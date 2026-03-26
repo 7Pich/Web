@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Anzo - Database Administrator</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+[data-theme="dark"]{
+  --bg:#0c0c0e;--bg2:#111115;--bg3:#17171d;--bg4:#1e1e27;
+  --ac:#00d4a0;--ac3:#005c45;
+  --tx:#e8e8f0;--mu:#6b6b80;--mu2:#44445a;
+  --br:rgba(255,255,255,0.06);--br2:rgba(0,212,160,0.22);
+}
+[data-theme="light"]{
+  --bg:#f4f4f6;--bg2:#ebebef;--bg3:#fff;--bg4:#e2e2e8;
+  --ac:#00a07a;--ac3:#b2f0e0;
+  --tx:#111118;--mu:#666678;--mu2:#aaaabc;
+  --br:rgba(0,0,0,0.08);--br2:rgba(0,160,122,0.25);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--tx);line-height:1.7;overflow-x:hidden;transition:background .3s,color .3s;animation:fi .5s ease}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:1rem 5%;background:rgba(12,12,14,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--br);transition:background .3s}
+[data-theme="light"] nav{background:rgba(244,244,246,0.92)}
+.logo{font-family:'Space Mono',monospace;font-weight:700;font-size:1rem;color:var(--ac);text-decoration:none;letter-spacing:.05em}
+.logo em{color:var(--mu);font-style:normal}
+.nlinks{display:flex;gap:0;list-style:none}
+.nlinks li a{
+  display:block;padding:.5rem 1.1rem;
+  font-family:'Space Mono',monospace;font-size:.78rem;
+  color:var(--mu);text-decoration:none;letter-spacing:.04em;
+  border-radius:6px;transition:color .2s,background .2s;
+}
+.nlinks li a:hover{color:var(--tx);background:rgba(255,255,255,0.05)}
+.nlinks li a.active{color:var(--ac)}
+.nright{display:flex;align-items:center;gap:.6rem}
+.thbtn{width:36px;height:36px;border-radius:8px;background:transparent;border:1px solid var(--br);color:var(--mu);cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.thbtn:hover{background:var(--bg4);border-color:var(--br2);color:var(--tx)}
+.hirebtn{font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;color:var(--ac);text-decoration:none;border:1px solid var(--br2);padding:.45rem 1rem;border-radius:4px;letter-spacing:.06em;transition:background .2s}
+.hirebtn:hover{background:rgba(0,212,160,0.1)}
+/* hamburger */
+.hbtn{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+.hbtn span{display:block;width:22px;height:2px;background:var(--tx);border-radius:2px;transition:transform .3s,opacity .3s}
+.hbtn.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hbtn.open span:nth-child(2){opacity:0}
+.hbtn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+/* mobile menu */
+.mmenu{display:none;position:fixed;top:61px;left:0;right:0;z-index:998;background:var(--bg2);border-bottom:1px solid var(--br);padding:1.25rem 5% 1.75rem;flex-direction:column;gap:1rem}
+.mmenu.open{display:flex}
+.mmenu a{font-size:.95rem;color:var(--mu);text-decoration:none;padding:.3rem 0;transition:color .2s}
+.mmenu a:hover{color:var(--tx)}
+
+/* ── PROGRESS + BACK-TOP ── */
+#pbar{position:fixed;top:0;left:0;height:2px;z-index:9999;background:var(--ac);width:0;box-shadow:0 0 8px var(--ac)}
+#btop{position:fixed;bottom:1.5rem;right:1.5rem;z-index:998;width:42px;height:42px;border-radius:8px;background:var(--bg3);border:1px solid var(--br2);color:var(--ac);cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s,transform .2s;box-shadow:0 4px 16px rgba(0,0,0,0.4)}
+#btop.on{opacity:1;pointer-events:all}
+#btop:hover{transform:translateY(-2px)}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;align-items:center;padding:8rem 5% 5rem;position:relative;overflow:hidden}
+.gbg{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,212,160,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,160,.025) 1px,transparent 1px);background-size:48px 48px}
+[data-theme="light"] .gbg{opacity:.4}
+.gl1{position:absolute;top:-100px;right:-80px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,160,.07),transparent 70%);pointer-events:none}
+.gl2{position:absolute;bottom:-180px;left:-80px;width:450px;height:450px;border-radius:50%;background:radial-gradient(circle,rgba(0,80,60,.1),transparent 70%);pointer-events:none}
+.hcon{position:relative;z-index:1;max-width:680px}
+.htag{display:inline-flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-size:.72rem;color:var(--ac);letter-spacing:.1em;border:1px solid var(--br2);padding:.4rem .9rem;border-radius:2px;margin-bottom:1.75rem;background:rgba(0,212,160,.04)}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--ac);box-shadow:0 0 6px var(--ac);animation:pu 2.4s ease-in-out infinite}
+@keyframes pu{0%,100%{opacity:1}50%{opacity:.25}}
+.hname{font-family:'Outfit',sans-serif;font-weight:800;font-size:clamp(3.5rem,8vw,6.5rem);line-height:.95;letter-spacing:-.04em;color:var(--tx);margin-bottom:.5rem}
+.hname .ac{color:var(--ac)}
+.hrole{font-family:'Space Mono',monospace;font-size:clamp(.8rem,1.4vw,1rem);color:var(--mu);letter-spacing:.08em;margin-bottom:1.75rem;margin-top:.6rem}
+.hrole .tw{color:var(--ac)}
+#tcur{display:inline-block;width:9px;height:1em;background:var(--ac);vertical-align:middle;margin-left:2px;animation:cu 1s step-end infinite}
+@keyframes cu{0%,100%{opacity:1}50%{opacity:0}}
+.hdesc{font-size:1rem;font-weight:300;color:var(--mu);line-height:1.8;max-width:500px;margin-bottom:2.25rem}
+.hdesc strong{color:var(--tx);font-weight:500}
+.hbtns{display:flex;gap:.85rem;flex-wrap:wrap}
+
+/* ── BUTTONS ── */
+.btnp{font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.06em;background:var(--ac);color:#000;border:none;padding:.8rem 1.85rem;border-radius:4px;cursor:pointer;text-decoration:none;transition:transform .2s,box-shadow .2s;display:inline-flex;align-items:center;gap:8px}
+.btnp:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,212,160,.3)}
+.btng{font-family:'Space Mono',monospace;font-size:.78rem;font-weight:400;letter-spacing:.06em;background:transparent;color:var(--mu);border:1px solid var(--br);padding:.8rem 1.85rem;border-radius:4px;cursor:pointer;text-decoration:none;transition:color .2s,border-color .2s;display:inline-flex;align-items:center;gap:8px}
+.btng:hover{color:var(--tx);border-color:rgba(255,255,255,.18)}
+.cvbtn{font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:.06em;color:var(--ac);border:1px solid var(--br2);background:rgba(0,212,160,.06);padding:.55rem 1.1rem;border-radius:4px;text-decoration:none;display:inline-flex;align-items:center;gap:7px;cursor:pointer;transition:background .2s,transform .2s}
+.cvbtn:hover{background:rgba(0,212,160,.14);transform:translateY(-1px)}
+
+/* terminal card */
+.tcard{position:absolute;right:5%;top:50%;transform:translateY(-50%);background:var(--bg3);border:1px solid var(--br);border-radius:10px;padding:1.2rem 1.4rem;width:300px;font-family:'Space Mono',monospace;font-size:.71rem;line-height:1.85;z-index:2;animation:fl 4s ease-in-out infinite}
+@keyframes fl{0%,100%{transform:translateY(-50%) translateY(0)}50%{transform:translateY(-50%) translateY(-8px)}}
+.tbar{display:flex;gap:6px;margin-bottom:.9rem;padding-bottom:.7rem;border-bottom:1px solid var(--br)}
+.td{width:10px;height:10px;border-radius:50%}
+.tl{color:var(--mu)}.tl .cmd{color:var(--ac)}.tl .val{color:#7dd3fc}.tl .str{color:#fca5a5}
+.tc{display:inline-block;width:7px;height:12px;background:var(--ac);vertical-align:middle;animation:cu 1s step-end infinite}
+
+/* ── SECTIONS ── */
+.sec{padding:5.5rem 5%;position:relative;scroll-margin-top:70px}
+.sec-alt{background:var(--bg2);transition:background .3s}
+.slbl{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ac);margin-bottom:.6rem;display:flex;align-items:center;gap:10px}
+.slbl::after{content:'';flex:1;max-width:36px;height:1px;background:var(--ac3)}
+.stit{font-family:'Outfit',sans-serif;font-weight:800;font-size:clamp(2rem,3.5vw,2.75rem);letter-spacing:-.03em;line-height:1.1;margin-bottom:.4rem}
+
+/* ── ABOUT ── */
+.agrid{display:grid;grid-template-columns:1.1fr 1fr;gap:3.5rem;align-items:start;margin-top:2.75rem}
+.atext p{color:var(--mu);font-weight:300;margin-bottom:1rem;font-size:.975rem;line-height:1.85}
+.atext p strong{color:var(--tx);font-weight:500}
+.srow{display:flex;gap:1.75rem;margin-top:2.25rem;padding-top:2rem;border-top:1px solid var(--br);flex-wrap:wrap}
+.snum{font-family:'Outfit',sans-serif;font-weight:800;font-size:2rem;letter-spacing:-.04em;color:var(--tx)}
+.snum span{color:var(--ac)}
+.slb2{font-size:.78rem;color:var(--mu);margin-top:2px}
+/* skill panel */
+.skpan{background:var(--bg3);border:1px solid var(--br);border-radius:10px;padding:1.4rem;transition:background .3s}
+.sktit{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--ac);letter-spacing:.14em;margin-bottom:1.1rem}
+.skrow{display:flex;flex-direction:column;gap:.85rem}
+.ski{display:flex;flex-direction:column;gap:5px}
+.skh{display:flex;justify-content:space-between}
+.skn{font-size:.8rem;color:var(--tx)}
+.skpc{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--ac)}
+.skbar{height:3px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.skfill{height:100%;background:var(--ac);border-radius:2px;transform-origin:left;transform:scaleX(0);transition:transform 1s cubic-bezier(.16,1,.3,1)}
+
+/* ── PROJECTS ── */
+.phead{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:1.25rem;flex-wrap:wrap;gap:1rem}
+.fbar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:1.75rem}
+.fbtn{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.08em;padding:4px 12px;border-radius:3px;border:1px solid var(--br);background:transparent;color:var(--mu);cursor:pointer;transition:all .2s}
+.fbtn:hover{color:var(--tx);border-color:var(--br2)}
+.fbtn.on{background:rgba(0,212,160,.12);border-color:var(--br2);color:var(--ac)}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
+.pc{background:var(--bg3);border:1px solid var(--br);border-radius:10px;overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:transform .25s,border-color .25s,box-shadow .25s}
+.pc:hover{transform:translateY(-5px);border-color:var(--br2);box-shadow:0 16px 40px rgba(0,0,0,.45),0 0 0 1px rgba(0,212,160,.1)}
+.pct{padding:1.35rem 1.35rem .9rem;border-bottom:1px solid var(--br);display:flex;align-items:center;justify-content:space-between}
+.pci{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;background:var(--bg4);border:1px solid var(--br)}
+.par{color:var(--mu);font-size:1rem;transition:color .2s,transform .2s}
+.pc:hover .par{color:var(--ac);transform:translate(2px,-2px)}
+.pcb{padding:1.1rem 1.35rem 1.35rem;flex:1;display:flex;flex-direction:column}
+.ptags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.65rem}
+.ptag{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.07em;padding:2px 7px;border-radius:2px;background:rgba(0,212,160,.08);color:var(--ac);border:1px solid rgba(0,212,160,.15)}
+.ptag.sql{background:rgba(250,204,21,.08);color:#fde68a;border-color:rgba(250,204,21,.15)}
+.ptag.py{background:rgba(96,165,250,.08);color:#bfdbfe;border-color:rgba(96,165,250,.15)}
+.ptag.ts{background:rgba(129,140,248,.08);color:#c7d2fe;border-color:rgba(129,140,248,.15)}
+.ptag.ns{background:rgba(74,222,128,.08);color:#bbf7d0;border-color:rgba(74,222,128,.15)}
+.ptn{font-family:'Outfit',sans-serif;font-weight:700;font-size:1rem;letter-spacing:-.01em;margin-bottom:.45rem}
+.pde{font-size:.8rem;color:var(--mu);font-weight:300;line-height:1.65;flex:1}
+.pc.wide{grid-column:span 2;flex-direction:row}
+.pc.wide .pct{border-bottom:none;border-right:1px solid var(--br);flex-direction:column;align-items:flex-start;gap:.85rem;min-width:190px;padding:1.6rem}
+.pc.wide .pcb{padding:1.6rem}
+.pc.wide .pci{width:52px;height:52px;font-size:1.6rem}
+.pc.wide .ptn{font-size:1.2rem}
+
+/* ── EXPERIENCE ── */
+.tl{margin-top:2.75rem}
+.tli{display:grid;grid-template-columns:110px auto 1fr;gap:1.25rem;padding-bottom:2.25rem;position:relative}
+.tli:not(:last-child)::after{content:'';position:absolute;left:118px;top:24px;bottom:0;width:1px;background:var(--br)}
+.tly{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--mu);letter-spacing:.06em;padding-top:5px;text-align:right}
+.tldw{display:flex;flex-direction:column;align-items:center}
+.tldo{width:10px;height:10px;border-radius:50%;background:var(--ac);box-shadow:0 0 10px rgba(0,212,160,.6);flex-shrink:0;margin-top:4px}
+.tlr{font-family:'Outfit',sans-serif;font-weight:700;font-size:1rem;margin-bottom:2px}
+.tlc{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--ac);letter-spacing:.06em;margin-bottom:.5rem}
+.tld{font-size:.85rem;color:var(--mu);font-weight:300;line-height:1.7}
+
+/* ── CONTACT ── */
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:2.75rem;align-items:start}
+.cinfo p{color:var(--mu);font-weight:300;font-size:.95rem;line-height:1.8;margin-bottom:1.25rem;margin-top:.85rem}
+.cdet{display:flex;flex-direction:column;gap:.65rem}
+.cd{display:flex;align-items:center;gap:11px;font-size:.85rem;color:var(--mu)}
+.cd .ico{width:34px;height:34px;border-radius:7px;background:var(--bg3);border:1px solid var(--br);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
+.cd a{color:var(--ac);text-decoration:none}
+.cd a:hover{text-decoration:underline}
+/* form */
+.cform{background:var(--bg3);border:1px solid var(--br);border-radius:12px;padding:1.75rem;display:flex;flex-direction:column;gap:1rem;position:relative;overflow:hidden;transition:background .3s}
+.cform::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--ac),transparent)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg label{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--ac);letter-spacing:.12em}
+.fg input,.fg textarea,.fg select{background:var(--bg4);border:1px solid var(--br);border-radius:6px;color:var(--tx);font-family:'Outfit',sans-serif;font-size:.875rem;font-weight:300;padding:.65rem .9rem;outline:none;transition:border-color .2s;resize:none}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--br2)}
+.fg textarea{min-height:110px}
+.fg select option{background:var(--bg4)}
+.fsub{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:.25rem}
+.bsend{font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.08em;background:var(--ac);color:#000;border:none;padding:.8rem 1.75rem;border-radius:4px;cursor:pointer;transition:transform .2s,box-shadow .2s;display:flex;align-items:center;gap:8px}
+.bsend:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,212,160,.3)}
+.bsend:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.fnote{font-size:.75rem;color:var(--mu)}
+.fsuc{display:none;font-family:'Space Mono',monospace;font-size:.75rem;color:var(--ac);padding:.7rem .9rem;border:1px solid var(--br2);border-radius:4px;background:rgba(0,212,160,.06)}
+.fsuc.on{display:block}
+.sbtn2{width:40px;height:40px;border-radius:6px;background:var(--bg4);border:1px solid var(--br);display:flex;align-items:center;justify-content:center;color:var(--mu);text-decoration:none;transition:all .2s}
+.sbtn2:hover{background:rgba(0,212,160,.1);border-color:var(--br2);color:var(--ac)}
+
+/* ── FOOTER ── */
+.divl{border:none;border-top:1px solid var(--br);margin:0}
+footer{padding:1.5rem 5%;border-top:1px solid var(--br);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+footer p{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--mu);letter-spacing:.05em}
+footer span{color:var(--ac)}
+
+/* ── REVEAL ── */
+.rev{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s ease}
+.rev.in{opacity:1;transform:none}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1000px){.tcard{display:none}.pgrid{grid-template-columns:1fr 1fr}.pc.wide{grid-column:span 2}}
+@media(max-width:768px){
+  .nlinks,.hirebtn{display:none}
+  .hbtn{display:flex}
+  .pgrid{grid-template-columns:1fr}
+  .pc.wide{grid-column:auto;flex-direction:column}
+  .pc.wide .pct{border-right:none;border-bottom:1px solid var(--br)}
+  .agrid,.cgrid{grid-template-columns:1fr;gap:2rem}
+  .tli{grid-template-columns:75px auto 1fr}
+  .frow{grid-template-columns:1fr}
+  .hero{padding-top:8.5rem}
+}
+</style>
+</head>
+<body>
+
+<div id="pbar"></div>
+<button id="btop" onclick="gotoTop()">↑</button>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#hero">ANZO<em>.db</em></a>
+  <ul class="nlinks">
+    <li><a href="#about" onclick="goTo(event,'about')">About</a></li>
+    <li><a href="#projects" onclick="goTo(event,'projects')">Projects</a></li>
+    <li><a href="#experience" onclick="goTo(event,'experience')">Experience</a></li>
+    <li><a href="#contact" onclick="goTo(event,'contact')">Contact</a></li>
+  </ul>
+  <div class="nright">
+    <button class="thbtn" id="thbtn" onclick="toggleTheme()">🌙</button>
+    <a class="hirebtn" href="#contact" onclick="goTo(event,'contact')">HIRE_ME()</a>
+    <button class="hbtn" id="hbtn" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mmenu" id="mmenu">
+  <a href="#about"      onclick="mGo(event,'about')">01 — About</a>
+  <a href="#projects"   onclick="mGo(event,'projects')">02 — Projects</a>
+  <a href="#experience" onclick="mGo(event,'experience')">03 — Experience</a>
+  <a href="#contact"    onclick="mGo(event,'contact')">04 — Contact</a>
+  <a href="#" class="cvbtn" style="width:fit-content;margin-top:.25rem" onclick="dlcv(event)">⬇ Download CV</a>
+</div>
+
+<!-- HERO -->
+<section class="hero sec" id="hero">
+  <div class="gbg"></div>
+  <div class="gl1"></div>
+  <div class="gl2"></div>
+  <div class="hcon">
+    <div class="htag"><span class="dot"></span>AVAILABLE FOR WORK &nbsp;·&nbsp; DATABASE ADMINISTRATOR</div>
+    <h1 class="hname"><span class="ac">A</span>nzo</h1>
+    <p class="hrole">// <span class="tw" id="ttext"></span><span id="tcur"></span></p>
+    <p class="hdesc">Designing <strong>robust, scalable database systems</strong> that power modern applications. Specialized in query optimization, data architecture, and keeping your data fast, safe, and always available.</p>
+    <div class="hbtns">
+      <a href="#projects" class="btnp" onclick="goTo(event,'projects')">View Projects →</a>
+      <a href="#" class="cvbtn" onclick="dlcv(event)">⬇ Download CV</a>
+      <a href="#contact" class="btng" onclick="goTo(event,'contact')">Get in touch</a>
+    </div>
+  </div>
+  <div class="tcard">
+    <div class="tbar">
+      <div class="td" style="background:#ff5f57"></div>
+      <div class="td" style="background:#febc2e"></div>
+      <div class="td" style="background:#28c840"></div>
+    </div>
+    <div class="tl">$ <span class="cmd">SELECT</span> * <span class="cmd">FROM</span> anzo</div>
+    <div class="tl">&nbsp;&nbsp;<span class="cmd">WHERE</span> role=<span class="str">'dba'</span>;</div>
+    <br>
+    <div class="tl">→ name: <span class="val">"Anzo"</span></div>
+    <div class="tl">→ city: <span class="val">"Phnom Penh, KH"</span></div>
+    <div class="tl">→ exp: <span class="val">3+ years</span></div>
+    <div class="tl">→ stack: <span class="val">["PG","MySQL","Mongo"]</span></div>
+    <div class="tl">→ status: <span style="color:var(--ac)">ONLINE ✓</span></div>
+    <br>
+    <div class="tl">$ <span class="tc"></span></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="sec sec-alt" id="about">
+  <div class="slbl">01 — About</div>
+  <div class="agrid">
+    <div class="atext rev">
+      <h2 class="stit">Turning data<br>into decisions</h2>
+      <p style="margin-top:1.1rem">Hi, I'm <strong>Anzo</strong> — a Database Administrator based in <strong>Phnom Penh, Cambodia</strong>. Passionate about data architecture, performance tuning, and systems that scale.</p>
+      <p>From <strong>schema design and normalization</strong> to query optimization, backup strategies, and real-time monitoring — I build databases that are reliable, fast, and maintainable.</p>
+      <p>Whether it's a high-throughput transactional system or a complex analytical warehouse, I deliver results that matter.</p>
+      <div class="srow">
+        <div><div class="snum">50<span>+</span></div><div class="slb2">Databases managed</div></div>
+        <div><div class="snum">3<span>+</span></div><div class="slb2">Years experience</div></div>
+        <div><div class="snum">99.9<span>%</span></div><div class="slb2">Uptime record</div></div>
+      </div>
+    </div>
+    <div class="skpan rev" style="transition-delay:.15s">
+      <div class="sktit">// SKILL_MATRIX.json</div>
+      <div class="skrow">
+        <div class="ski"><div class="skh"><span class="skn">PostgreSQL</span><span class="skpc">95%</span></div><div class="skbar"><div class="skfill" data-w=".95"></div></div></div>
+        <div class="ski"><div class="skh"><span class="skn">MySQL / MariaDB</span><span class="skpc">92%</span></div><div class="skbar"><div class="skfill" data-w=".92"></div></div></div>
+        <div class="ski"><div class="skh"><span class="skn">MongoDB</span><span class="skpc">85%</span></div><div class="skbar"><div class="skfill" data-w=".85"></div></div></div>
+        <div class="ski"><div class="skh"><span class="skn">Redis</span><span class="skpc">80%</span></div><div class="skbar"><div class="skfill" data-w=".80"></div></div></div>
+        <div class="ski"><div class="skh"><span class="skn">Query Optimization</span><span class="skpc">90%</span></div><div class="skbar"><div class="skfill" data-w=".90"></div></div></div>
+        <div class="ski"><div class="skh"><span class="skn">Data Modeling</span><span class="skpc">88%</span></div><div class="skbar"><div class="skfill" data-w=".88"></div></div></div>
+        <div class="ski"><div class="skh"><span class="skn">Python / SQL Scripting</span><span class="skpc">82%</span></div><div class="skbar"><div class="skfill" data-w=".82"></div></div></div>
+        <div class="ski"><div class="skh"><span class="skn">Cloud DB (AWS RDS)</span><span class="skpc">78%</span></div><div class="skbar"><div class="skfill" data-w=".78"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divl"/>
+
+<!-- PROJECTS -->
+<section class="sec" id="projects">
+  <div class="phead">
+    <div><div class="slbl">02 — Work</div><h2 class="stit rev">Selected projects</h2></div>
+  </div>
+  <div class="fbar rev" style="transition-delay:.1s">
+    <button class="fbtn on" data-f="all">ALL</button>
+    <button class="fbtn" data-f="PostgreSQL">POSTGRESQL</button>
+    <button class="fbtn" data-f="MySQL">MYSQL</button>
+    <button class="fbtn" data-f="MongoDB">MONGODB</button>
+    <button class="fbtn" data-f="Python">PYTHON</button>
+    <button class="fbtn" data-f="Redis">REDIS</button>
+  </div>
+  <div class="pgrid" id="pgrid">
+    <a href="#" class="pc wide rev" data-tags="PostgreSQL,Python,Redis">
+      <div class="pct">
+        <div class="pci" style="background:rgba(0,212,160,.08);border-color:var(--br2);font-size:1.6rem">🗄️</div>
+        <div>
+          <div class="ptags"><span class="ptag sql">PostgreSQL</span><span class="ptag py">Python</span><span class="ptag">Redis</span></div>
+          <div style="font-family:'Space Mono',monospace;font-size:.6rem;color:var(--mu);letter-spacing:.08em">FEATURED PROJECT</div>
+        </div>
+      </div>
+      <div class="pcb">
+        <div class="ptn">EcomDB — High-Performance E-Commerce Database</div>
+        <p class="pde">Designed and optimized a PostgreSQL schema handling 10M+ daily transactions. Implemented Redis caching, read replicas, and partitioning that reduced query times by 70%.</p>
+        <div style="margin-top:1rem;display:flex;gap:1.25rem">
+          <span style="font-family:'Space Mono',monospace;font-size:.68rem;color:var(--mu)">10M+ tx/day</span>
+          <span style="font-family:'Space Mono',monospace;font-size:.68rem;color:var(--ac)">70% faster</span>
+        </div>
+      </div>
+    </a>
+    <a href="#" class="pc rev" style="transition-delay:.05s" data-tags="MySQL,Python">
+      <div class="pct"><div class="pci">📊</div><span class="par">↗</span></div>
+      <div class="pcb"><div class="ptags"><span class="ptag sql">MySQL</span><span class="ptag py">Python</span></div><div class="ptn">DataVault Analytics</div><p class="pde">BI data warehouse consolidating 8 data sources into a star-schema with automated ETL pipelines.</p></div>
+    </a>
+    <a href="#" class="pc rev" style="transition-delay:.1s" data-tags="MongoDB">
+      <div class="pct"><div class="pci">🔒</div><span class="par">↗</span></div>
+      <div class="pcb"><div class="ptags"><span class="ptag ns">MongoDB</span><span class="ptag ts">Node.js</span></div><div class="ptn">SecureAuth DB Layer</div><p class="pde">Secure user schema with row-level encryption, RBAC, and audit logging for a fintech application.</p></div>
+    </a>
+    <a href="#" class="pc rev" style="transition-delay:.15s" data-tags="PostgreSQL">
+      <div class="pct"><div class="pci">⚡</div><span class="par">↗</span></div>
+      <div class="pcb"><div class="ptags"><span class="ptag sql">PostgreSQL</span><span class="ptag">TimescaleDB</span></div><div class="ptn">RealTime Metrics Store</div><p class="pde">Time-series DB for IoT sensors ingesting 50K events/sec with automated retention policies.</p></div>
+    </a>
+    <a href="#" class="pc rev" style="transition-delay:.2s" data-tags="Python,MySQL">
+      <div class="pct"><div class="pci">🔄</div><span class="par">↗</span></div>
+      <div class="pcb"><div class="ptags"><span class="ptag py">Python</span><span class="ptag sql">MySQL</span></div><div class="ptn">DB Migration Toolkit</div><p class="pde">Zero-downtime migration framework with rollback support and integrity validation.</p></div>
+    </a>
+    <a href="#" class="pc rev" style="transition-delay:.25s" data-tags="Redis,PostgreSQL">
+      <div class="pct"><div class="pci">🧠</div><span class="par">↗</span></div>
+      <div class="pcb"><div class="ptags"><span class="ptag">Redis</span><span class="ptag sql">PostgreSQL</span></div><div class="ptn">Cache Optimizer</div><p class="pde">Auto-detects hot queries and caches to Redis, reducing DB load by 60% with zero code changes.</p></div>
+    </a>
+  </div>
+</section>
+
+<hr class="divl"/>
+
+<!-- EXPERIENCE -->
+<section class="sec sec-alt" id="experience">
+  <div class="slbl">03 — Career</div>
+  <h2 class="stit rev">Experience</h2>
+  <div class="tl">
+    <div class="tli rev">
+      <div class="tly">2023 — NOW</div>
+      <div class="tldw"><div class="tldo"></div></div>
+      <div><div class="tlr">Senior Database Administrator</div><div class="tlc">TECHCORP · FULL-TIME</div><p class="tld">Oversee all production databases across 4 environments. Led migration to AWS RDS achieving 40% cost reduction. Implemented automated backup and disaster recovery with 1-hour RPO.</p></div>
+    </div>
+    <div class="tli rev" style="transition-delay:.1s">
+      <div class="tly">2022 — 2023</div>
+      <div class="tldw"><div class="tldo" style="background:var(--mu2);box-shadow:none"></div></div>
+      <div><div class="tlr">Database Administrator</div><div class="tlc">DATA SOLUTIONS CO. · FULL-TIME</div><p class="tld">Managed MySQL and MongoDB clusters for SaaS with 200K+ users. Reduced query response from 800ms to 95ms through indexing and query refactoring.</p></div>
+    </div>
+    <div class="tli rev" style="transition-delay:.2s">
+      <div class="tly">2021 — 2022</div>
+      <div class="tldw"><div class="tldo" style="background:var(--mu2);box-shadow:none"></div></div>
+      <div><div class="tlr">Junior DBA / Data Analyst</div><div class="tlc">STARTUP INC. · CONTRACT</div><p class="tld">Designed database schemas for 3 product features, wrote complex analytical queries for reporting, and maintained daily ETL pipelines using Python and cron jobs.</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divl"/>
+
+<!-- CONTACT -->
+<section class="sec" id="contact">
+  <div class="slbl">04 — Contact</div>
+  <div class="cgrid">
+    <div class="cinfo rev">
+      <h2 class="stit">Let's work<br>together</h2>
+      <p>Need a database architect, performance expert, or someone to manage your data infrastructure? Open to new projects and full-time opportunities.</p>
+      <div class="cdet">
+        <div class="cd"><div class="ico">📧</div><a id="elink" href="#">loading...</a></div>
+        <div class="cd"><div class="ico">📍</div><span>Phnom Penh, Cambodia</span></div>
+        <div class="cd"><div class="ico">✈️</div><a href="https://t.me/MaiBich" target="_blank" rel="noopener">t.me/MaiBich</a></div>
+        <div class="cd"><div class="ico">📘</div><a href="https://www.facebook.com/mai.pich.5/" target="_blank" rel="noopener">facebook.com/mai.pich.5</a></div>
+        <div class="cd"><div class="ico">💼</div><span>Open to remote &amp; on-site</span></div>
+      </div>
+      <div style="margin-top:1.4rem;display:flex;flex-direction:column;gap:.65rem">
+        <a href="#" class="cvbtn" onclick="dlcv(event)">⬇ Download CV / Resume</a>
+        <div style="display:flex;gap:.6rem;margin-top:.2rem">
+          <a id="esoc" href="#" class="sbtn2" title="Email">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+          </a>
+          <a href="https://t.me/MaiBich" target="_blank" rel="noopener" class="sbtn2" title="Telegram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          </a>
+          <a href="https://www.facebook.com/mai.pich.5/" target="_blank" rel="noopener" class="sbtn2" title="Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="cform rev" style="transition-delay:.15s">
+      <div class="fsuc" id="fsuc">✓ MESSAGE_SENT() — I'll reply soon!</div>
+      <div class="frow">
+        <div class="fg"><label>NAME</label><input type="text" id="fn" placeholder="Your name"/></div>
+        <div class="fg"><label>EMAIL</label><input type="email" id="fe" placeholder="you@example.com"/></div>
+      </div>
+      <div class="fg">
+        <label>SUBJECT</label>
+        <select id="fs">
+          <option value="">Select a topic...</option>
+          <option>Database Design &amp; Architecture</option>
+          <option>Performance Optimization</option>
+          <option>Migration Project</option>
+          <option>Full-time Opportunity</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="fg"><label>MESSAGE</label><textarea id="fm" placeholder="Tell me about your project..."></textarea></div>
+      <div class="fsub">
+        <button class="bsend" id="sbtn" onclick="sendF()"><span id="slbl">SEND_MESSAGE()</span></button>
+        <span class="fnote">I usually reply within 24h.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 <span>Anzo</span> · Database Administrator · Phnom Penh, Cambodia</p>
+  <p style="font-size:.62rem;color:var(--mu2)">SELECT 'built with care' AS portfolio;</p>
+</footer>
+
+<script>
+/* === NAV SCROLL — goTo scrolls to the section by ID === */
+function goTo(e, id) {
+  e.preventDefault();
+  var el = document.getElementById(id);
+  if (!el) return;
+  var top = el.getBoundingClientRect().top + window.pageYOffset - 68;
+  window.scrollTo({ top: top, behavior: 'smooth' });
+  /* close mobile menu if open */
+  document.getElementById('hbtn').classList.remove('open');
+  document.getElementById('mmenu').classList.remove('open');
+}
+function mGo(e, id) { goTo(e, id); }
+function gotoTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+/* === THEME === */
+var dark = true;
+function toggleTheme() {
+  dark = !dark;
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  document.getElementById('thbtn').textContent = dark ? '🌙' : '☀️';
+}
+
+/* === HAMBURGER === */
+function toggleMenu() {
+  document.getElementById('hbtn').classList.toggle('open');
+  document.getElementById('mmenu').classList.toggle('open');
+}
+
+/* === SCROLL: progress bar + back-to-top + active nav === */
+window.addEventListener('scroll', function () {
+  var st = window.pageYOffset;
+  var dh = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('pbar').style.width = (dh > 0 ? (st / dh * 100) : 0) + '%';
+  document.getElementById('btop').classList.toggle('on', st > 400);
+  /* highlight active nav link */
+  var cur = '';
+  ['about','projects','experience','contact'].forEach(function(id) {
+    var s = document.getElementById(id);
+    if (s && st >= s.offsetTop - 120) cur = id;
+  });
+  document.querySelectorAll('.nlinks a').forEach(function(a) {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+  });
+});
+
+/* === TYPING EFFECT === */
+var phrases = ['Database Administrator','PostgreSQL Specialist','Performance Optimizer','Data Architect','Your DB Guardian'];
+var pi = 0, ci = 0, del = false;
+var ttel = document.getElementById('ttext');
+function ty() {
+  var c = phrases[pi];
+  if (!del) {
+    ttel.textContent = c.slice(0, ++ci);
+    if (ci === c.length) { del = true; setTimeout(ty, 1800); return; }
+    setTimeout(ty, 65);
+  } else {
+    ttel.textContent = c.slice(0, --ci);
+    if (ci === 0) { del = false; pi = (pi + 1) % phrases.length; setTimeout(ty, 400); return; }
+    setTimeout(ty, 35);
+  }
+}
+setTimeout(ty, 800);
+
+/* === SCROLL REVEAL + SKILL BARS === */
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) {
+      e.target.classList.add('in');
+      e.target.querySelectorAll('.skfill[data-w]').forEach(function(b, i) {
+        setTimeout(function() {
+          b.style.transitionDelay = (i * 0.08) + 's';
+          b.style.transform = 'scaleX(' + b.dataset.w + ')';
+        }, 120);
+      });
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.rev').forEach(function(el) { observer.observe(el); });
+
+/* === PROJECT FILTER === */
+document.querySelectorAll('.fbtn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.fbtn').forEach(function(b) { b.classList.remove('on'); });
+    btn.classList.add('on');
+    var f = btn.dataset.f;
+    document.querySelectorAll('#pgrid .pc').forEach(function(c) {
+      var show = f === 'all' || (c.dataset.tags && c.dataset.tags.indexOf(f) > -1);
+      c.style.opacity = show ? '1' : '0.12';
+      c.style.pointerEvents = show ? 'all' : 'none';
+      c.style.transform = show ? '' : 'scale(0.97)';
+    });
+  });
+});
+
+/* === CONTACT FORM → TELEGRAM BOT === */
+function sendF() {
+  var n = document.getElementById('fn').value.trim();
+  var e = document.getElementById('fe').value.trim();
+  var s = document.getElementById('fs').value;
+  var m = document.getElementById('fm').value.trim();
+
+  if (!n || !e || !m) {
+    alert('Please fill in your name, email, and message.');
+    return;
+  }
+
+  var btn = document.getElementById('sbtn');
+  var lbl = document.getElementById('slbl');
+  btn.disabled = true;
+  lbl.textContent = 'SENDING...';
+
+  var text = '\u{1F4EC} New Portfolio Message\n\n'
+    + '\u{1F464} Name: ' + n + '\n'
+    + '\u{1F4E7} Email: ' + e + '\n'
+    + '\u{1F4CC} Subject: ' + (s || 'Not selected') + '\n'
+    + '\u{1F4AC} Message:\n' + m;
+
+  var t1 = '6824967389';
+  var t2 = 'AAHpIh5SleEk-67UHNCBTrekqizNbSNYSLI';
+  var chatId = '746308807';
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://api.telegram.org/bot' + t1 + ':' + t2 + '/sendMessage', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+
+  xhr.onload = function() {
+    var res = JSON.parse(xhr.responseText);
+    if (res.ok) {
+      var suc = document.getElementById('fsuc');
+      suc.textContent = '\u2713 Sent! Check your Telegram @Anzothekingbot';
+      suc.classList.add('on');
+      document.getElementById('fn').value = '';
+      document.getElementById('fe').value = '';
+      document.getElementById('fs').value = '';
+      document.getElementById('fm').value = '';
+      setTimeout(function() { suc.classList.remove('on'); }, 7000);
+    } else {
+      alert('Error: ' + (res.description || 'Could not send. Make sure you sent /start to @Anzothekingbot'));
+    }
+    btn.disabled = false;
+    lbl.textContent = 'SEND_MESSAGE()';
+  };
+
+  xhr.onerror = function() {
+    alert('Network error. Try contacting via t.me/MaiBich directly.');
+    btn.disabled = false;
+    lbl.textContent = 'SEND_MESSAGE()';
+  };
+
+  xhr.send(JSON.stringify({
+    chat_id: chatId,
+    text: text
+  }));
+}
+
+/* === CV DOWNLOAD === */
+function dlcv(e) {
+  if (e) e.preventDefault();
+  var cv = 'ANZO - DATABASE ADMINISTRATOR\n'
+    + '==========================================\n'
+    + 'Email: Maibich2019@gmail.com\n'
+    + 'Location: Phnom Penh, Cambodia\n'
+    + 'Telegram: https://t.me/MaiBich\n'
+    + 'Facebook: https://www.facebook.com/mai.pich.5/\n\n'
+    + 'SKILLS\n------\n'
+    + 'PostgreSQL, MySQL, MongoDB, Redis\n'
+    + 'Query Optimization, Data Modeling\n'
+    + 'Python, SQL Scripting, AWS RDS\n\n'
+    + 'EXPERIENCE\n----------\n'
+    + '2023-Now   Senior DBA - TechCorp\n'
+    + '2022-2023  DBA - Data Solutions Co.\n'
+    + '2021-2022  Junior DBA - Startup Inc.\n\n'
+    + '** Replace this with your real PDF CV **';
+  var blob = new Blob([cv], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'Anzo_CV.txt'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* === EMAIL (set via JS so nothing can encode it) === */
+(function() {
+  var em = 'Maibich2019' + '@' + 'gmail.com';
+  var el = document.getElementById('elink');
+  var es = document.getElementById('esoc');
+  if (el) { el.href = 'mailto:' + em; el.textContent = em; }
+  if (es) { es.href = 'mailto:' + em; }
+})();
+</script>
+</body>
+</html>

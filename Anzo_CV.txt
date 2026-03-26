@@ -1,0 +1,20 @@
+ANZO - DATABASE ADMINISTRATOR
+==========================================
+Email: Maibich2019@gmail.com
+Location: Phnom Penh, Cambodia
+Telegram: https://t.me/MaiBich
+Facebook: https://www.facebook.com/mai.pich.5/
+
+SKILLS
+------
+PostgreSQL, MySQL, MongoDB, Redis
+Query Optimization, Data Modeling
+Python, SQL Scripting, AWS RDS
+
+EXPERIENCE
+----------
+2023-Now   Senior DBA - TechCorp
+2022-2023  DBA - Data Solutions Co.
+2021-2022  Junior DBA - Startup Inc.
+
+** Replace this with your real PDF CV **
