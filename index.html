@@ -641,7 +641,7 @@ document.querySelectorAll('#pgrid .pc').forEach(function(card,i){card.addEventLi
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeProjectModal();});
 
 // MINI AI ASSISTANT
-var AI_API_URL=location.protocol==='file:'?'http://localhost:3000/ai':'/ai';
+var AI_API_URL=window.ANZO_AI_API_URL||(location.protocol==='file:'?'http://localhost:3000/ai':'/ai');
 function toggleAi(){document.getElementById('aipanel').classList.toggle('on');setTimeout(function(){var i=document.getElementById('aiinput');if(i&&document.getElementById('aipanel').classList.contains('on'))i.focus();},80);}
 function aiAdd(text,who){
   var box=document.getElementById('aimsgs'),msg=document.createElement('div');
