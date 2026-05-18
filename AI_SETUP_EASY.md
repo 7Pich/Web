@@ -15,10 +15,7 @@ Open PowerShell in the project folder:
 ```powershell
 cd D:\Year4\Web\Anzo
 cd server
-copy .env.example .env
-notepad .env
-npm install
-npm start
+.\start-ai.ps1
 ```
 
 Put your new key inside `server/.env`:
