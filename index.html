@@ -651,6 +651,13 @@ function aiAddHtml(html){
   var box=document.getElementById('aimsgs'),msg=document.createElement('div');
   msg.className='aimsg bot';msg.innerHTML=html;box.appendChild(msg);box.scrollTop=box.scrollHeight;return msg;
 }
+function aiFormat(text){
+  var safe=String(text||'').replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});
+  var payToken='__ANZO_PAYWAY_LINK__';
+  safe=safe.replace(/https:\/\/link\.payway\.com\.kh\/ABAPAYzI4445189/g,payToken);
+  safe=safe.replace(/(https?:\/\/[^\s<]+)/g,function(url){return '<a href="'+url+'" target="_blank" rel="noopener">'+url+'</a>';});
+  return safe.split(payToken).join('<a class="aicta" href="https://link.payway.com.kh/ABAPAYzI4445189" target="_blank" rel="noopener">Pay with ABA PayWay</a>');
+}
 function aiReply(q){
   var s=q.toLowerCase();
   if(s.indexOf('contact')>-1||s.indexOf('phone')>-1||s.indexOf('call')>-1||s.indexOf('number')>-1){
@@ -685,7 +692,7 @@ function askAi(text){
     return res.json().then(function(data){return {ok:res.ok,data:data};});
   }).then(function(result){
     if(result.ok&&result.data&&result.data.reply){
-      thinking.textContent=result.data.reply;
+      thinking.innerHTML=aiFormat(result.data.reply);
     }else{
       thinking.innerHTML=aiReply(text);
     }
