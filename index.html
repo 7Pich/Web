@@ -641,14 +641,15 @@ document.querySelectorAll('#pgrid .pc').forEach(function(card,i){card.addEventLi
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeProjectModal();});
 
 // MINI AI ASSISTANT
+var AI_API_URL=location.protocol==='file:'?'http://localhost:3000/ai':'/ai';
 function toggleAi(){document.getElementById('aipanel').classList.toggle('on');setTimeout(function(){var i=document.getElementById('aiinput');if(i&&document.getElementById('aipanel').classList.contains('on'))i.focus();},80);}
 function aiAdd(text,who){
   var box=document.getElementById('aimsgs'),msg=document.createElement('div');
-  msg.className='aimsg '+(who||'bot');msg.textContent=text;box.appendChild(msg);box.scrollTop=box.scrollHeight;
+  msg.className='aimsg '+(who||'bot');msg.textContent=text;box.appendChild(msg);box.scrollTop=box.scrollHeight;return msg;
 }
 function aiAddHtml(html){
   var box=document.getElementById('aimsgs'),msg=document.createElement('div');
-  msg.className='aimsg bot';msg.innerHTML=html;box.appendChild(msg);box.scrollTop=box.scrollHeight;
+  msg.className='aimsg bot';msg.innerHTML=html;box.appendChild(msg);box.scrollTop=box.scrollHeight;return msg;
 }
 function aiReply(q){
   var s=q.toLowerCase();
@@ -674,7 +675,23 @@ function aiReply(q){
 }
 function askAi(text){
   if(!document.getElementById('aipanel').classList.contains('on'))document.getElementById('aipanel').classList.add('on');
-  aiAdd(text,'user');setTimeout(function(){aiAddHtml(aiReply(text));},250);
+  aiAdd(text,'user');
+  var thinking=aiAdd('Thinking...','bot');
+  fetch(AI_API_URL,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({message:text})
+  }).then(function(res){
+    return res.json().then(function(data){return {ok:res.ok,data:data};});
+  }).then(function(result){
+    if(result.ok&&result.data&&result.data.reply){
+      thinking.textContent=result.data.reply;
+    }else{
+      thinking.innerHTML=aiReply(text);
+    }
+  }).catch(function(){
+    thinking.innerHTML=aiReply(text);
+  });
 }
 function sendAi(e){
   e.preventDefault();var input=document.getElementById('aiinput'),q=input.value.trim();if(!q)return;
