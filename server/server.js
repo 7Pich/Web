@@ -43,7 +43,7 @@ async function connectDB() {
 
 app.post('/ai', async (req, res) => {
   try {
-    const { message } = req.body;
+    const { message, history } = req.body;
     const apiKey = process.env.GEMINI_API_KEY;
     const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 
@@ -54,18 +54,43 @@ app.post('/ai', async (req, res) => {
       return res.status(400).json({ ok: false, error: 'Message is required' });
     }
 
+    const recentHistory = Array.isArray(history) ? history.slice(-8).map(item => {
+      const role = item && item.role === 'assistant' ? 'Assistant' : 'Visitor';
+      const text = String((item && item.text) || '').replace(/\s+/g, ' ').trim().slice(0, 240);
+      return text ? `${role}: ${text}` : '';
+    }).filter(Boolean) : [];
+
     const prompt = [
       'You are ANZO AI, a friendly assistant for Anzo portfolio website.',
       'Answer clearly and briefly. Use simple English.',
+      'Behave like a chat and portfolio search assistant: understand follow-up questions, find the best matching Anzo facts, compare skills/projects when asked, and suggest the most relevant section link.',
       'Do not invent private information.',
+      'If the visitor asks for information outside the portfolio, answer generally only when it helps explain Anzo services; otherwise say you can best answer about Anzo, databases, projects, services, contact, CV, and payment.',
       'Portfolio facts:',
       '- Name: Anzo',
       '- Role: Database Administrator',
       '- Location: Phnom Penh, Cambodia',
+      '- Education: Year 4 student focused on web, database, and software development.',
+      '- Languages: Khmer and English.',
       '- Phone: 096 464 2015',
       '- Email: Maibich2019@gmail.com',
-      '- Services: database setup, PostgreSQL/MySQL tuning, query optimization, Redis caching, MongoDB support, Python automation, backup and access review.',
+      '- Profile: Anzo is passionate about data architecture, performance tuning, reliable systems, clean database operations, and practical backend/data workflows.',
+      '- Core skills: PostgreSQL, MySQL/MariaDB, MongoDB, Redis, SQL, Python, database design, indexing, query tuning, backup planning, recovery, access control, data migration, ETL, validation, reporting, and caching.',
+      '- Services: database setup, schema design, PostgreSQL/MySQL tuning, slow query review, execution plan checks, Redis caching, MongoDB maintenance, Python automation, API/data cleanup, backups, recovery planning, and access review.',
+      '- Experience: Database Administrator / Data Support from 2023 to present; manages databases, improves SQL performance, creates backup plans, and supports data reports.',
+      '- Experience: Junior Database / Backend Support and project/freelance work from 2021 to 2023; supported data migration, cleanup, API data tasks, schema updates, user permissions, and troubleshooting.',
+      '- Project: Fintech Reconciliation Platform using PostgreSQL, Python, and Redis; reliable checks for payment records, settlement review, and daily reporting.',
+      '- Project: Inventory Sync Engine using MySQL and Python; improved inventory synchronization, retry handling, and error visibility.',
+      '- Project: Customer Analytics Store using MongoDB; flexible schema design, aggregation, and dashboard analytics.',
+      '- Project: API Cache Layer using Redis; faster API responses, lower database load, and TTL rules.',
+      '- Project: Data Migration Toolkit using Python and SQL; validates counts, missing values, duplicates, and supports safer imports.',
+      '- Project: Backup and Access Audit; reviewed backup routines, database users, permissions, and recovery plans.',
+      '- Availability: open for database support, query optimization, backend data tasks, freelance projects, and full-time opportunities.',
       '- Payment link: https://link.payway.com.kh/ABAPAYzI4445189',
+      '- Keep answers helpful, specific to Anzo, and direct visitors to the contact form when they want to hire or discuss a project.',
+      '',
+      'Recent chat:',
+      recentHistory.length ? recentHistory.join('\n') : 'No previous chat.',
       '',
       'Visitor question:',
       message

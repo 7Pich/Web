@@ -656,6 +656,18 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeProject
 
 // MINI AI ASSISTANT
 var AI_API_URL=window.ANZO_AI_API_URL||(location.protocol==='file:'?'http://localhost:3000/ai':'/ai');
+var aiHistory=[];
+var aiKnowledge=[
+  {keys:['about','who','anzo','yourself','profile'],answer:`Anzo is a Database Administrator based in Phnom Penh, Cambodia, and a Year 4 student focused on web, database, and software development. He works with reliable data systems, query performance, backup planning, and practical backend/data workflows.<br><a class="aicta" href="#about" onclick="goTo(event,'about')">View About</a>`},
+  {keys:['experience','job','career','work history','2023','2021'],answer:`Anzo has Database Administrator / Data Support experience from 2023 to present, plus junior database and backend support project work from 2021 to 2023. His work includes performance tuning, schema updates, backups, migrations, permissions, and troubleshooting.<br><a class="aicta" href="#experience" onclick="goTo(event,'experience')">View Experience</a>`},
+  {keys:['education','study','student','language','khmer','english'],answer:'Anzo is a Year 4 student studying web, database, and software development. Languages: Khmer and English.'},
+  {keys:['contact','phone','call','number','email','telegram'],answer:`You can call Anzo by Smart: <a href="tel:0964642015">096 464 2015</a>. Email: Maibich2019@gmail.com. You can also use the contact form at the bottom of the page.<br><a class="aicta" href="#contact" onclick="goTo(event,'contact')">Open Contact</a>`},
+  {keys:['pay','payment','aba','hire','price'],answer:`For payment or hiring, use ABA PayWay here:<br><a class="aicta" href="https://link.payway.com.kh/ABAPAYzI4445189" target="_blank" rel="noopener">Pay with ABA PayWay</a>`},
+  {keys:['service','offer','help','work','support'],answer:`Anzo can help with database setup, schema design, PostgreSQL/MySQL tuning, slow query review, indexing, execution plan checks, Redis caching, MongoDB maintenance, Python automation, backups, recovery planning, and access review.<br><a class="aicta" href="#services" onclick="goTo(event,'services')">View Services</a>`},
+  {keys:['project','portfolio','case','fintech','inventory','analytics','cache','migration','backup'],answer:`Selected projects include a fintech reconciliation platform, inventory sync engine, customer analytics store, Redis API cache layer, data migration toolkit, and backup/access audit. They cover PostgreSQL, MySQL, MongoDB, Redis, Python, ETL, validation, reporting, and reliability.<br><a class="aicta" href="#projects" onclick="goTo(event,'projects')">View Projects</a>`},
+  {keys:['skill','database','postgres','postgresql','mysql','mariadb','mongo','mongodb','redis','python','sql','etl'],answer:'Main skills: PostgreSQL, MySQL/MariaDB, MongoDB, Redis, SQL, Python, database design, indexing, query tuning, backups, recovery, access control, migration, ETL, validation, reporting, and caching.'},
+  {keys:['cv','resume','download'],answer:'Use the Download CV button in the hero or mobile menu. If you want a project discussion, send a message through the contact form too.'}
+];
 function toggleAi(){document.getElementById('aipanel').classList.toggle('on');setTimeout(function(){var i=document.getElementById('aiinput');if(i&&document.getElementById('aipanel').classList.contains('on'))i.focus();},80);}
 function aiAdd(text,who){
   var box=document.getElementById('aimsgs'),msg=document.createElement('div');
@@ -674,44 +686,33 @@ function aiFormat(text){
 }
 function aiReply(q){
   var s=q.toLowerCase();
-  if(s.indexOf('contact')>-1||s.indexOf('phone')>-1||s.indexOf('call')>-1||s.indexOf('number')>-1){
-    return `You can call Anzo by Smart: <a href="tel:0964642015">096 464 2015</a>. You can also use the contact form at the bottom of the page.<br><a class="aicta" href="#contact" onclick="goTo(event,'contact')">Open Contact</a>`;
+  for(var i=0;i<aiKnowledge.length;i++){
+    if(aiKnowledge[i].keys.some(function(k){return s.indexOf(k)>-1;}))return aiKnowledge[i].answer;
   }
-  if(s.indexOf('pay')>-1||s.indexOf('payment')>-1||s.indexOf('aba')>-1||s.indexOf('hire')>-1){
-    return `For payment or hiring, use ABA PayWay here:<br><a class="aicta" href="https://link.payway.com.kh/ABAPAYzI4445189" target="_blank" rel="noopener">Pay with ABA PayWay</a>`;
-  }
-  if(s.indexOf('service')>-1||s.indexOf('offer')>-1||s.indexOf('help')>-1||s.indexOf('work')>-1){
-    return `Anzo can help with database setup, PostgreSQL/MySQL tuning, query optimization, Redis caching, MongoDB support, Python automation, backups, and access review.<br><a class="aicta" href="#services" onclick="goTo(event,'services')">View Services</a>`;
-  }
-  if(s.indexOf('project')>-1||s.indexOf('portfolio')>-1||s.indexOf('case')>-1){
-    return `The selected projects include fintech reconciliation, inventory sync, analytics storage, API caching, migration tooling, and backup/access audits. Click any project card to see more detail.<br><a class="aicta" href="#projects" onclick="goTo(event,'projects')">View Projects</a>`;
-  }
-  if(s.indexOf('skill')>-1||s.indexOf('database')>-1||s.indexOf('postgres')>-1||s.indexOf('mysql')>-1||s.indexOf('mongo')>-1||s.indexOf('redis')>-1){
-    return 'Main skills: PostgreSQL, MySQL, MongoDB, Redis, Python, database design, query tuning, backup planning, and data reliability.';
-  }
-  if(s.indexOf('cv')>-1||s.indexOf('resume')>-1||s.indexOf('download')>-1){
-    return 'Use the Download CV button in the hero or mobile menu. If you want a project discussion, send a message through the contact form too.';
-  }
-  return 'I can answer about services, skills, projects, contact, CV, and payment. For a custom request, send Anzo a message in the contact form.';
+  return 'I can answer about Anzo, services, skills, experience, education, projects, contact, CV, and payment. For a custom request, send Anzo a message in the contact form.';
 }
 function askAi(text){
   if(!document.getElementById('aipanel').classList.contains('on'))document.getElementById('aipanel').classList.add('on');
   aiAdd(text,'user');
+  aiHistory.push({role:'user',text:text});
+  aiHistory=aiHistory.slice(-10);
   var thinking=aiAdd('Thinking...','bot');
   fetch(AI_API_URL,{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({message:text})
+    body:JSON.stringify({message:text,history:aiHistory})
   }).then(function(res){
     return res.json().then(function(data){return {ok:res.ok,data:data};});
   }).then(function(result){
     if(result.ok&&result.data&&result.data.reply){
       thinking.innerHTML=aiFormat(result.data.reply);
+      aiHistory.push({role:'assistant',text:result.data.reply});
     }else{
-      thinking.innerHTML=aiReply(text);
+      var fallback=aiReply(text);thinking.innerHTML=fallback;aiHistory.push({role:'assistant',text:fallback.replace(/<[^>]*>/g,' ')});
     }
+    aiHistory=aiHistory.slice(-10);
   }).catch(function(){
-    thinking.innerHTML=aiReply(text);
+    var fallback=aiReply(text);thinking.innerHTML=fallback;aiHistory.push({role:'assistant',text:fallback.replace(/<[^>]*>/g,' ')});aiHistory=aiHistory.slice(-10);
   });
 }
 function sendAi(e){
