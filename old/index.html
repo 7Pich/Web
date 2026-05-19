@@ -568,23 +568,14 @@ function sendF() {
   btn.disabled = true;
   lbl.textContent = 'SENDING...';
 
-  var text = '\u{1F4EC} New Portfolio Message\n\n'
-    + '\u{1F464} Name: ' + n + '\n'
-    + '\u{1F4E7} Email: ' + e + '\n'
-    + '\u{1F4CC} Subject: ' + (s || 'Not selected') + '\n'
-    + '\u{1F4AC} Message:\n' + m;
-
-  var t1 = '6824967389';
-  var t2 = 'AAHpIh5SleEk-67UHNCBTrekqizNbSNYSLI';
-  var chatId = '746308807';
-
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'https://api.telegram.org/bot' + t1 + ':' + t2 + '/sendMessage', true);
-  xhr.setRequestHeader('Content-Type', 'application/json');
-
-  xhr.onload = function() {
-    var res = JSON.parse(xhr.responseText);
-    if (res.ok) {
+  fetch((location.protocol === 'file:' ? 'http://localhost:3000/telegram' : '/telegram'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: n, email: e, subject: s, message: m })
+  })
+  .then(function(res) { return res.json().then(function(data) { return { ok: res.ok, data: data }; }); })
+  .then(function(result) {
+    if (result.ok && result.data && result.data.ok) {
       var suc = document.getElementById('fsuc');
       suc.textContent = '\u2713 Sent! Check your Telegram @Anzothekingbot';
       suc.classList.add('on');
@@ -594,22 +585,17 @@ function sendF() {
       document.getElementById('fm').value = '';
       setTimeout(function() { suc.classList.remove('on'); }, 7000);
     } else {
-      alert('Error: ' + (res.description || 'Could not send. Make sure you sent /start to @Anzothekingbot'));
+      alert('Error: ' + ((result.data && result.data.error) || 'Could not send.'));
     }
     btn.disabled = false;
     lbl.textContent = 'SEND_MESSAGE()';
-  };
-
-  xhr.onerror = function() {
+  })
+  .catch(function() {
     alert('Network error. Try contacting via t.me/MaiBich directly.');
     btn.disabled = false;
     lbl.textContent = 'SEND_MESSAGE()';
-  };
+  });
 
-  xhr.send(JSON.stringify({
-    chat_id: chatId,
-    text: text
-  }));
 }
 
 /* === CV DOWNLOAD === */

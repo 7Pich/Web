@@ -210,6 +210,12 @@ nav.scrolled{background:rgba(12,12,14,0.98);box-shadow:0 12px 30px rgba(0,0,0,0.
 .modalstat strong{display:block;color:var(--tx);font-size:1rem}
 .modalstat span{font-family:'Space Mono',monospace;font-size:.6rem;color:var(--mu)}
 .modalchips{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:1rem}
+.msgdialog{width:min(380px,calc(100vw - 32px));border:1px solid var(--br2);border-radius:12px;background:var(--bg3);color:var(--tx);box-shadow:var(--shadow);padding:0}
+.msgdialog::backdrop{background:rgba(0,0,0,.62);backdrop-filter:blur(5px)}
+.msgdialog-body{padding:1.25rem}
+.msgdialog-title{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--ac);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.55rem}
+.msgdialog-text{color:var(--mu);font-size:.92rem;line-height:1.65;margin-bottom:1rem}
+.msgdialog-btn{font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:.08em;background:var(--ac);color:#02030a;border:none;border-radius:4px;padding:.7rem 1rem;cursor:pointer}
 /* AI ASSISTANT */
 .aibtn{position:fixed;right:22px;bottom:22px;z-index:9999;width:54px;height:54px;border-radius:14px;border:1px solid var(--br2);background:linear-gradient(135deg,var(--ac),#7c3cff);color:#02030a;font-family:'Space Mono',monospace;font-weight:900;cursor:pointer;box-shadow:0 16px 36px rgba(0,212,160,.22);display:flex;align-items:center;justify-content:center}
 .aipanel{position:fixed;right:22px;bottom:88px;z-index:9999;width:min(360px,calc(100vw - 44px));background:rgba(8,8,18,.96);border:1px solid var(--br2);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;display:none}
@@ -548,6 +554,14 @@ footer span{color:var(--ac)}
   </div>
 </div>
 
+<dialog class="msgdialog" id="msgdialog">
+  <div class="msgdialog-body">
+    <div class="msgdialog-title" id="msgdialog-title">Form needs info</div>
+    <div class="msgdialog-text" id="msgdialog-text">Please fill in your name, email, and message.</div>
+    <button class="msgdialog-btn" type="button" onclick="closeMsgDialog()">OK</button>
+  </div>
+</dialog>
+
 <button class="aibtn" id="aibtn" onclick="toggleAi()" aria-label="Open AI assistant">AI</button>
 <div class="aipanel" id="aipanel">
   <div class="aihead">
@@ -707,37 +721,53 @@ function sendAi(e){
 
 // ANTI-SPAM + CONTACT FORM
 var lastSend=0,sendCount=0,blocked=0;
+var CONTACT_API_URL=window.ANZO_CONTACT_API_URL||(location.protocol==='file:'?'http://localhost:3000/telegram':'/telegram');
+function showMsgDialog(title,text){
+  var dlg=document.getElementById('msgdialog');
+  document.getElementById('msgdialog-title').textContent=title||'Message';
+  document.getElementById('msgdialog-text').textContent=text||'Please check the form and try again.';
+  if(dlg&&typeof dlg.showModal==='function')dlg.showModal();else alert(text);
+}
+function closeMsgDialog(){
+  var dlg=document.getElementById('msgdialog');
+  if(dlg&&dlg.open)dlg.close();
+}
 function sendF(){
   var now=Date.now();
-  if(now<blocked){alert('Too many messages! Please wait '+Math.ceil((blocked-now)/60000)+' minute(s).');return;}
-  if(now-lastSend<30000){alert('Please wait '+Math.ceil((30000-(now-lastSend))/1000)+' seconds before sending again.');return;}
+  if(now<blocked){showMsgDialog('Please wait','Too many messages. Please wait '+Math.ceil((blocked-now)/60000)+' minute(s).');return;}
+  if(now-lastSend<30000){showMsgDialog('Please wait','Please wait '+Math.ceil((30000-(now-lastSend))/1000)+' seconds before sending again.');return;}
   if(document.getElementById('hp').value!=='')return;
   var n=document.getElementById('fn').value.trim();
   var em=document.getElementById('fe').value.trim();
   var s=document.getElementById('fs').value;
   var m=document.getElementById('fm').value.trim();
-  if(!n||!em||!m){alert('Please fill in your name, email, and message.');return;}
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){alert('Please enter a valid email address.');return;}
-  if(m.length<10){alert('Message too short. Please write at least 10 characters.');return;}
+  if(!n||!em||!m){showMsgDialog('Form needs info','Please fill in your name, email, and message.');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){showMsgDialog('Email required','Please enter a valid email address.');return;}
+  if(m.length<10){showMsgDialog('Message too short','Please write at least 10 characters.');return;}
   sendCount++;
-  if(sendCount>3){blocked=now+600000;sendCount=0;alert('Too many submissions! Blocked for 10 minutes.');return;}
+  if(sendCount>3){blocked=now+600000;sendCount=0;showMsgDialog('Please wait','Too many submissions. Blocked for 10 minutes.');return;}
   var btn=document.getElementById('sbtn'),lbl=document.getElementById('slbl');
   btn.disabled=true;lbl.textContent='SENDING...';lastSend=Date.now();
-  var text='\uD83D\uDCEC New Portfolio Message\n\n\uD83D\uDC64 Name: '+n+'\n\uD83D\uDCE7 Email: '+em+'\n\uD83D\uDCCC Subject: '+(s||'Not selected')+'\n\uD83D\uDCAC Message:\n'+m;
-  var xhr=new XMLHttpRequest();
-  xhr.open('POST','https://api.telegram.org/bot7694137999:AAH3GMjZI3IC1PsIk6TFlvbBCm-bzy5d1oc/sendMessage',true);
-  xhr.setRequestHeader('Content-Type','application/json');
-  xhr.onload=function(){
-    var res=JSON.parse(xhr.responseText);
-    if(res.ok){
+  fetch(CONTACT_API_URL,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({name:n,email:em,subject:s,message:m})
+  }).then(function(res){
+    return res.json().then(function(data){return {ok:res.ok,data:data};});
+  }).then(function(result){
+    if(result.ok&&result.data&&result.data.ok){
       var suc=document.getElementById('fsuc');suc.classList.add('on');
       document.getElementById('fn').value='';document.getElementById('fe').value='';document.getElementById('fs').value='';document.getElementById('fm').value='';
       setTimeout(function(){suc.classList.remove('on');},7000);
       var cd=30;var timer=setInterval(function(){cd--;lbl.textContent='WAIT '+cd+'s...';if(cd<=0){clearInterval(timer);lbl.textContent='SEND_MESSAGE()';btn.disabled=false;}},1000);
-    }else{alert('Error sending. Please try again.');btn.disabled=false;lbl.textContent='SEND_MESSAGE()';}
-  };
-  xhr.onerror=function(){alert('Network error. Contact via t.me/MaiBich');btn.disabled=false;lbl.textContent='SEND_MESSAGE()';};
-  xhr.send(JSON.stringify({chat_id:'746308807',text:text}));
+    }else{
+      showMsgDialog('Send failed',(result.data&&result.data.error)||'Error sending. Please try again.');
+      btn.disabled=false;lbl.textContent='SEND_MESSAGE()';
+    }
+  }).catch(function(){
+    showMsgDialog('Network error','Contact via t.me/MaiBich or try again later.');
+    btn.disabled=false;lbl.textContent='SEND_MESSAGE()';
+  });
 }
 
 // CV DOWNLOAD

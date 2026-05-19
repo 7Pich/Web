@@ -705,25 +705,16 @@ function sendF() {
   lbl.textContent = 'SENDING...';
   lastSubmit = Date.now();
 
-  var text = '\uD83D\uDCEC New Portfolio Message\n\n'
-    + '\uD83D\uDC64 Name: ' + n + '\n'
-    + '\uD83D\uDCE7 Email: ' + e + '\n'
-    + '\uD83D\uDCCC Subject: ' + (s || 'Not selected') + '\n'
-    + '\uD83D\uDCAC Message:\n' + m;
+  var contactUrl = (location.protocol === 'file:' ? 'http://localhost:3000/telegram' : '/telegram');
 
-  var t1 = '7694137999';
-  var t2 = 'AAH3GMjZI3IC1PsIk6TFlvbBCm-bzy5d1oc';
-  var chatId = '746308807';
-
-  /* Use GET request with URL params — works on GitHub Pages (no CORS issue) */
-  var encodedText = encodeURIComponent(text);
-  var url = 'https://api.telegram.org/bot' + t1 + ':' + t2
-    + '/sendMessage?chat_id=' + chatId + '&text=' + encodedText;
-
-  fetch(url)
-    .then(function(res) { return res.json(); })
-    .then(function(data) {
-      if (data.ok) {
+  fetch(contactUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: n, email: e, subject: s, message: m })
+  })
+    .then(function(res) { return res.json().then(function(data) { return { ok: res.ok, data: data }; }); })
+    .then(function(result) {
+      if (result.ok && result.data && result.data.ok) {
         var suc = document.getElementById('fsuc');
         suc.textContent = '\u2713 Message sent! I will reply within 24h.';
         suc.classList.add('on');
@@ -740,7 +731,7 @@ function sendF() {
           if (cd <= 0) { clearInterval(timer); lbl.textContent = 'SEND_MESSAGE()'; btn.disabled = false; }
         }, 1000);
       } else {
-        alert('Error sending. Please try again.');
+        alert((result.data && result.data.error) || 'Error sending. Please try again.');
         btn.disabled = false;
         lbl.textContent = 'SEND_MESSAGE()';
       }
