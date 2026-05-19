@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 require('dotenv').config();
 
 const app = express();
@@ -10,6 +11,24 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '..')));
 
 let db;
+const telegramCountPath = path.join(__dirname, '.telegram-count');
+
+function nextTelegramMessageNumber() {
+  const fallback = Number.parseInt(process.env.TELEGRAM_MESSAGE_START || '68', 10);
+  let current = Number.isFinite(fallback) ? fallback : 68;
+
+  try {
+    if (fs.existsSync(telegramCountPath)) {
+      const saved = Number.parseInt(fs.readFileSync(telegramCountPath, 'utf8'), 10);
+      if (Number.isFinite(saved)) current = saved + 1;
+    }
+    fs.writeFileSync(telegramCountPath, String(current));
+  } catch (err) {
+    console.warn('Could not update Telegram message counter:', err.message);
+  }
+
+  return current;
+}
 
 async function connectDB() {
   db = await mysql.createConnection({
@@ -119,13 +138,14 @@ app.post('/telegram', async (req, res) => {
       return res.status(400).json({ ok: false, error: 'Message is too short' });
     }
 
+    const messageNumber = nextTelegramMessageNumber();
     const text = [
-      'New Portfolio Message',
+      `\uD83D\uDCEC New Portfolio Message #${messageNumber}`,
       '',
-      `Name: ${String(name).trim()}`,
-      `Email: ${String(email).trim()}`,
-      `Subject: ${subject || 'Not selected'}`,
-      'Message:',
+      `\uD83D\uDC64 Name: ${String(name).trim()}`,
+      `\uD83D\uDCE7 Email: ${String(email).trim()}`,
+      `\uD83D\uDCCC Subject: ${subject || 'Not selected'}`,
+      '\uD83D\uDCAC Message:',
       String(message).trim()
     ].join('\n');
 
