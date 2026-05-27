@@ -50,6 +50,7 @@ tr:last-child td{border-bottom:none}
     <textarea id="raw" oninput="autoSaveRaw()" placeholder="$0.01 paid by RON VIREAK (*400) on May 27, 04:41 PM via ABA PAY at MAI BICH. Trx. ID: 177987486639961, APV: 888477."></textarea>
     <div class="actions">
       <button class="primary" onclick="buildReport()">GENERATE_REPORT()</button>
+      <button class="ghost" onclick="loadServerPayments()">SYNC TELEGRAM</button>
       <button class="ghost" onclick="copyReport()">COPY REPORT</button>
       <button class="ghost" onclick="clearAll()">CLEAR</button>
     </div>
@@ -80,6 +81,7 @@ tr:last-child td{border-bottom:none}
 
 <script>
 var STORAGE_KEY='anzo_payway_report_raw';
+var PAYMENTS_API_URL=window.ANZO_PAYMENTS_API_URL||(location.protocol==='file:'?'http://localhost:3000/payments':(location.hostname.indexOf('github.io')>-1?'https://anzo-ai.onrender.com/payments':'/payments'));
 function parsePayments(text){
   var regex=/\$([0-9]+(?:\.[0-9]+)?)\s+paid by\s+(.+?)\s+on\s+(.+?),\s+(.+?)\s+via\s+(.+?)\s+at\s+(.+?)\.\s+Trx\. ID:\s+([0-9A-Za-z-]+),\s+APV:\s+([0-9A-Za-z-]+)/gi;
   var rows=[],match;
@@ -98,9 +100,7 @@ function parsePayments(text){
   return rows;
 }
 function money(n){return '$'+Number(n||0).toFixed(2);}
-function buildReport(){
-  autoSaveRaw();
-  var rows=parsePayments(document.getElementById('raw').value);
+function renderReport(rows){
   var body=document.getElementById('rows');
   var total=rows.reduce(function(sum,row){return sum+row.amount;},0);
   document.getElementById('totalTx').textContent=rows.length;
@@ -128,6 +128,32 @@ function buildReport(){
   });
   document.getElementById('clean').textContent=report.join('\n');
 }
+function normalizeServerPayment(row){
+  return {
+    amount:Number(row.amount||0),
+    paidBy:row.paidBy||'-',
+    date:row.date||'-',
+    time:row.time||'-',
+    method:row.method||'-',
+    business:row.business||'-',
+    trx:row.transactionId||row.trx||'-',
+    apv:row.apv||'-'
+  };
+}
+function buildReport(){
+  autoSaveRaw();
+  renderReport(parsePayments(document.getElementById('raw').value));
+}
+function loadServerPayments(){
+  fetch(PAYMENTS_API_URL)
+    .then(function(res){return res.json();})
+    .then(function(data){
+      if(data&&data.ok&&Array.isArray(data.payments)){
+        renderReport(data.payments.map(normalizeServerPayment));
+      }
+    })
+    .catch(function(){});
+}
 function copyReport(){
   var text=document.getElementById('clean').textContent;
   navigator.clipboard.writeText(text);
@@ -150,8 +176,10 @@ function loadSavedReport(){
     document.getElementById('raw').value=saved;
     buildReport();
   }
+  loadServerPayments();
 }
 loadSavedReport();
+setInterval(loadServerPayments,30000);
 </script>
 </body>
 </html>

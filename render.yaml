@@ -15,5 +15,7 @@ services:
         sync: false
       - key: TELEGRAM_CHAT_ID
         sync: false
+      - key: TELEGRAM_WEBHOOK_SECRET
+        sync: false
       - key: PAYWAY_SECRET_KEY
         sync: false

@@ -17,6 +17,7 @@ app.use(express.static(path.join(__dirname, '..')));
 
 let db;
 const telegramCountPath = path.join(__dirname, '.telegram-count');
+const paymentsPath = path.join(__dirname, 'payments.json');
 
 function nextTelegramMessageNumber() {
   const fallback = Number.parseInt(process.env.TELEGRAM_MESSAGE_START || '68', 10);
@@ -57,6 +58,47 @@ function payWayStatusLabel(status) {
     '3': 'Cancelled'
   };
   return labels[value] ? `${labels[value]} (${value})` : (value || 'Unknown');
+}
+
+function parseAbaPaymentMessage(text) {
+  const match = String(text || '').match(/\$([0-9]+(?:\.[0-9]+)?)\s+paid by\s+(.+?)\s+on\s+(.+?),\s+(.+?)\s+via\s+(.+?)\s+at\s+(.+?)\.\s+Trx\. ID:\s+([0-9A-Za-z-]+),\s+APV:\s+([0-9A-Za-z-]+)/i);
+  if (!match) return null;
+
+  return {
+    amount: Number.parseFloat(match[1]),
+    currency: 'USD',
+    paidBy: match[2].trim(),
+    date: match[3].trim(),
+    time: match[4].trim(),
+    method: match[5].trim(),
+    business: match[6].trim(),
+    transactionId: match[7].trim(),
+    apv: match[8].trim(),
+    raw: String(text).trim(),
+    receivedAt: new Date().toISOString()
+  };
+}
+
+function readPayments() {
+  try {
+    if (!fs.existsSync(paymentsPath)) return [];
+    const saved = JSON.parse(fs.readFileSync(paymentsPath, 'utf8'));
+    return Array.isArray(saved) ? saved : [];
+  } catch (err) {
+    console.warn('Could not read payment report file:', err.message);
+    return [];
+  }
+}
+
+function savePayment(payment) {
+  const payments = readPayments();
+  const exists = payments.some(item => item.transactionId === payment.transactionId);
+  if (exists) return { saved: false, payments };
+
+  payments.unshift(payment);
+  const limited = payments.slice(0, 1000);
+  fs.writeFileSync(paymentsPath, JSON.stringify(limited, null, 2));
+  return { saved: true, payments: limited };
 }
 
 async function connectDB() {
@@ -280,6 +322,35 @@ app.post('/payway/callback', async (req, res) => {
     console.error(err);
     res.status(500).send('PayWay callback server error');
   }
+});
+
+app.post('/telegram/payment-updates', async (req, res) => {
+  try {
+    const webhookSecret = process.env.TELEGRAM_WEBHOOK_SECRET;
+    if (webhookSecret && req.get('x-telegram-bot-api-secret-token') !== webhookSecret) {
+      return res.status(401).send('Invalid Telegram webhook secret');
+    }
+
+    const message = req.body?.message || req.body?.channel_post || req.body?.edited_message;
+    const text = message?.text || message?.caption || '';
+    const payment = parseAbaPaymentMessage(text);
+
+    if (payment) {
+      const result = savePayment(payment);
+      if (result.saved) {
+        console.log(`Saved ABA payment ${payment.transactionId}`);
+      }
+    }
+
+    res.status(200).send('ok');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Telegram payment update server error');
+  }
+});
+
+app.get('/payments', (req, res) => {
+  res.json({ ok: true, payments: readPayments() });
 });
 
 app.get('/health', (req, res) => {
