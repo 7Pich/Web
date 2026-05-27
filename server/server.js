@@ -3,11 +3,16 @@ const mysql = require('mysql2/promise');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
 require('dotenv').config();
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({
+  verify: (req, res, buf) => {
+    req.rawBody = buf.toString('utf8');
+  }
+}));
 app.use(express.static(path.join(__dirname, '..')));
 
 let db;
@@ -28,6 +33,30 @@ function nextTelegramMessageNumber() {
   }
 
   return current;
+}
+
+function signPayWayPayload(payload, secretKey) {
+  const sortedKeys = Object.keys(payload || {}).sort();
+  const base = sortedKeys.map(key => {
+    const value = payload[key];
+    return value && typeof value === 'object' ? JSON.stringify(value) : String(value ?? '');
+  }).join('');
+
+  return crypto
+    .createHmac('sha512', secretKey)
+    .update(base)
+    .digest('base64');
+}
+
+function payWayStatusLabel(status) {
+  const value = String(status ?? '').trim();
+  const labels = {
+    '0': 'Success',
+    '1': 'Failed',
+    '2': 'Pending',
+    '3': 'Cancelled'
+  };
+  return labels[value] ? `${labels[value]} (${value})` : (value || 'Unknown');
 }
 
 async function connectDB() {
@@ -195,33 +224,41 @@ app.post('/telegram', async (req, res) => {
   }
 });
 
-app.post('/payment', async (req, res) => {
+app.post('/payway/callback', async (req, res) => {
   try {
-    const { name, contact, amount, currency, transactionId, note } = req.body;
+    const payload = req.body || {};
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
+    const payWaySecret = process.env.PAYWAY_SECRET_KEY;
+    const receivedSignature = req.get('x-payway-hmac-sha512') || '';
 
     if (!botToken || !chatId) {
       return res.status(500).json({ ok: false, error: 'Telegram is not configured' });
     }
-    if (!name || !contact || !amount || !transactionId) {
-      return res.status(400).json({ ok: false, error: 'Missing payment fields' });
+    if (payWaySecret) {
+      const expectedSignature = signPayWayPayload(payload, payWaySecret);
+      const expected = Buffer.from(expectedSignature);
+      const received = Buffer.from(receivedSignature);
+      if (expected.length !== received.length || !crypto.timingSafeEqual(expected, received)) {
+        return res.status(401).send('Invalid signature');
+      }
+    } else {
+      console.warn('PAYWAY_SECRET_KEY is not set; accepting PayWay callback without signature verification.');
     }
 
-    const paidAmount = Number.parseFloat(amount);
-    if (!Number.isFinite(paidAmount) || paidAmount <= 0) {
-      return res.status(400).json({ ok: false, error: 'Invalid amount' });
-    }
-
+    const transactionId = payload.tran_id || payload.transaction_id || payload.request_id || 'Unknown';
+    const approvalCode = payload.apv || payload.approval_code || 'N/A';
+    const status = payWayStatusLabel(payload.status);
     const text = [
-      '\uD83D\uDCB3 New Payment Transaction',
+      '\uD83D\uDCB3 ABA PayWay Payment Callback',
       '',
-      `\uD83D\uDC64 Name: ${String(name).trim()}`,
-      `\u260E\uFE0F Contact: ${String(contact).trim()}`,
-      `\uD83D\uDCB5 Amount: ${paidAmount.toFixed(2)} ${currency || 'USD'}`,
-      `\uD83E\uDDFE Transaction ID: ${String(transactionId).trim()}`,
-      `\uD83D\uDCDD Note: ${note ? String(note).trim() : 'No note'}`,
-      `\u23F1 Sent: ${new Date().toISOString()}`
+      `\uD83E\uDDFE Transaction ID: ${transactionId}`,
+      `\u2705 Status: ${status}`,
+      `\uD83D\uDD10 Approval: ${approvalCode}`,
+      `\u23F1 Received: ${new Date().toISOString()}`,
+      '',
+      'Raw payload:',
+      JSON.stringify(payload, null, 2).slice(0, 3000)
     ].join('\n');
 
     const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -238,10 +275,10 @@ app.post('/payment', async (req, res) => {
       });
     }
 
-    res.json({ ok: true });
+    res.status(200).send('ok');
   } catch (err) {
     console.error(err);
-    res.status(500).json({ ok: false, error: 'Payment notification server error' });
+    res.status(500).send('PayWay callback server error');
   }
 });
 
