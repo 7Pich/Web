@@ -195,6 +195,56 @@ app.post('/telegram', async (req, res) => {
   }
 });
 
+app.post('/payment', async (req, res) => {
+  try {
+    const { name, contact, amount, currency, transactionId, note } = req.body;
+    const botToken = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_CHAT_ID;
+
+    if (!botToken || !chatId) {
+      return res.status(500).json({ ok: false, error: 'Telegram is not configured' });
+    }
+    if (!name || !contact || !amount || !transactionId) {
+      return res.status(400).json({ ok: false, error: 'Missing payment fields' });
+    }
+
+    const paidAmount = Number.parseFloat(amount);
+    if (!Number.isFinite(paidAmount) || paidAmount <= 0) {
+      return res.status(400).json({ ok: false, error: 'Invalid amount' });
+    }
+
+    const text = [
+      '\uD83D\uDCB3 New Payment Transaction',
+      '',
+      `\uD83D\uDC64 Name: ${String(name).trim()}`,
+      `\u260E\uFE0F Contact: ${String(contact).trim()}`,
+      `\uD83D\uDCB5 Amount: ${paidAmount.toFixed(2)} ${currency || 'USD'}`,
+      `\uD83E\uDDFE Transaction ID: ${String(transactionId).trim()}`,
+      `\uD83D\uDCDD Note: ${note ? String(note).trim() : 'No note'}`,
+      `\u23F1 Sent: ${new Date().toISOString()}`
+    ].join('\n');
+
+    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text })
+    });
+
+    const data = await response.json();
+    if (!response.ok || !data.ok) {
+      return res.status(response.status || 502).json({
+        ok: false,
+        error: data.description || 'Telegram send failed'
+      });
+    }
+
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ ok: false, error: 'Payment notification server error' });
+  }
+});
+
 app.get('/health', (req, res) => {
   res.json({ status: 'Anzo backend running' });
 });
