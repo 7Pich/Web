@@ -170,6 +170,14 @@ nav.scrolled{background:rgba(12,12,14,0.98);box-shadow:0 12px 30px rgba(0,0,0,0.
 .tlr{font-family:'Outfit',sans-serif;font-weight:700;font-size:1rem;margin-bottom:2px}
 .tlc{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--ac);letter-spacing:.06em;margin-bottom:.5rem}
 .tld{font-size:.85rem;color:var(--mu);font-weight:300;line-height:1.7}
+/* CHANGELOG */
+.clog{margin-top:2.75rem;display:grid;gap:1rem;max-width:850px}
+.clogi{display:grid;grid-template-columns:130px 1fr;gap:1.25rem;padding:1.25rem;background:var(--bg3);border:1px solid var(--br);border-radius:10px;transition:border-color .2s,transform .2s}
+.clogi:hover{border-color:var(--br2);transform:translateY(-2px)}
+.cldate{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--ac);letter-spacing:.08em;padding-top:2px}
+.cltitle{font-weight:800;font-size:1rem;letter-spacing:-.01em;margin-bottom:.45rem}
+.clist{margin:0;padding-left:1rem;color:var(--mu);font-size:.86rem;line-height:1.75}
+.clist li+li{margin-top:.25rem}
 /* CONTACT */
 .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:2.75rem;align-items:start}
 .cinfo p{color:var(--mu);font-weight:300;font-size:.95rem;line-height:1.8;margin-bottom:1.25rem;margin-top:.85rem}
@@ -251,7 +259,7 @@ footer span{color:var(--ac)}
 .rev.in{opacity:1;transform:none}
 /* RESPONSIVE */
 @media(max-width:1000px){.tcard{display:none}.pgrid,.svcgrid{grid-template-columns:1fr 1fr}.pc.wide{grid-column:span 2}}
-@media(max-width:768px){.nlinks,.hirebtn{display:none}.hbtn{display:flex}.mcontact{display:block}.pgrid,.svcgrid{grid-template-columns:1fr}.pc.wide{grid-column:auto;flex-direction:column}.pc.wide .pct{border-right:none;border-bottom:1px solid var(--br)}.agrid,.cgrid{grid-template-columns:1fr;gap:2rem}.tli{grid-template-columns:75px auto 1fr}.frow{grid-template-columns:1fr}.hero{padding-top:8.5rem}.modalstats{grid-template-columns:1fr}.aibtn{right:16px;bottom:16px}.aipanel{right:16px;bottom:78px;width:calc(100vw - 32px)}}
+@media(max-width:768px){.nlinks,.hirebtn{display:none}.hbtn{display:flex}.mcontact{display:block}.pgrid,.svcgrid{grid-template-columns:1fr}.pc.wide{grid-column:auto;flex-direction:column}.pc.wide .pct{border-right:none;border-bottom:1px solid var(--br)}.agrid,.cgrid{grid-template-columns:1fr;gap:2rem}.tli{grid-template-columns:75px auto 1fr}.clogi{grid-template-columns:1fr;gap:.55rem}.frow{grid-template-columns:1fr}.hero{padding-top:8.5rem}.modalstats{grid-template-columns:1fr}.aibtn{right:16px;bottom:16px}.aipanel{right:16px;bottom:78px;width:calc(100vw - 32px)}}
 </style>
 </head>
 <body>
@@ -275,6 +283,7 @@ footer span{color:var(--ac)}
     <li><a href="#services" onclick="goTo(event,'services')">Services</a></li>
     <li><a href="#projects" onclick="goTo(event,'projects')">Projects</a></li>
     <li><a href="#experience" onclick="goTo(event,'experience')">Experience</a></li>
+    <li><a href="#changelog" onclick="goTo(event,'changelog')">Changelog</a></li>
     <li class="nav-contact">
       <a href="#contact" onclick="goTo(event,'contact')">Contact</a>
       <div class="nav-contact-panel">
@@ -299,7 +308,8 @@ footer span{color:var(--ac)}
   <a href="#services" onclick="mGo(event,'services')">02 — Services</a>
   <a href="#projects" onclick="mGo(event,'projects')">03 — Projects</a>
   <a href="#experience" onclick="mGo(event,'experience')">04 — Experience</a>
-  <a href="#contact" onclick="mGo(event,'contact')">05 — Contact</a>
+  <a href="#changelog" onclick="mGo(event,'changelog')">05 - Changelog</a>
+  <a href="#contact" onclick="mGo(event,'contact')">06 - Contact</a>
   <div class="mcontact">
     <div class="mcontact-title">Quick call</div>
     <a href="tel:0964642015"><strong>Smart</strong><span>096 464 2015</span></a>
@@ -486,9 +496,30 @@ footer span{color:var(--ac)}
 
 <hr class="divl"/>
 
+<!-- CHANGELOG -->
+<section class="sec sec-alt" id="changelog">
+  <div class="slbl">05 - Changelog</div>
+  <h2 class="stit rev">Latest updates</h2>
+  <div class="clog">
+    <article class="clogi rev">
+      <div class="cldate">2026-05-27</div>
+      <div>
+        <div class="cltitle">Logo and update history</div>
+        <ul class="clist">
+          <li>Added the Anzo database wordmark logo to the live homepage.</li>
+          <li>Added a matching favicon for the browser tab.</li>
+          <li>Added a changelog page section and `CHANGELOG.md` for future updates.</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<hr class="divl"/>
+
 <!-- CONTACT -->
 <section class="sec" id="contact">
-  <div class="slbl">05 — Contact</div>
+  <div class="slbl">06 - Contact</div>
   <div class="cgrid">
     <div class="cinfo rev">
       <h2 class="stit">Let's work<br>together</h2>
@@ -625,7 +656,7 @@ window.addEventListener('scroll',function(){
   document.getElementById('pbar').style.width=(dh>0?(st/dh*100):0)+'%';
   document.getElementById('btop').classList.toggle('on',st>400);
   var cur='';
-  ['about','services','projects','experience','contact'].forEach(function(id){var s=document.getElementById(id);if(s&&st>=s.offsetTop-120)cur=id;});
+  ['about','services','projects','experience','changelog','contact'].forEach(function(id){var s=document.getElementById(id);if(s&&st>=s.offsetTop-120)cur=id;});
   document.querySelectorAll('.nlinks a').forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+cur);});
 });
 
