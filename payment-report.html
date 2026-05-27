@@ -47,7 +47,7 @@ tr:last-child td{border-bottom:none}
 
   <section class="panel">
     <label for="raw">ABA BOT MESSAGES</label>
-    <textarea id="raw" placeholder="$0.01 paid by RON VIREAK (*400) on May 27, 04:41 PM via ABA PAY at MAI BICH. Trx. ID: 177987486639961, APV: 888477."></textarea>
+    <textarea id="raw" oninput="autoSaveRaw()" placeholder="$0.01 paid by RON VIREAK (*400) on May 27, 04:41 PM via ABA PAY at MAI BICH. Trx. ID: 177987486639961, APV: 888477."></textarea>
     <div class="actions">
       <button class="primary" onclick="buildReport()">GENERATE_REPORT()</button>
       <button class="ghost" onclick="copyReport()">COPY REPORT</button>
@@ -79,6 +79,7 @@ tr:last-child td{border-bottom:none}
 </main>
 
 <script>
+var STORAGE_KEY='anzo_payway_report_raw';
 function parsePayments(text){
   var regex=/\$([0-9]+(?:\.[0-9]+)?)\s+paid by\s+(.+?)\s+on\s+(.+?),\s+(.+?)\s+via\s+(.+?)\s+at\s+(.+?)\.\s+Trx\. ID:\s+([0-9A-Za-z-]+),\s+APV:\s+([0-9A-Za-z-]+)/gi;
   var rows=[],match;
@@ -98,6 +99,7 @@ function parsePayments(text){
 }
 function money(n){return '$'+Number(n||0).toFixed(2);}
 function buildReport(){
+  autoSaveRaw();
   var rows=parsePayments(document.getElementById('raw').value);
   var body=document.getElementById('rows');
   var total=rows.reduce(function(sum,row){return sum+row.amount;},0);
@@ -132,12 +134,24 @@ function copyReport(){
 }
 function clearAll(){
   document.getElementById('raw').value='';
+  localStorage.removeItem(STORAGE_KEY);
   document.getElementById('rows').innerHTML='<tr><td colspan="8" class="empty">No report generated yet.</td></tr>';
   document.getElementById('clean').textContent='No report generated yet.';
   document.getElementById('totalTx').textContent='0';
   document.getElementById('totalUsd').textContent='$0.00';
   document.getElementById('reportDate').textContent='-';
 }
+function autoSaveRaw(){
+  localStorage.setItem(STORAGE_KEY,document.getElementById('raw').value);
+}
+function loadSavedReport(){
+  var saved=localStorage.getItem(STORAGE_KEY);
+  if(saved){
+    document.getElementById('raw').value=saved;
+    buildReport();
+  }
+}
+loadSavedReport();
 </script>
 </body>
 </html>
