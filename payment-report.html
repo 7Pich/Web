@@ -20,6 +20,11 @@ textarea:focus{border-color:rgba(0,212,160,.45)}
 button{font-family:'Space Mono',monospace;font-weight:700;font-size:.78rem;letter-spacing:.06em;border:none;border-radius:4px;padding:.8rem 1.15rem;cursor:pointer}
 .primary{background:#00d4a0;color:#02030a}
 .ghost{background:transparent;color:#85859a;border:1px solid rgba(255,255,255,.12)}
+.sheetbox{display:grid;grid-template-columns:1fr auto;gap:.75rem;margin-top:.85rem}
+.sheetbox input{width:100%;background:#111115;border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#e8e8f0;font:13px 'Space Mono',monospace;padding:.75rem .85rem;outline:none}
+.sheetbox input:focus{border-color:rgba(0,212,160,.45)}
+.notice{display:none;margin-top:.75rem;font-family:'Space Mono',monospace;font-size:.72rem;color:#00d4a0}
+.notice.on{display:block}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1rem}
 .stat{background:#17171d;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1rem}
 .stat strong{display:block;font-size:1.8rem;line-height:1;color:#00d4a0}
@@ -51,9 +56,15 @@ tr:last-child td{border-bottom:none}
     <div class="actions">
       <button class="primary" onclick="buildReport()">GENERATE_REPORT()</button>
       <button class="ghost" onclick="loadServerPayments()">SYNC TELEGRAM</button>
+      <button class="ghost" onclick="saveToGoogleSheet()">SAVE TO SHEET</button>
       <button class="ghost" onclick="copyReport()">COPY REPORT</button>
       <button class="ghost" onclick="clearAll()">CLEAR</button>
     </div>
+    <div class="sheetbox">
+      <input id="sheetUrl" oninput="saveSheetUrl()" placeholder="Google Apps Script Web App URL"/>
+      <button class="ghost" onclick="saveSheetUrl()">SAVE URL</button>
+    </div>
+    <div class="notice" id="notice"></div>
   </section>
 
   <section class="stats">
@@ -81,7 +92,9 @@ tr:last-child td{border-bottom:none}
 
 <script>
 var STORAGE_KEY='anzo_payway_report_raw';
+var SHEET_URL_KEY='anzo_payway_sheet_url';
 var PAYMENTS_API_URL=window.ANZO_PAYMENTS_API_URL||(location.protocol==='file:'?'http://localhost:3000/payments':(location.hostname.indexOf('github.io')>-1?'https://anzo-ai.onrender.com/payments':'/payments'));
+var currentRows=[];
 function parsePayments(text){
   var regex=/\$([0-9]+(?:\.[0-9]+)?)\s+paid by\s+(.+?)\s+on\s+(.+?),\s+(.+?)\s+via\s+(.+?)\s+at\s+(.+?)\.\s+Trx\. ID:\s+([0-9A-Za-z-]+),\s+APV:\s+([0-9A-Za-z-]+)/gi;
   var rows=[],match;
@@ -101,6 +114,7 @@ function parsePayments(text){
 }
 function money(n){return '$'+Number(n||0).toFixed(2);}
 function renderReport(rows){
+  currentRows=rows;
   var body=document.getElementById('rows');
   var total=rows.reduce(function(sum,row){return sum+row.amount;},0);
   document.getElementById('totalTx').textContent=rows.length;
@@ -157,6 +171,7 @@ function loadServerPayments(){
 function copyReport(){
   var text=document.getElementById('clean').textContent;
   navigator.clipboard.writeText(text);
+  showNotice('Report copied.');
 }
 function clearAll(){
   document.getElementById('raw').value='';
@@ -172,11 +187,39 @@ function autoSaveRaw(){
 }
 function loadSavedReport(){
   var saved=localStorage.getItem(STORAGE_KEY);
+  var sheetUrl=localStorage.getItem(SHEET_URL_KEY);
+  if(sheetUrl)document.getElementById('sheetUrl').value=sheetUrl;
   if(saved){
     document.getElementById('raw').value=saved;
     buildReport();
   }
   loadServerPayments();
+}
+function saveSheetUrl(){
+  localStorage.setItem(SHEET_URL_KEY,document.getElementById('sheetUrl').value.trim());
+  showNotice('Google Sheet URL saved.');
+}
+function saveToGoogleSheet(){
+  var url=document.getElementById('sheetUrl').value.trim();
+  if(!url){showNotice('Add your Google Apps Script Web App URL first.');return;}
+  if(!currentRows.length){showNotice('Generate or sync a report first.');return;}
+  localStorage.setItem(SHEET_URL_KEY,url);
+  fetch(url,{
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'text/plain'},
+    body:JSON.stringify({payments:currentRows})
+  }).then(function(){
+    showNotice('Sent to Google Sheet. Check your sheet.');
+  }).catch(function(){
+    showNotice('Could not send to Google Sheet.');
+  });
+}
+function showNotice(text){
+  var notice=document.getElementById('notice');
+  notice.textContent=text;
+  notice.classList.add('on');
+  setTimeout(function(){notice.classList.remove('on');},5000);
 }
 loadSavedReport();
 setInterval(loadServerPayments,30000);
