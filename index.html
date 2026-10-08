@@ -120,6 +120,8 @@ nav.scrolled{background:rgba(12,12,14,0.98);box-shadow:0 12px 30px rgba(0,0,0,0.
 .sktit{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--ac);letter-spacing:.14em;margin-bottom:1.1rem}
 .skrow{display:flex;flex-direction:column;gap:.85rem}
 .ski{display:flex;flex-direction:column;gap:5px}
+.skgrp{margin-bottom:.9rem}
+.skgl{font-size:.8rem;font-weight:600;color:var(--tx);margin-bottom:.4rem}
 .skh{display:flex;justify-content:space-between}
 .skn{font-size:.8rem;color:var(--tx)}
 .skpc{font-family:'Space Mono',monospace;font-size:.68rem;color:var(--ac)}
@@ -139,7 +141,7 @@ nav.scrolled{background:rgba(12,12,14,0.98);box-shadow:0 12px 30px rgba(0,0,0,0.
 .fbtn{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.08em;padding:4px 12px;border-radius:3px;border:1px solid var(--br);background:transparent;color:var(--mu);cursor:pointer;transition:all .2s}
 .fbtn:hover{color:var(--tx);border-color:var(--br2)}
 .fbtn.on{background:rgba(0,212,160,.12);border-color:var(--br2);color:var(--ac)}
-.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-flow:dense;gap:1.1rem}
 .pc{background:var(--bg3);border:1px solid var(--br);border-radius:10px;overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:transform .25s,border-color .25s,box-shadow .25s}
 .pc:hover{transform:translateY(-5px);border-color:var(--br2);box-shadow:var(--shadow),0 0 0 1px rgba(0,212,160,.1)}
 .pct{padding:1.35rem 1.35rem .9rem;border-bottom:1px solid var(--br);display:flex;align-items:center;justify-content:space-between}
@@ -389,6 +391,23 @@ footer span{color:var(--ac)}
         <div class="ski"><div class="skh"><span class="skn">Python / SQL Scripting</span><span class="skpc">82%</span></div><div class="skbar"><div class="skfill" data-w=".82"></div></div></div>
         <div class="ski"><div class="skh"><span class="skn">Cloud DB (AWS RDS)</span><span class="skpc">78%</span></div><div class="skbar"><div class="skfill" data-w=".78"></div></div></div>
       </div>
+      <div class="sktit" style="margin-top:1.6rem">// BUILT_IN_PRODUCTION.json</div>
+      <div class="skgrp">
+        <div class="skgl">Telegram Bot</div>
+        <div class="ptags"><span class="ptag ns">Node.js</span><span class="ptag">Telegraf</span><span class="ptag">Hono</span><span class="ptag">Webhooks</span><span class="ptag">Mini Apps</span><span class="ptag">Inline keyboards</span></div>
+      </div>
+      <div class="skgrp">
+        <div class="skgl">Web App</div>
+        <div class="ptags"><span class="ptag ts">TypeScript</span><span class="ptag ts">React</span><span class="ptag">Vite</span><span class="ptag">Tailwind CSS</span><span class="ptag">PWA / Web Push</span><span class="ptag">JWT auth</span></div>
+      </div>
+      <div class="skgrp">
+        <div class="skgl">Cloud &amp; Data</div>
+        <div class="ptags"><span class="ptag sql">Cloudflare D1 (SQLite)</span><span class="ptag">Cloudflare Workers</span><span class="ptag">KV</span><span class="ptag">Cron triggers</span><span class="ptag">Service bindings</span><span class="ptag">Render</span><span class="ptag">Docker</span></div>
+      </div>
+      <div class="skgrp">
+        <div class="skgl">Media, AI &amp; Payments</div>
+        <div class="ptags"><span class="ptag py">Python / FastAPI</span><span class="ptag">yt-dlp</span><span class="ptag">FFmpeg</span><span class="ptag">Tesseract OCR</span><span class="ptag">Text-to-Speech</span><span class="ptag">Gemini AI</span><span class="ptag">KHQR / ABA PayWay</span></div>
+      </div>
     </div>
   </div>
 </section>
@@ -435,6 +454,20 @@ footer span{color:var(--ac)}
     <button class="fbtn" data-f="Redis">REDIS</button>
   </div>
   <div class="pgrid" id="pgrid">
+    <div class="pc wide rev" data-tags="Cloudflare D1,SQLite,TypeScript,Node.js">
+      <div class="pct">
+        <div class="pci" style="background:rgba(0,212,160,.08);border-color:var(--br2);font-size:1.6rem">🤖</div>
+        <div><div class="ptags"><span class="ptag sql">Cloudflare D1</span><span class="ptag ts">TypeScript</span><span class="ptag ns">Node.js</span></div><div style="font-family:'Space Mono',monospace;font-size:.6rem;color:var(--mu);letter-spacing:.08em">LIVE PROJECT</div></div>
+      </div>
+      <div class="pcb">
+        <div class="ptn">Khmer Daily Tools — AnzoAI Bot &amp; Web App</div>
+        <p class="pde">An everyday toolbox for Cambodian users on Telegram and the web: video downloader, AI companion, voice tools, Khmer calendar with public-holiday alerts, and KHQR payments. Runs on Cloudflare Workers with a shared D1 database for users, orders, and reminders.</p>
+        <div style="margin-top:1rem;display:flex;gap:1.25rem;flex-wrap:wrap">
+          <a href="https://anzoai.anzotools.workers.dev" target="_blank" rel="noopener" style="font-family:'Space Mono',monospace;font-size:.68rem;color:var(--ac);text-decoration:none">OPEN WEB APP ↗</a>
+          <a href="https://t.me/AnzoAIbot" target="_blank" rel="noopener" style="font-family:'Space Mono',monospace;font-size:.68rem;color:var(--ac);text-decoration:none">@AnzoAIbot ON TELEGRAM ↗</a>
+        </div>
+      </div>
+    </div>
     <a href="#" class="pc wide rev" data-tags="PostgreSQL,Python,Redis">
       <div class="pct">
         <div class="pci" style="background:rgba(0,212,160,.08);border-color:var(--br2);font-size:1.6rem">🗄️</div>
@@ -846,6 +879,11 @@ function dlcv(e){
     '- Python',
     '- Database backup',
     '- Query optimization',
+    '- Node.js / TypeScript / React',
+    '- Telegram bots (Telegraf, webhooks, Mini Apps)',
+    '- Cloudflare Workers, D1 (SQLite), KV',
+    '- Python FastAPI, Docker, Render',
+    '- KHQR / ABA PayWay payments',
     '',
     'SERVICES',
     '------------------------------',
@@ -934,6 +972,10 @@ function dlcv(e){
       <div class="skill">Backup, recovery, and access control</div>
       <div class="skill">Python automation and SQL scripting</div>
       <div class="skill">Reporting, migration, and data validation</div>
+      <div class="skill">Telegram bots: Node.js, Telegraf, webhooks, Mini Apps</div>
+      <div class="skill">Web apps: TypeScript, React, Vite, Tailwind CSS</div>
+      <div class="skill">Serverless: Cloudflare Workers, D1 (SQLite), KV, cron</div>
+      <div class="skill">Payments and AI: KHQR / ABA PayWay, Gemini AI</div>
     </div>
   </section>
 
@@ -975,7 +1017,7 @@ function dlcv(e){
   <section class="section">
     <h2>Tools</h2>
     <div class="chips">
-      <span class="chip">PostgreSQL</span><span class="chip">MySQL</span><span class="chip">MongoDB</span><span class="chip">Redis</span><span class="chip">Python</span><span class="chip">SQL</span><span class="chip">AWS RDS</span>
+      <span class="chip">PostgreSQL</span><span class="chip">MySQL</span><span class="chip">MongoDB</span><span class="chip">Redis</span><span class="chip">Python</span><span class="chip">SQL</span><span class="chip">AWS RDS</span><span class="chip">Node.js</span><span class="chip">TypeScript</span><span class="chip">React</span><span class="chip">Telegraf</span><span class="chip">Cloudflare Workers</span><span class="chip">Cloudflare D1</span><span class="chip">FastAPI</span><span class="chip">Docker</span>
     </div>
   </section>
 
