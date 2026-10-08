@@ -159,7 +159,7 @@ app.post('/ai', async (req, res) => {
       '- Project: Data Migration Toolkit using Python and SQL; validates counts, missing values, duplicates, and supports safer imports.',
       '- Project: Backup and Access Audit; reviewed backup routines, database users, permissions, and recovery plans.',
       '- Availability: open for database support, query optimization, backend data tasks, freelance projects, and full-time opportunities.',
-      '- Payment link: https://link.payway.com.kh/ABAPAYzI4445189',
+      '- Payment link (ABA PayWay): https://link.payway.com.kh/ABAPAYzI4445189 — clicking it on the site lets the visitor choose to pay in USD or KHR (riel).',
       '- Keep answers helpful, specific to Anzo, and direct visitors to the contact form when they want to hire or discuss a project.',
       '',
       'Recent chat:',
