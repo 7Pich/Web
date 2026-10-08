@@ -236,7 +236,7 @@ nav.scrolled{background:rgba(12,12,14,0.98);box-shadow:0 12px 30px rgba(0,0,0,0.
 .paylbl{font-size:.8rem;color:var(--mu)}
 .modalbody p.paynote{font-size:.78rem;margin:1rem 0 0;text-align:center}
 .pvbox{width:min(980px,100%);max-height:calc(100vh - 100px);display:flex;flex-direction:column;overflow:hidden}
-.pvtabs{display:flex;gap:.4rem;margin-top:.7rem}
+.pvtabs{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem}
 .pvtab{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.08em;padding:.35rem .75rem;border-radius:5px;border:1px solid var(--br);background:transparent;color:var(--mu);cursor:pointer}
 .pvtab.on{background:rgba(0,212,160,.12);border-color:var(--br2);color:var(--ac)}
 .pvbody{padding:1rem 1.35rem 1.35rem;overflow:auto;flex:1}
@@ -494,9 +494,10 @@ footer span{color:var(--ac)}
       </div>
       <div class="pcb">
         <div class="ptn">Khmer Daily Tools — AnzoAI Bot &amp; Web App</div>
-        <p class="pde">An everyday toolbox for Cambodian users on Telegram and the web: video downloader, AI companion, voice tools, Khmer calendar with public-holiday alerts, and KHQR payments. Runs on Cloudflare Workers with a shared D1 database for users, orders, and reminders.</p>
+        <p class="pde">An everyday toolbox for Cambodian users on Telegram and two websites: video downloader, AI companion, voice tools, Khmer calendar with public-holiday alerts, and KHQR payments. Runs on Cloudflare Workers with a shared D1 database for users, orders, and reminders.</p>
         <div class="pvbtns">
-          <button type="button" class="pvbtn" onclick="openPreview('web',event)">▶ PREVIEW WEB APP</button>
+          <button type="button" class="pvbtn" onclick="openPreview('web',event)">▶ PREVIEW ANZOAI WEB</button>
+          <button type="button" class="pvbtn" onclick="openPreview('kdt',event)">▶ PREVIEW KHMERDAILYTOOLS WEB</button>
           <button type="button" class="pvbtn" onclick="openPreview('bot',event)">▶ PREVIEW TELEGRAM BOT</button>
         </div>
       </div>
@@ -615,6 +616,10 @@ footer span{color:var(--ac)}
           <div class="socicon" style="background:rgba(0,212,160,0.12);border-color:rgba(0,212,160,0.3)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20a15 15 0 0 1 0-20z"/></svg></div>
           <span>AnzoAI Web App</span>
         </a>
+        <a href="https://khmerdailytools-ui.anzotools.workers.dev" target="_blank" rel="noopener" class="socitem">
+          <div class="socicon" style="background:rgba(250,204,21,0.12);border-color:rgba(250,204,21,0.3)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fde68a" stroke-width="1.8"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg></div>
+          <span>KhmerDailyTools Web</span>
+        </a>
         <a href="https://t.me/AnzoAIbot" target="_blank" rel="noopener" class="socitem">
           <div class="socicon" style="background:rgba(124,60,255,0.15);border-color:rgba(124,60,255,0.35)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.8"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4"/><circle cx="12" cy="3" r="1"/><circle cx="9" cy="14" r="1" fill="#a78bfa"/><circle cx="15" cy="14" r="1" fill="#a78bfa"/></svg></div>
           <span>@AnzoAIbot (Telegram bot)</span>
@@ -679,7 +684,8 @@ footer span{color:var(--ac)}
         <div class="modalkicker">Live preview</div>
         <div class="modaltitle">Khmer Daily Tools — AnzoAI</div>
         <div class="pvtabs">
-          <button type="button" class="pvtab" data-pv="web" onclick="showPreview('web')">WEB APP</button>
+          <button type="button" class="pvtab" data-pv="web" onclick="showPreview('web')">ANZOAI WEB</button>
+          <button type="button" class="pvtab" data-pv="kdt" onclick="showPreview('kdt')">KHMERDAILYTOOLS WEB</button>
           <button type="button" class="pvtab" data-pv="bot" onclick="showPreview('bot')">TELEGRAM BOT</button>
         </div>
       </div>
@@ -687,8 +693,12 @@ footer span{color:var(--ac)}
     </div>
     <div class="pvbody">
       <div class="pvpane" id="pv-web">
-        <iframe class="pvframe" id="pvframe" title="AnzoAI web app preview" loading="lazy"></iframe>
+        <iframe class="pvframe" id="pvframe" title="AnzoAI web app preview" data-src="https://anzoai.anzotools.workers.dev"></iframe>
         <div class="pvbar"><span>This is the real live app. You can click around and try it here.</span><a class="pvopen" href="https://anzoai.anzotools.workers.dev" target="_blank" rel="noopener">OPEN FULL APP ↗</a></div>
+      </div>
+      <div class="pvpane" id="pv-kdt">
+        <iframe class="pvframe" title="KhmerDailyTools web preview" data-src="https://khmerdailytools-ui.anzotools.workers.dev"></iframe>
+        <div class="pvbar"><span>KhmerDailyTools — free Khmer AI tools: text-to-speech, video download, background remover, KHQR, Khmer calendar.</span><a class="pvopen" href="https://khmerdailytools-ui.anzotools.workers.dev" target="_blank" rel="noopener">OPEN FULL SITE ↗</a></div>
       </div>
       <div class="pvpane" id="pv-bot">
         <div class="tg">
@@ -890,9 +900,9 @@ function tgInit(){
 }
 function showPreview(which){
   document.querySelectorAll('.pvtab').forEach(function(t){t.classList.toggle('on',t.dataset.pv===which);});
-  document.getElementById('pv-web').classList.toggle('on',which==='web');
-  document.getElementById('pv-bot').classList.toggle('on',which==='bot');
-  if(which==='web'){var f=document.getElementById('pvframe');if(!f.src)f.src='https://anzoai.anzotools.workers.dev';}
+  document.querySelectorAll('.pvpane').forEach(function(p){p.classList.toggle('on',p.id==='pv-'+which);});
+  var f=document.querySelector('#pv-'+which+' iframe');
+  if(f){if(!f.getAttribute('src'))f.src=f.dataset.src;}
   else tgInit();
 }
 function openPreview(which,e){
