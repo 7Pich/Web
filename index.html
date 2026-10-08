@@ -223,6 +223,31 @@ nav.scrolled{background:rgba(12,12,14,0.98);box-shadow:0 12px 30px rgba(0,0,0,0.
 .modalstat{border:1px solid var(--br);border-radius:8px;padding:.8rem;background:var(--bg4)}
 .modalstat strong{display:block;color:var(--tx);font-size:1rem}
 .modalstat span{font-family:'Space Mono',monospace;font-size:.6rem;color:var(--mu)}
+.pvbtns{margin-top:1rem;display:flex;gap:.6rem;flex-wrap:wrap}
+.pvbtn{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.06em;padding:.5rem .85rem;border-radius:6px;border:1px solid var(--br2);background:rgba(0,212,160,.08);color:var(--ac);cursor:pointer;transition:background .2s}
+.pvbtn:hover{background:rgba(0,212,160,.18)}
+#pvmodal{padding-top:82px}
+.pvbox{width:min(980px,100%);max-height:calc(100vh - 100px);display:flex;flex-direction:column;overflow:hidden}
+.pvtabs{display:flex;gap:.4rem;margin-top:.7rem}
+.pvtab{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.08em;padding:.35rem .75rem;border-radius:5px;border:1px solid var(--br);background:transparent;color:var(--mu);cursor:pointer}
+.pvtab.on{background:rgba(0,212,160,.12);border-color:var(--br2);color:var(--ac)}
+.pvbody{padding:1rem 1.35rem 1.35rem;overflow:auto;flex:1}
+.pvpane{display:none}.pvpane.on{display:block}
+.pvframe{width:100%;height:max(320px,min(calc(100vh - 330px),640px));border:1px solid var(--br);border-radius:10px;background:#fff;display:block}
+.pvbar{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:.8rem;font-size:.8rem;color:var(--mu)}
+.pvopen{font-family:'Space Mono',monospace;font-size:.66rem;color:var(--ac);text-decoration:none;border:1px solid var(--br2);border-radius:6px;padding:.45rem .8rem}
+.tg{max-width:440px;margin:0 auto;border-radius:14px;overflow:hidden;border:1px solid var(--br);background:#0e1621;font-family:-apple-system,'Segoe UI',Roboto,sans-serif}
+.tghead{display:flex;align-items:center;gap:.7rem;padding:.7rem .9rem;background:#17212b;color:#fff}
+.tgav{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#00d4a0,#7c3cff);display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.tgname{font-weight:600;font-size:.92rem;line-height:1.2}.tgsub{font-size:.72rem;color:#6c8ba6}
+.tgchat{height:300px;overflow-y:auto;padding:.9rem;display:flex;flex-direction:column;gap:.45rem;background:#0e1621}
+.tgm{max-width:82%;padding:.5rem .75rem;border-radius:12px;font-size:.86rem;line-height:1.45;color:#fff;white-space:pre-line;word-wrap:break-word}
+.tgm.in{align-self:flex-start;background:#182533;border-bottom-left-radius:4px}
+.tgm.out{align-self:flex-end;background:#2b5278;border-bottom-right-radius:4px}
+.tgkb{display:grid;gap:4px;padding:6px;background:#17212b}
+.tgrow{display:flex;gap:4px}
+.tgk{flex:1;min-width:0;padding:.55rem .25rem;border:none;border-radius:6px;background:#2b3a4a;color:#fff;font-size:.72rem;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tgk:hover{background:#36495d}
 .modalchips{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:1rem}
 .msgdialog{width:min(380px,calc(100vw - 32px));border:1px solid var(--br2);border-radius:12px;background:var(--bg3);color:var(--tx);box-shadow:var(--shadow);padding:0}
 .msgdialog::backdrop{background:rgba(0,0,0,.62);backdrop-filter:blur(5px)}
@@ -454,7 +479,7 @@ footer span{color:var(--ac)}
     <button class="fbtn" data-f="Redis">REDIS</button>
   </div>
   <div class="pgrid" id="pgrid">
-    <div class="pc wide rev" data-tags="Cloudflare D1,SQLite,TypeScript,Node.js">
+    <div class="pc wide rev" data-preview="1" data-tags="Cloudflare D1,SQLite,TypeScript,Node.js" style="cursor:pointer">
       <div class="pct">
         <div class="pci" style="background:rgba(0,212,160,.08);border-color:var(--br2);font-size:1.6rem">🤖</div>
         <div><div class="ptags"><span class="ptag sql">Cloudflare D1</span><span class="ptag ts">TypeScript</span><span class="ptag ns">Node.js</span></div><div style="font-family:'Space Mono',monospace;font-size:.6rem;color:var(--mu);letter-spacing:.08em">LIVE PROJECT</div></div>
@@ -462,9 +487,9 @@ footer span{color:var(--ac)}
       <div class="pcb">
         <div class="ptn">Khmer Daily Tools — AnzoAI Bot &amp; Web App</div>
         <p class="pde">An everyday toolbox for Cambodian users on Telegram and the web: video downloader, AI companion, voice tools, Khmer calendar with public-holiday alerts, and KHQR payments. Runs on Cloudflare Workers with a shared D1 database for users, orders, and reminders.</p>
-        <div style="margin-top:1rem;display:flex;gap:1.25rem;flex-wrap:wrap">
-          <a href="https://anzoai.anzotools.workers.dev" target="_blank" rel="noopener" style="font-family:'Space Mono',monospace;font-size:.68rem;color:var(--ac);text-decoration:none">OPEN WEB APP ↗</a>
-          <a href="https://t.me/AnzoAIbot" target="_blank" rel="noopener" style="font-family:'Space Mono',monospace;font-size:.68rem;color:var(--ac);text-decoration:none">@AnzoAIbot ON TELEGRAM ↗</a>
+        <div class="pvbtns">
+          <button type="button" class="pvbtn" onclick="openPreview('web',event)">▶ PREVIEW WEB APP</button>
+          <button type="button" class="pvbtn" onclick="openPreview('bot',event)">▶ PREVIEW TELEGRAM BOT</button>
         </div>
       </div>
     </div>
@@ -631,6 +656,36 @@ footer span{color:var(--ac)}
   </div>
 </div>
 
+<div class="modal" id="pvmodal" onclick="closePreview(event)">
+  <div class="modalbox pvbox">
+    <div class="modalhead">
+      <div>
+        <div class="modalkicker">Live preview</div>
+        <div class="modaltitle">Khmer Daily Tools — AnzoAI</div>
+        <div class="pvtabs">
+          <button type="button" class="pvtab" data-pv="web" onclick="showPreview('web')">WEB APP</button>
+          <button type="button" class="pvtab" data-pv="bot" onclick="showPreview('bot')">TELEGRAM BOT</button>
+        </div>
+      </div>
+      <button class="modalclose" type="button" onclick="closePreview(event)" aria-label="Close preview">X</button>
+    </div>
+    <div class="pvbody">
+      <div class="pvpane" id="pv-web">
+        <iframe class="pvframe" id="pvframe" title="AnzoAI web app preview" loading="lazy"></iframe>
+        <div class="pvbar"><span>This is the real live app. You can click around and try it here.</span><a class="pvopen" href="https://anzoai.anzotools.workers.dev" target="_blank" rel="noopener">OPEN FULL APP ↗</a></div>
+      </div>
+      <div class="pvpane" id="pv-bot">
+        <div class="tg">
+          <div class="tghead"><div class="tgav">🤖</div><div><div class="tgname">AnzoAI · KhmerDailyTools</div><div class="tgsub">bot · @AnzoAIbot</div></div></div>
+          <div class="tgchat" id="tgchat"></div>
+          <div class="tgkb" id="tgkb"></div>
+        </div>
+        <div class="pvbar"><span>Tap a button to see what each tool does. Open Telegram to use it for real.</span><a class="pvopen" href="https://t.me/AnzoAIbot" target="_blank" rel="noopener">OPEN @AnzoAIbot ↗</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <dialog class="msgdialog" id="msgdialog">
   <div class="msgdialog-body">
     <div class="msgdialog-title" id="msgdialog-title">Form needs info</div>
@@ -728,8 +783,76 @@ function closeProjectModal(e){
   if(e&&e.type==='click'&&e.target.className!=='modal'&&e.target.className!=='modalclose')return;
   var m=document.getElementById('pmodal');if(m){m.classList.remove('on');document.body.style.overflow='';}
 }
-document.querySelectorAll('#pgrid .pc').forEach(function(card,i){card.addEventListener('click',function(e){e.preventDefault();openProjectModal(i);});});
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeProjectModal();});
+document.querySelectorAll('#pgrid .pc:not([data-preview])').forEach(function(card,i){card.addEventListener('click',function(e){e.preventDefault();openProjectModal(i);});});
+document.querySelectorAll('#pgrid .pc[data-preview]').forEach(function(card){card.addEventListener('click',function(e){openPreview('web',e);});});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeProjectModal();closePreview();}});
+
+// LIVE PREVIEW: web app (real iframe) + Telegram bot (chat mockup from the bot's real menu)
+var BOT_KEYS=[
+  ['📋 Copy','🗜 បង្រួម','✂️ លុបBG','🎙 សំឡេង'],
+  ['📄 PDF','📱 QR','📐 ប្ដូរទំហំ','🎤 សំឡេង→អក្សរ'],
+  ['⬇️ វីដែអូ','💱 ប្ដូរប្រាក់','🤨 Meme','📝 វេយ្យាករណ៍'],
+  ['🖼 ច្រឹបរូបភាព','🎭 ធ្វើ Sticker','🎵 MP3→សំឡេង'],
+  ['📝 PDF→Word','🤖 AI ដោះស្រាយលំហាត់'],
+  ['💕 មិត្តភ័ក្តិ AI']
+];
+var BOT_REPLIES={
+  '📋 Copy':'📋 Copy — រូបទៅអក្សរ (OCR)\nSend a photo and get the text back.',
+  '🗜 បង្រួម':'🗜 បង្រួម — compress an image to a smaller file size.',
+  '✂️ លុបBG':'✂️ លុប BG — លុបផ្ទៃខាងក្រោយរូបភាព\nRemoves the photo background.',
+  '🎙 សំឡេង':'🎙 សំឡេង — បំប្លែងអក្សរជាសំឡេង (TTS)\nType Khmer or English text, get a voice message.',
+  '📄 PDF':'📄 PDF — combine photos and files into one PDF.',
+  '📱 QR':'📱 QR — បង្កើត QR Code from any text or link.',
+  '📐 ប្ដូរទំហំ':'📐 ប្ដូរទំហំ — ប្ដូរឯកតា (m↔cm, L↔mL, kg↔lb, °C↔°F...)',
+  '🎤 សំឡេង→អក្សរ':'🎤 សំឡេង→អក្សរ — send a voice message, get the text (STT).',
+  '⬇️ វីដែអូ':'⬇️ វីដែអូ — paste a TikTok link to download the video.',
+  '💱 ប្ដូរប្រាក់':'💱 ប្ដូរប្រាក់ — ប្ដូររូបិយប័ណ្ណ (USD ↔ KHR and more).',
+  '🤨 Meme':'🤨 Meme — pick a template and add your own text.',
+  '📝 វេយ្យាករណ៍':'📝 វេយ្យាករណ៍ — ពិនិត្យវេយ្យាករណ៍ (grammar check).',
+  '🖼 ច្រឹបរូបភាព':'🖼 ច្រឹប — crop a photo to 1:1, 4:5, 16:9 and more.',
+  '🎭 ធ្វើ Sticker':'🎭 Sticker — បង្កើត sticker ពីរូបភាព',
+  '🎵 MP3→សំឡេង':'🎵 MP3→សំឡេង — ប្ដូរឯកសារសំឡេងទៅជាសារសំឡេង',
+  '📝 PDF→Word':'📝 PDF→Word — convert a PDF into an editable Word file.',
+  '🤖 AI ដោះស្រាយលំហាត់':'🤖 AI ដោះស្រាយលំហាត់ — send a math or homework problem as text or a photo, and AI solves it.',
+  '💕 មិត្តភ័ក្តិ AI':'💕 មិត្តភ័ក្តិ AI — chat with a friendly AI companion.'
+};
+function tgMsg(text,cls){
+  var c=document.getElementById('tgchat'),m=document.createElement('div');
+  m.className='tgm '+cls;m.textContent=text;c.appendChild(m);c.scrollTop=c.scrollHeight;
+}
+function tgInit(){
+  var kb=document.getElementById('tgkb');if(kb.childElementCount)return;
+  BOT_KEYS.forEach(function(row){
+    var r=document.createElement('div');r.className='tgrow';
+    row.forEach(function(k){
+      var b=document.createElement('button');b.type='button';b.className='tgk';b.textContent=k;
+      b.addEventListener('click',function(){
+        tgMsg(k,'out');
+        setTimeout(function(){tgMsg((BOT_REPLIES[k]||k)+'\n\n👉 Open @AnzoAIbot to try it for real.','in');},450);
+      });
+      r.appendChild(b);
+    });
+    kb.appendChild(r);
+  });
+  tgMsg('/start','out');
+  tgMsg('🛠 KhmerDailyTools\n\nសួស្ដី! 👋\n\nជ្រើស​ ឧបករណ៍​ ខាងក្រោម ↓','in');
+}
+function showPreview(which){
+  document.querySelectorAll('.pvtab').forEach(function(t){t.classList.toggle('on',t.dataset.pv===which);});
+  document.getElementById('pv-web').classList.toggle('on',which==='web');
+  document.getElementById('pv-bot').classList.toggle('on',which==='bot');
+  if(which==='web'){var f=document.getElementById('pvframe');if(!f.src)f.src='https://anzoai.anzotools.workers.dev';}
+  else tgInit();
+}
+function openPreview(which,e){
+  if(e){e.preventDefault();e.stopPropagation();}
+  showPreview(which);
+  document.getElementById('pvmodal').classList.add('on');document.body.style.overflow='hidden';
+}
+function closePreview(e){
+  if(e&&e.type==='click'&&e.target.id!=='pvmodal'&&e.target.className!=='modalclose')return;
+  var m=document.getElementById('pvmodal');if(m&&m.classList.contains('on')){m.classList.remove('on');document.body.style.overflow='';}
+}
 
 // MINI AI ASSISTANT
 var AI_API_URL=window.ANZO_AI_API_URL||(location.protocol==='file:'?'http://localhost:3000/ai':'/ai');
