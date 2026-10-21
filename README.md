@@ -8,3 +8,7 @@
 
 > **Note:** This service is `anzo-ai` on Render. The `khmerdailytools-resolver` service on Render is reserved for the media resolution tools in `D:\Year4\khmerdailytools-ui-code` and the Telegram bot.
 
+## Execution Policy
+- **Autonomous Mode:** Pre-approved by user. Directly execute all requested enhancements, fixes, builds, and pushes without asking for extra confirmation.
+
+
