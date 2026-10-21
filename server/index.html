@@ -115,13 +115,80 @@ nav.scrolled{background:rgba(12,12,14,0.98);box-shadow:0 12px 30px rgba(0,0,0,0.
 .ksb-solar{color:#fde047;font-weight:500}
 [data-theme="light"] .ksb-solar{color:#d97706}
 
-/* TERMINAL */
-.tcard{position:absolute;right:5%;top:50%;transform:translateY(-50%);background:var(--bg3);border:1px solid var(--br);border-radius:10px;padding:1.2rem 1.4rem;width:300px;font-family:'Space Mono',monospace;font-size:.71rem;line-height:1.85;z-index:2;animation:fl 4s ease-in-out infinite}
+/* SPOTLIGHT GLOW EFFECT ON CARDS */
+.pc, .svccard, .skpan, .khmer-status-bar {
+  position: relative;
+}
+.pc::before, .svccard::before, .skpan::before, .khmer-status-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(380px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 212, 160, 0.12), transparent 45%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .3s ease;
+  z-index: 1;
+}
+.pc:hover::before, .svccard:hover::before, .skpan:hover::before, .khmer-status-bar:hover::before {
+  opacity: 1;
+}
+[data-theme="light"] .pc::before,
+[data-theme="light"] .svccard::before,
+[data-theme="light"] .skpan::before,
+[data-theme="light"] .khmer-status-bar::before {
+  background: radial-gradient(350px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 160, 122, 0.14), transparent 45%);
+}
+
+/* MOON PHASE ICON */
+.ksb-moon{font-size:1.15rem;line-height:1;display:inline-block;vertical-align:middle;filter:drop-shadow(0 0 6px rgba(255,209,10,0.5));animation:moonpulse 3s ease-in-out infinite}
+@keyframes moonpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+
+/* 1-CLICK COPY PILL & TOAST POPUP */
+.copy-pill{display:inline-flex;align-items:center;gap:4px;margin-left:auto;font-family:'Space Mono',monospace;font-size:.62rem;color:var(--ac);background:rgba(0,212,160,.08);border:1px solid var(--br2);padding:2px 7px;border-radius:4px;cursor:pointer;transition:background .2s,transform .2s}
+.copy-pill:hover{background:rgba(0,212,160,.18);transform:translateY(-1px)}
+.toast-popup{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(12,16,22,0.96);color:#fff;border:1px solid var(--ac);box-shadow:0 14px 40px rgba(0,212,160,0.3);padding:.65rem 1.35rem;border-radius:999px;font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.02em;display:inline-flex;align-items:center;gap:8px;z-index:2147483647;opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.toast-popup.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+[data-theme="light"] .toast-popup{background:rgba(255,255,255,0.98);color:#0f172a;box-shadow:0 14px 40px rgba(0,0,0,0.15)}
+
+/* INTERACTIVE LIVE TERMINAL */
+.tcard{position:absolute;right:5%;top:50%;transform:translateY(-50%);background:var(--bg3);border:1px solid var(--br);border-radius:12px;padding:1.1rem 1.25rem;width:350px;max-width:92vw;font-family:'Space Mono',monospace;font-size:.72rem;line-height:1.75;z-index:2;box-shadow:var(--shadow),0 0 30px rgba(0,212,160,0.06);transition:box-shadow .3s,border-color .3s;animation:fl 5s ease-in-out infinite}
+.tcard:hover{border-color:var(--br2);box-shadow:var(--shadow),0 0 35px rgba(0,212,160,0.12)}
 @keyframes fl{0%,100%{transform:translateY(-50%) translateY(0)}50%{transform:translateY(-50%) translateY(-8px)}}
-.tbar{display:flex;gap:6px;margin-bottom:.9rem;padding-bottom:.7rem;border-bottom:1px solid var(--br)}
+.tbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:.75rem;padding-bottom:.65rem;border-bottom:1px solid var(--br)}
+.tdots{display:flex;gap:6px;align-items:center}
 .td{width:10px;height:10px;border-radius:50%}
-.tl{color:var(--mu)}.tl .cmd{color:var(--ac)}.tl .val{color:#7dd3fc}.tl .str{color:#fca5a5}
-.tc{display:inline-block;width:7px;height:12px;background:var(--ac);vertical-align:middle;animation:cu 1s step-end infinite}
+.ttitle{font-size:.65rem;color:var(--mu);letter-spacing:.06em}
+.tstatus{display:inline-flex;align-items:center;gap:5px;font-size:.62rem;color:var(--ac);font-weight:700}
+.tstatus-dot{width:6px;height:6px;border-radius:50%;background:var(--ac);box-shadow:0 0 6px var(--ac);animation:pu 2s infinite}
+.term-body{max-height:220px;min-height:140px;overflow-y:auto;padding-right:4px;margin-bottom:.65rem;display:flex;flex-direction:column;gap:5px;scrollbar-width:thin;scrollbar-color:var(--br2) transparent}
+.term-body::-webkit-scrollbar{width:4px}
+.term-body::-webkit-scrollbar-thumb{background:var(--br2);border-radius:4px}
+.term-line{word-break:break-word;font-size:.72rem}
+.term-line.cmd-echo{color:var(--ac);font-weight:700}
+.term-line.out{color:var(--tx)}
+.term-line.dim{color:var(--mu);font-size:.68rem}
+.term-line.val{color:#7dd3fc}
+.term-line.str{color:#fca5a5}
+.term-pills{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.65rem;padding-top:.45rem;border-top:1px dashed var(--br)}
+.term-pill{background:rgba(0,212,160,.06);border:1px solid var(--br2);color:var(--ac);font-family:'Space Mono',monospace;font-size:.62rem;padding:2px 7px;border-radius:3px;cursor:pointer;transition:background .2s,transform .2s}
+.term-pill:hover{background:rgba(0,212,160,.16);transform:translateY(-1px)}
+.term-prompt-line{display:flex;align-items:center;gap:6px;background:var(--bg4);border:1px solid var(--br);border-radius:6px;padding:.35rem .65rem;transition:border-color .2s}
+.term-prompt-line:focus-within{border-color:var(--br2)}
+.term-prompt-sym{color:var(--ac);font-weight:700}
+.term-input{flex:1;background:transparent;border:none;outline:none;color:var(--tx);font-family:'Space Mono',monospace;font-size:.72rem}
+.term-input::placeholder{color:var(--mu);opacity:.6}
+
+/* CATEGORIZED SKILLS STYLING */
+.sk-categories{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:.6rem}
+.sk-cat-card{background:var(--bg4);border:1px solid var(--br);border-radius:8px;padding:.85rem 1rem;transition:border-color .2s,transform .2s}
+.sk-cat-card:hover{border-color:var(--br2)}
+.sk-cat-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:.55rem}
+.sk-cat-title{font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;color:var(--tx);display:flex;align-items:center;gap:6px}
+.sk-cat-badge{font-family:'Space Mono',monospace;font-size:.58rem;color:var(--ac);background:rgba(0,212,160,.08);padding:2px 6px;border-radius:3px;border:1px solid var(--br2)}
+.sk-tags-wrap{display:flex;gap:5px;flex-wrap:wrap}
+.sk-tag-item{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:4px;font-family:'Space Mono',monospace;font-size:.64rem;background:rgba(255,255,255,.04);border:1px solid var(--br);color:var(--tx);transition:all .2s}
+.sk-tag-item:hover{border-color:var(--br2);background:rgba(0,212,160,.09);color:var(--ac);transform:translateY(-1px)}
 /* SECTIONS */
 .sec{padding:5.5rem 5%;position:relative;scroll-margin-top:70px}
 .sec-alt{background:var(--bg2);transition:background .3s}
@@ -313,7 +380,7 @@ footer span{color:var(--ac)}
 .rev{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s ease}
 .rev.in{opacity:1;transform:none}
 /* RESPONSIVE */
-@media(max-width:1000px){.tcard{display:none}.pgrid,.svcgrid{grid-template-columns:1fr 1fr}.pc.wide{grid-column:span 2}}
+@media(max-width:1000px){.hero{flex-direction:column;align-items:flex-start;padding-top:7.5rem}.tcard{position:relative;right:auto;top:auto;transform:none;width:100%;max-width:540px;margin-top:2rem;animation:none}.pgrid,.svcgrid{grid-template-columns:1fr 1fr}.pc.wide{grid-column:span 2}}
 @media(max-width:768px){.nlinks,.hirebtn{display:none}.hbtn{display:flex}.mcontact{display:block}.pgrid,.svcgrid{grid-template-columns:1fr}.pc.wide{grid-column:auto;flex-direction:column}.pc.wide .pct{border-right:none;border-bottom:1px solid var(--br)}.agrid,.cgrid{grid-template-columns:1fr;gap:2rem}.tli{grid-template-columns:75px auto 1fr}.clogi{grid-template-columns:1fr;gap:.55rem}.frow{grid-template-columns:1fr}.hero{padding-top:8.5rem}.modalstats{grid-template-columns:1fr}.aibtn{right:16px;bottom:16px}.aipanel{right:16px;bottom:78px;width:calc(100vw - 32px)}}
 </style>
 </head>
@@ -401,6 +468,7 @@ footer span{color:var(--ac)}
         <span class="ksb-time" id="ksb-eng-time">--</span>
       </div>
       <div class="ksb-row2">
+        <span class="ksb-moon" id="ksb-moon" title="Moon phase">🌔</span>
         <span class="ksb-lunar" id="ksb-khmer-lunar">--</span>
         <span class="ksb-sep">•</span>
         <span class="ksb-solar" id="ksb-khmer-solar">--</span>
@@ -415,16 +483,36 @@ footer span{color:var(--ac)}
       <a href="#contact" class="btng" onclick="goTo(event,'contact')">Get in touch</a>
     </div>
   </div>
-  <div class="tcard">
-    <div class="tbar"><div class="td" style="background:#ff5f57"></div><div class="td" style="background:#febc2e"></div><div class="td" style="background:#28c840"></div></div>
-    <div class="tl">$ <span class="cmd">SELECT</span> * <span class="cmd">FROM</span> anzo</div>
-    <div class="tl">&nbsp;&nbsp;<span class="cmd">WHERE</span> role=<span class="str">'dba'</span>;</div><br>
-    <div class="tl">→ name: <span class="val">"Anzo"</span></div>
-    <div class="tl">→ city: <span class="val">"Phnom Penh, KH"</span></div>
-    <div class="tl">→ exp: <span class="val">3+ years</span></div>
-    <div class="tl">→ stack: <span class="val">["PG","MySQL","Mongo"]</span></div>
-    <div class="tl">→ status: <span style="color:var(--ac)">ONLINE ✓</span></div><br>
-    <div class="tl">$ <span class="tc"></span></div>
+  <div class="tcard" id="hero-terminal">
+    <div class="tbar">
+      <div class="tdots">
+        <div class="td" style="background:#ff5f57"></div>
+        <div class="td" style="background:#febc2e"></div>
+        <div class="td" style="background:#28c840"></div>
+      </div>
+      <div class="ttitle">anzo@phnompenh:~</div>
+      <div class="tstatus"><span class="tstatus-dot"></span><span>LIVE</span></div>
+    </div>
+    <div class="term-body" id="term-body">
+      <div class="term-line cmd-echo">$ SELECT * FROM anzo WHERE role='dba';</div>
+      <div class="term-line">→ name: <span class="val">"Anzo"</span></div>
+      <div class="term-line">→ city: <span class="val">"Phnom Penh, KH"</span></div>
+      <div class="term-line">→ role: <span class="val">"Database Administrator"</span></div>
+      <div class="term-line">→ stack: <span class="val">["PostgreSQL","MySQL","Redis","Mongo"]</span></div>
+      <div class="term-line dim">Type a command or tap quick pills below ↓</div>
+    </div>
+    <div class="term-pills">
+      <button type="button" class="term-pill" onclick="runTermCmd('help')">help</button>
+      <button type="button" class="term-pill" onclick="runTermCmd('skills')">skills</button>
+      <button type="button" class="term-pill" onclick="runTermCmd('projects')">projects</button>
+      <button type="button" class="term-pill" onclick="runTermCmd('contact')">contact</button>
+      <button type="button" class="term-pill" onclick="runTermCmd('whoami')">whoami</button>
+      <button type="button" class="term-pill" onclick="runTermCmd('clear')">clear</button>
+    </div>
+    <form class="term-prompt-line" onsubmit="handleTermSubmit(event)">
+      <span class="term-prompt-sym">$</span>
+      <input type="text" id="term-input" class="term-input" placeholder="type help or command..." autocomplete="off" spellcheck="false" />
+    </form>
   </div>
 </section>
 
@@ -451,33 +539,79 @@ footer span{color:var(--ac)}
       </div>
     </div>
     <div class="skpan rev" style="transition-delay:.15s">
-      <div class="sktit">// SKILL_MATRIX.json</div>
-      <div class="skrow">
-        <div class="ski"><div class="skh"><span class="skn">PostgreSQL</span><span class="skpc">95%</span></div><div class="skbar"><div class="skfill" data-w=".95"></div></div></div>
-        <div class="ski"><div class="skh"><span class="skn">MySQL / MariaDB</span><span class="skpc">92%</span></div><div class="skbar"><div class="skfill" data-w=".92"></div></div></div>
-        <div class="ski"><div class="skh"><span class="skn">MongoDB</span><span class="skpc">85%</span></div><div class="skbar"><div class="skfill" data-w=".85"></div></div></div>
-        <div class="ski"><div class="skh"><span class="skn">Redis</span><span class="skpc">80%</span></div><div class="skbar"><div class="skfill" data-w=".80"></div></div></div>
-        <div class="ski"><div class="skh"><span class="skn">Query Optimization</span><span class="skpc">90%</span></div><div class="skbar"><div class="skfill" data-w=".90"></div></div></div>
-        <div class="ski"><div class="skh"><span class="skn">Data Modeling</span><span class="skpc">88%</span></div><div class="skbar"><div class="skfill" data-w=".88"></div></div></div>
-        <div class="ski"><div class="skh"><span class="skn">Python / SQL Scripting</span><span class="skpc">82%</span></div><div class="skbar"><div class="skfill" data-w=".82"></div></div></div>
-        <div class="ski"><div class="skh"><span class="skn">Cloud DB (AWS RDS)</span><span class="skpc">78%</span></div><div class="skbar"><div class="skfill" data-w=".78"></div></div></div>
-      </div>
-      <div class="sktit" style="margin-top:1.6rem">// BUILT_IN_PRODUCTION.json</div>
-      <div class="skgrp">
-        <div class="skgl">Telegram Bot</div>
-        <div class="ptags"><span class="ptag ns">Node.js</span><span class="ptag">Telegraf</span><span class="ptag">Hono</span><span class="ptag">Webhooks</span><span class="ptag">Mini Apps</span><span class="ptag">Inline keyboards</span></div>
-      </div>
-      <div class="skgrp">
-        <div class="skgl">Web App</div>
-        <div class="ptags"><span class="ptag ts">TypeScript</span><span class="ptag ts">React</span><span class="ptag">Vite</span><span class="ptag">Tailwind CSS</span><span class="ptag">PWA / Web Push</span><span class="ptag">JWT auth</span></div>
-      </div>
-      <div class="skgrp">
-        <div class="skgl">Cloud &amp; Data</div>
-        <div class="ptags"><span class="ptag sql">Cloudflare D1 (SQLite)</span><span class="ptag">Cloudflare Workers</span><span class="ptag">KV</span><span class="ptag">Cron triggers</span><span class="ptag">Service bindings</span><span class="ptag">Render</span><span class="ptag">Docker</span></div>
-      </div>
-      <div class="skgrp">
-        <div class="skgl">Media, AI &amp; Payments</div>
-        <div class="ptags"><span class="ptag py">Python / FastAPI</span><span class="ptag">yt-dlp</span><span class="ptag">FFmpeg</span><span class="ptag">Tesseract OCR</span><span class="ptag">Text-to-Speech</span><span class="ptag">Gemini AI</span><span class="ptag">KHQR / ABA PayWay</span></div>
+      <div class="sktit">// SKILL_MATRIX_BY_DOMAIN.json</div>
+      
+      <div class="sk-categories">
+        <!-- DOMAIN 1: RELATIONAL & NOSQL -->
+        <div class="sk-cat-card">
+          <div class="sk-cat-head">
+            <span class="sk-cat-title">🗄️ Relational &amp; NoSQL Databases</span>
+            <span class="sk-cat-badge">CORE SPECIALTY</span>
+          </div>
+          <div class="sk-tags-wrap">
+            <span class="sk-tag-item"><strong style="color:var(--ac)">PostgreSQL</strong> 95%</span>
+            <span class="sk-tag-item"><strong>MySQL / MariaDB</strong> 92%</span>
+            <span class="sk-tag-item"><strong>MongoDB</strong> 85%</span>
+            <span class="sk-tag-item"><strong>Redis Caching</strong> 82%</span>
+            <span class="sk-tag-item"><strong>Cloudflare D1 (SQLite)</strong> 88%</span>
+            <span class="sk-tag-item"><strong>Query Tuning &amp; Indexes</strong> 90%</span>
+          </div>
+          <div class="skrow" style="margin-top:.7rem">
+            <div class="ski"><div class="skh"><span class="skn">PostgreSQL Architecture &amp; Tuning</span><span class="skpc">95%</span></div><div class="skbar"><div class="skfill" data-w=".95"></div></div></div>
+            <div class="ski"><div class="skh"><span class="skn">MySQL Performance &amp; Replication</span><span class="skpc">92%</span></div><div class="skbar"><div class="skfill" data-w=".92"></div></div></div>
+          </div>
+        </div>
+
+        <!-- DOMAIN 2: BACKEND & AUTOMATION -->
+        <div class="sk-cat-card">
+          <div class="sk-cat-head">
+            <span class="sk-cat-title">⚙️ Backend &amp; Data Engineering</span>
+            <span class="sk-cat-badge">AUTOMATION</span>
+          </div>
+          <div class="sk-tags-wrap">
+            <span class="sk-tag-item"><strong>Python (FastAPI / ETL)</strong></span>
+            <span class="sk-tag-item"><strong>Node.js / Hono</strong></span>
+            <span class="sk-tag-item"><strong>TypeScript</strong></span>
+            <span class="sk-tag-item"><strong>Docker &amp; Containers</strong></span>
+            <span class="sk-tag-item"><strong>Data Modeling (3NF/Star)</strong></span>
+            <span class="sk-tag-item"><strong>Zero-Downtime Migration</strong></span>
+          </div>
+          <div class="skrow" style="margin-top:.7rem">
+            <div class="ski"><div class="skh"><span class="skn">Python Scripting &amp; ETL Pipelines</span><span class="skpc">85%</span></div><div class="skbar"><div class="skfill" data-w=".85"></div></div></div>
+          </div>
+        </div>
+
+        <!-- DOMAIN 3: TELEGRAM & AI -->
+        <div class="sk-cat-card">
+          <div class="sk-cat-head">
+            <span class="sk-cat-title">🤖 Telegram Bots &amp; AI Integrations</span>
+            <span class="sk-cat-badge">PRODUCTION</span>
+          </div>
+          <div class="sk-tags-wrap">
+            <span class="sk-tag-item"><strong>Telegraf Engine</strong></span>
+            <span class="sk-tag-item"><strong>Telegram Mini Apps</strong></span>
+            <span class="sk-tag-item"><strong>Gemini AI / LLMs</strong></span>
+            <span class="sk-tag-item"><strong>yt-dlp Video Resolver</strong></span>
+            <span class="sk-tag-item"><strong>FFmpeg Media Processing</strong></span>
+            <span class="sk-tag-item"><strong>Khmer OCR &amp; TTS</strong></span>
+          </div>
+        </div>
+
+        <!-- DOMAIN 4: CLOUD & PAYMENTS -->
+        <div class="sk-cat-card">
+          <div class="sk-cat-head">
+            <span class="sk-cat-title">☁️ Cloud, Web &amp; Fintech Payments</span>
+            <span class="sk-cat-badge">DEPLOYMENT</span>
+          </div>
+          <div class="sk-tags-wrap">
+            <span class="sk-tag-item"><strong>Cloudflare Workers / KV</strong></span>
+            <span class="sk-tag-item"><strong>Render Web Services</strong></span>
+            <span class="sk-tag-item"><strong>React / Vite / Tailwind</strong></span>
+            <span class="sk-tag-item"><strong style="color:var(--ac)">ABA PayWay (USD/KHR)</strong></span>
+            <span class="sk-tag-item"><strong>KHQR Integration</strong></span>
+            <span class="sk-tag-item"><strong>RESTful APIs</strong></span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -630,13 +764,20 @@ footer span{color:var(--ac)}
       <h2 class="stit">Let's work<br>together</h2>
       <p>Need a database architect, performance expert, or someone to manage your data infrastructure? Open to new projects and full-time opportunities.</p>
       <div class="soclist">
-        <a id="elink" href="#" class="socitem">
+        <div class="socitem" style="cursor:pointer" onclick="copyText('Maibich2019@gmail.com', 'Email')">
           <div class="socicon" style="background:rgba(59,130,246,0.15);border-color:rgba(59,130,246,0.3)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg></div>
           <span id="elink-txt">Maibich2019@gmail.com</span>
-        </a>
+          <span class="copy-pill" title="Click to copy email">Copy</span>
+        </div>
+        <div class="socitem" style="cursor:pointer" onclick="copyText('0964642015', 'Phone')">
+          <div class="socicon" style="background:rgba(0,212,160,0.15);border-color:rgba(0,212,160,0.3)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.66 2.81a2 2 0 0 1-.45 2.11L8.05 9.91a16 16 0 0 0 6.04 6.04l1.27-1.27a2 2 0 0 1 2.11-.45c.91.31 1.85.53 2.81.66A2 2 0 0 1 22 16.92z"/></svg></div>
+          <span>096 464 2015 (Smart)</span>
+          <span class="copy-pill" title="Click to copy phone">Copy</span>
+        </div>
         <a href="https://t.me/MaiBich" target="_blank" rel="noopener" class="socitem">
           <div class="socicon" style="background:rgba(34,211,238,0.15);border-color:rgba(34,211,238,0.3)"><svg width="18" height="18" viewBox="0 0 24 24" fill="#22d3ee"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></div>
           <span>t.me/MaiBich</span>
+          <span class="copy-pill" onclick="event.preventDefault();event.stopPropagation();copyText('@MaiBich', 'Telegram')">Copy</span>
         </a>
         <a href="https://www.facebook.com/mai.pich.5/" target="_blank" rel="noopener" class="socitem">
           <div class="socicon" style="background:rgba(59,130,246,0.15);border-color:rgba(59,130,246,0.3)"><svg width="18" height="18" viewBox="0 0 24 24" fill="#3b82f6"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
@@ -1245,6 +1386,7 @@ function dlcv(e){
 
   <p class="print">Tip: open this file in a browser and press Ctrl+P to save as PDF.</p>
 </main>
+<div id="toast" class="toast-popup" role="status" aria-live="polite">✓ Copied to clipboard!</div>
 </body>
 </html>`;
   var blob=new Blob([cv],{type:'text/html'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='Anzo_CV_Professional.html';a.click();URL.revokeObjectURL(url);
@@ -1271,6 +1413,120 @@ document.getElementById('photo-input').addEventListener('change',function(e){
   if(et)et.textContent=em;
 })();
 
+// 1-CLICK COPY HELPER & TOAST
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg || '✓ Copied to clipboard!';
+  t.classList.add('show');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(function() {
+    t.classList.remove('show');
+  }, 2400);
+}
+
+function copyText(text, label) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      showToast('✓ ' + (label || 'Copied') + ' copied to clipboard!');
+    }).catch(function() {
+      fallbackCopy(text, label);
+    });
+  } else {
+    fallbackCopy(text, label);
+  }
+}
+
+function fallbackCopy(text, label) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast('✓ ' + (label || 'Copied') + ' copied to clipboard!');
+  } catch(err) {
+    showToast('Copied: ' + text);
+  }
+  document.body.removeChild(ta);
+}
+
+// SPOTLIGHT MOUSE-TRACKING GLOW
+document.querySelectorAll('.pc, .svccard, .skpan, .khmer-status-bar').forEach(function(el) {
+  el.addEventListener('mousemove', function(e) {
+    var rect = el.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
+    el.style.setProperty('--mouse-x', x + 'px');
+    el.style.setProperty('--mouse-y', y + 'px');
+  });
+});
+
+// INTERACTIVE HERO TERMINAL
+var termCommands = {
+  help: 'Available commands:\n• whoami    - About Anzo\n• skills    - Core tech stack & tools\n• projects  - Key systems & achievements\n• contact   - Phone, Telegram & Email\n• hire      - Open ABA PayWay payment\n• status    - System & database status\n• clear     - Clear terminal history\n• select * from anzo',
+  whoami: 'Anzo: Senior Database Administrator & Full-Stack Architect.\nBased in Phnom Penh, Cambodia. Year 4 developer specializing in high-throughput database schemas, query optimization, and resilient backends.',
+  skills: 'Databases: PostgreSQL (95%), MySQL/MariaDB (92%), MongoDB (85%), Redis (82%), Cloudflare D1\nBackend: Python (FastAPI/ETL), Node.js, TypeScript, Docker\nBots & Cloud: Telegraf, Cloudflare Workers, Gemini AI, ABA PayWay',
+  projects: '1. Khmer Daily Tools — Telegram Bot & Web App (Workers + D1)\n2. EcomDB — PostgreSQL Schema Handling 10M+ Daily Transactions\n3. SecureAuth — Fintech RBAC & Encryption Layer\n4. RealTime Metrics Store — TimescaleDB IoT Ingestion',
+  contact: 'Phone: 096 464 2015 (Smart)\nTelegram: @MaiBich (https://t.me/MaiBich)\nEmail: Maibich2019@gmail.com\nLocation: Phnom Penh, Cambodia',
+  hire: 'Opening ABA PayWay modal... Click USD or KHR to complete payment.',
+  status: '🟢 Status: All production databases healthy. Uptime 99.9%. Ready for new data architecture and optimization projects.',
+  'select * from anzo': 'id: 1 | name: "Anzo" | role: "DBA" | city: "Phnom Penh" | uptime: "99.9%" | status: "ONLINE"'
+};
+
+function runTermCmd(cmd) {
+  var body = document.getElementById('term-body');
+  var input = document.getElementById('term-input');
+  if (!body) return;
+  var c = (cmd || '').trim().toLowerCase();
+  
+  // Echo command
+  var echo = document.createElement('div');
+  echo.className = 'term-line cmd-echo';
+  echo.textContent = '$ ' + cmd;
+  body.appendChild(echo);
+  
+  if (c === 'clear') {
+    body.innerHTML = '<div class="term-line dim">Terminal cleared. Type help for commands.</div>';
+    if (input) input.value = '';
+    return;
+  }
+  
+  var resp = termCommands[c];
+  if (!resp) {
+    if (c.indexOf('select') === 0) {
+      resp = 'id: 1 | name: "Anzo" | role: "DBA" | city: "Phnom Penh" | stack: "PostgreSQL, MySQL, Redis"';
+    } else {
+      resp = 'Command not recognized: "' + cmd + '". Type "help" to see available commands.';
+    }
+  }
+  
+  var out = document.createElement('div');
+  out.className = 'term-line out';
+  out.style.whiteSpace = 'pre-line';
+  out.textContent = resp;
+  body.appendChild(out);
+  
+  if (c === 'hire' || c === 'pay') {
+    var paym = document.getElementById('paymodal');
+    if (paym) { paym.classList.add('on'); document.body.style.overflow = 'hidden'; }
+  }
+  
+  body.scrollTop = body.scrollHeight;
+  if (input) input.value = '';
+}
+
+function handleTermSubmit(e) {
+  e.preventDefault();
+  var input = document.getElementById('term-input');
+  if (!input) return;
+  var val = input.value.trim();
+  if (val) runTermCmd(val);
+}
+
 // KHMER CALENDAR & PHNOM PENH LIVE CLOCK
 (function initKhmerClock() {
   var khmerDigits = ['០', '១', '២', '៣', '៤', '៥', '៦', '៧', '៨', '៩'];
@@ -1282,12 +1538,27 @@ document.getElementById('photo-input').addEventListener('change',function(e){
     'កក្កដា', 'សីហា', 'កញ្ញា', 'តុលា', 'វិច្ឆិកា', 'ធ្នូ'
   ];
 
+  function getMoonEmoji(day, moonPhase) {
+    if (moonPhase === 0) { // Waxing (កើត)
+      if (day <= 3) return '🌒';
+      if (day <= 7) return '🌓';
+      if (day <= 13) return '🌔';
+      return '🌕'; // 14-15
+    } else { // Waning (រោច)
+      if (day <= 3) return '🌖';
+      if (day <= 7) return '🌗';
+      if (day <= 13) return '🌘';
+      return '🌑'; // 14-15
+    }
+  }
+
   function update() {
     var now = new Date();
     var timeEl = document.getElementById('ksb-eng-time');
     var dateEl = document.getElementById('ksb-eng-date');
     var lunarEl = document.getElementById('ksb-khmer-lunar');
     var solarEl = document.getElementById('ksb-khmer-solar');
+    var moonEl = document.getElementById('ksb-moon');
     if (!timeEl || !dateEl) return;
 
     var timeStr = new Intl.DateTimeFormat('en-US', {
@@ -1326,6 +1597,10 @@ document.getElementById('photo-input').addEventListener('change',function(e){
         var k = window.momentkh.fromGregorian(year, month, day);
         var lunarStr = window.momentkh.format(k);
         lunarEl.textContent = lunarStr;
+        if (moonEl && k && k.khmer) {
+          moonEl.textContent = getMoonEmoji(k.khmer.day, k.khmer.moonPhase);
+          moonEl.title = (k.khmer.moonPhase === 0 ? 'ខែកើត (Waxing)' : 'ខែរោច (Waning)') + ' ថ្ងៃទី' + toKhmerNum(k.khmer.day);
+        }
       } catch (err) {
         console.warn('Khmer lunar calculation error:', err);
       }
