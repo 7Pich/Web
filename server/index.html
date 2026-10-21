@@ -1499,7 +1499,13 @@ function dlcv(e){
 }
 
 function printCv(){
-  window.open('cv.html', '_blank');
+  var win = window.open('cv.html', '_blank');
+  if (win) {
+    win.focus();
+    win.addEventListener('load', function() {
+      setTimeout(function() { win.print(); }, 350);
+    });
+  }
 }
 
 function copyCvText(){
@@ -1659,7 +1665,10 @@ function runTermCmd(cmd) {
   out.textContent = resp;
   body.appendChild(out);
   
-  if (c === 'cv' || c === 'resume') { openCv(); }\n  if (c === 'hire' || c === 'pay') {
+  if (c === 'cv' || c === 'resume') {
+    openCv();
+  }
+  if (c === 'hire' || c === 'pay') {
     var paym = document.getElementById('paymodal');
     if (paym) { paym.classList.add('on'); document.body.style.overflow = 'hidden'; }
   }
