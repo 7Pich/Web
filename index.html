@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Anzo - Database Administrator</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230c0c0e'/%3E%3Cellipse cx='32' cy='18' rx='18' ry='8' fill='none' stroke='%2300d4a0' stroke-width='5'/%3E%3Cpath d='M14 18v24c0 4.4 8.1 8 18 8s18-3.6 18-8V18' fill='none' stroke='%2300d4a0' stroke-width='5'/%3E%3Cpath d='M14 30c0 4.4 8.1 8 18 8s18-3.6 18-8' fill='none' stroke='%2300d4a0' stroke-width='5'/%3E%3C/svg%3E"/>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<script src="momentkh.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 [data-theme="dark"]{--bg:#0c0c0e;--bg2:#111115;--bg3:#17171d;--bg4:#1e1e27;--ac:#00d4a0;--ac3:#005c45;--tx:#e8e8f0;--mu:#6b6b80;--mu2:#44445a;--br:rgba(255,255,255,0.06);--br2:rgba(0,212,160,0.22);--shadow:0 20px 50px rgba(0,0,0,0.55)}
@@ -95,6 +96,25 @@ nav.scrolled{background:rgba(12,12,14,0.98);box-shadow:0 12px 30px rgba(0,0,0,0.
 .btng:hover{color:var(--tx);border-color:rgba(255,255,255,.18)}
 .cvbtn{font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:.06em;color:var(--ac);border:1px solid var(--br2);background:rgba(0,212,160,.06);padding:.55rem 1.1rem;border-radius:4px;text-decoration:none;display:inline-flex;align-items:center;gap:7px;cursor:pointer;transition:background .2s,transform .2s}
 .cvbtn:hover{background:rgba(0,212,160,.14);transform:translateY(-1px)}
+/* KHMER CALENDAR & PHNOM PENH LIVE CLOCK BAR */
+.khmer-status-bar{display:inline-flex;flex-direction:column;gap:5px;background:rgba(10,25,38,0.78);border:1px solid rgba(0,212,160,0.22);border-radius:10px;padding:.7rem 1.15rem;margin-bottom:1.6rem;box-shadow:0 8px 24px rgba(0,0,0,0.32);max-width:100%;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:background .3s,border-color .3s}
+[data-theme="light"] .khmer-status-bar{background:rgba(255,255,255,0.92);border-color:rgba(0,160,122,0.25);box-shadow:0 8px 24px rgba(0,0,0,0.08)}
+.ksb-row1{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-family:'Space Mono',monospace;font-size:clamp(.72rem,1.15vw,.86rem);color:#cbd5e1;letter-spacing:.02em}
+[data-theme="light"] .ksb-row1{color:#334155}
+.ksb-dot{width:7px;height:7px;border-radius:50%;background:#00d4a0;box-shadow:0 0 8px #00d4a0;animation:pu 2s ease-in-out infinite;flex-shrink:0}
+.ksb-city{color:var(--tx);font-weight:700}
+.ksb-tz{color:#64748b;font-size:.74rem}
+.ksb-sep{color:#475569;font-size:.8rem;user-select:none}
+.ksb-date{color:#cbd5e1;font-weight:500}
+[data-theme="light"] .ksb-date{color:#475569}
+.ksb-time{color:#ffffff;font-weight:800;letter-spacing:.04em}
+[data-theme="light"] .ksb-time{color:#0f172a}
+.ksb-row2{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-family:'Noto Sans Khmer',sans-serif;font-size:clamp(.78rem,1.2vw,.92rem);color:#ffd10a;line-height:1.5}
+[data-theme="light"] .ksb-row2{color:#b45309}
+.ksb-lunar{font-weight:600}
+.ksb-solar{color:#fde047;font-weight:500}
+[data-theme="light"] .ksb-solar{color:#d97706}
+
 /* TERMINAL */
 .tcard{position:absolute;right:5%;top:50%;transform:translateY(-50%);background:var(--bg3);border:1px solid var(--br);border-radius:10px;padding:1.2rem 1.4rem;width:300px;font-family:'Space Mono',monospace;font-size:.71rem;line-height:1.85;z-index:2;animation:fl 4s ease-in-out infinite}
 @keyframes fl{0%,100%{transform:translateY(-50%) translateY(0)}50%{transform:translateY(-50%) translateY(-8px)}}
@@ -369,6 +389,24 @@ footer span{color:var(--ac)}
         <p class="hrole">// <span class="tw" id="ttext"></span><span id="tcur"></span></p>
       </div>
     </div>
+
+    <!-- LIVE PHNOM PENH & KHMER LUNAR CALENDAR STATUS BAR -->
+    <div class="khmer-status-bar" id="khmer-status-bar">
+      <div class="ksb-row1">
+        <span class="ksb-dot"></span>
+        <span class="ksb-city">Phnom Penh <span class="ksb-tz">(UTC+7)</span></span>
+        <span class="ksb-sep">•</span>
+        <span class="ksb-date" id="ksb-eng-date">--</span>
+        <span class="ksb-sep">•</span>
+        <span class="ksb-time" id="ksb-eng-time">--</span>
+      </div>
+      <div class="ksb-row2">
+        <span class="ksb-lunar" id="ksb-khmer-lunar">--</span>
+        <span class="ksb-sep">•</span>
+        <span class="ksb-solar" id="ksb-khmer-solar">--</span>
+      </div>
+    </div>
+
     <p class="hdesc">Designing <strong>robust, scalable database systems</strong> that power modern applications. Specialized in query optimization, data architecture, and keeping your data fast, safe, and always available.</p>
     <div class="hbtns">
       <a href="#projects" class="btnp" onclick="goTo(event,'projects')">View Projects →</a>
@@ -1232,6 +1270,72 @@ document.getElementById('photo-input').addEventListener('change',function(e){
   if(el)el.href='mailto:'+em;
   if(et)et.textContent=em;
 })();
+
+// KHMER CALENDAR & PHNOM PENH LIVE CLOCK
+(function initKhmerClock() {
+  var khmerDigits = ['០', '១', '២', '៣', '៤', '៥', '៦', '៧', '៨', '៩'];
+  function toKhmerNum(n) {
+    return String(n).replace(/[0-9]/g, function(d) { return khmerDigits[d]; });
+  }
+  var khmerSolarMonths = [
+    'មករា', 'កុម្ភៈ', 'មីនា', 'មេសា', 'ឧសភា', 'មិថុនា',
+    'កក្កដា', 'សីហា', 'កញ្ញា', 'តុលា', 'វិច្ឆិកា', 'ធ្នូ'
+  ];
+
+  function update() {
+    var now = new Date();
+    var timeEl = document.getElementById('ksb-eng-time');
+    var dateEl = document.getElementById('ksb-eng-date');
+    var lunarEl = document.getElementById('ksb-khmer-lunar');
+    var solarEl = document.getElementById('ksb-khmer-solar');
+    if (!timeEl || !dateEl) return;
+
+    var timeStr = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Phnom_Penh',
+      hour: 'numeric',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    }).format(now);
+    timeEl.textContent = timeStr;
+
+    var dateParts = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Phnom_Penh',
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    }).formatToParts(now);
+
+    var partsMap = {};
+    dateParts.forEach(function(p) { partsMap[p.type] = p.value; });
+    dateEl.textContent = (partsMap.weekday || '') + ', ' + (partsMap.month || '') + ' ' + (partsMap.day || '') + ', ' + (partsMap.year || '');
+
+    var year = parseInt(partsMap.year, 10);
+    var day = parseInt(partsMap.day, 10);
+    var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var month = monthNames.indexOf(partsMap.month) + 1;
+    if (month < 1) month = now.getMonth() + 1;
+
+    if (solarEl) {
+      solarEl.textContent = 'ត្រូវនឹងថ្ងៃទី' + toKhmerNum(day) + ' ខែ' + (khmerSolarMonths[month - 1] || '') + ' ឆ្នាំ' + toKhmerNum(year);
+    }
+
+    if (lunarEl && window.momentkh && typeof window.momentkh.fromGregorian === 'function') {
+      try {
+        var k = window.momentkh.fromGregorian(year, month, day);
+        var lunarStr = window.momentkh.format(k);
+        lunarEl.textContent = lunarStr;
+      } catch (err) {
+        console.warn('Khmer lunar calculation error:', err);
+      }
+    }
+  }
+
+  update();
+  setInterval(update, 1000);
+})();
+
 </script>
 </body>
 </html>
