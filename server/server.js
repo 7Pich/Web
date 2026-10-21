@@ -13,6 +13,7 @@ app.use(express.json({
     req.rawBody = buf.toString('utf8');
   }
 }));
+app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, '..')));
 
 let db;
