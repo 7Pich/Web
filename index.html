@@ -296,6 +296,66 @@ nav.scrolled{background:rgba(12,12,14,0.98);box-shadow:0 12px 30px rgba(0,0,0,0.
 .mcontact-title{font-family:'Space Mono',monospace;font-size:.62rem;color:var(--ac);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.5rem}
 .mcontact a{display:flex;align-items:center;justify-content:space-between;color:var(--tx);font-size:.88rem;padding:.3rem 0;text-decoration:none}
 .mcontact span{color:var(--mu)}
+/* CV MODAL & RESUME SHEET */
+.cvbox{width:min(920px,96vw);max-height:calc(100vh - 70px);display:flex;flex-direction:column;overflow:hidden;background:var(--bg3);border:1px solid var(--br2);border-radius:14px;box-shadow:var(--shadow)}
+.cvhead{padding:1rem 1.35rem;border-bottom:1px solid var(--br);display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;background:var(--bg2)}
+.cvtitle{font-weight:800;font-size:1.15rem;color:var(--tx);display:flex;align-items:center;gap:8px}
+.cvtitle span{color:var(--ac)}
+.cv-toolbar{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.cv-tool-btn{font-family:'Space Mono',monospace;font-size:.66rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;padding:.42rem .85rem;border-radius:6px;border:1px solid var(--br2);background:rgba(0,212,160,.08);color:var(--ac);cursor:pointer;text-decoration:none;transition:all .2s}
+.cv-tool-btn:hover{background:rgba(0,212,160,.18);transform:translateY(-1px)}
+.cv-tool-btn.primary{background:var(--ac);color:#02030a;border-color:var(--ac)}
+.cv-tool-btn.primary:hover{opacity:.92;transform:translateY(-1px);box-shadow:0 6px 18px rgba(0,212,160,.28)}
+.cvbody{padding:1.5rem 1.85rem 2rem;overflow-y:auto;flex:1;background:var(--bg)}
+[data-theme="light"] .cvbody{background:#f1f5f9}
+.cv-sheet{background:var(--bg3);border:1px solid var(--br);border-radius:12px;padding:2.25rem 2.5rem;box-shadow:0 12px 35px rgba(0,0,0,0.3)}
+[data-theme="light"] .cv-sheet{background:#fff;border-color:rgba(0,0,0,0.08);box-shadow:0 12px 35px rgba(0,0,0,0.06)}
+
+.cv-top-row{display:flex;justify-content:space-between;align-items:flex-start;gap:1.5rem;padding-bottom:1.5rem;border-bottom:2px solid var(--br);position:relative}
+.cv-top-row::after{content:'';position:absolute;bottom:-2px;left:0;width:80px;height:2px;background:var(--ac)}
+.cv-hname{font-size:2.2rem;font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--tx)}
+.cv-hname span{color:var(--ac)}
+.cv-hrole{font-family:'Space Mono',monospace;font-size:.82rem;font-weight:700;color:var(--ac);letter-spacing:.08em;margin-top:2px}
+.cv-hsub{font-size:.82rem;color:var(--mu);margin-top:2px}
+.cv-cblock{display:flex;flex-direction:column;gap:.3rem;text-align:right}
+.cv-crow{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--mu);text-decoration:none;display:inline-flex;align-items:center;justify-content:flex-end;gap:6px}
+.cv-crow strong{color:var(--tx)}
+.cv-sec-block{margin-top:1.85rem}
+.cv-sec-lbl{font-family:'Space Mono',monospace;font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);display:flex;align-items:center;gap:8px;margin-bottom:.85rem}
+.cv-sec-lbl::after{content:'';flex:1;height:1px;background:var(--br)}
+.cv-ptext{font-size:.88rem;color:var(--mu);line-height:1.75;font-weight:300}
+.cv-ptext strong{color:var(--tx);font-weight:600}
+.cv-skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
+.cv-sk-box{background:var(--bg4);border:1px solid var(--br);border-radius:8px;padding:.85rem 1rem}
+.cv-sk-head{font-family:'Space Mono',monospace;font-size:.7rem;font-weight:700;color:var(--tx);margin-bottom:.45rem;display:flex;justify-content:space-between}
+.cv-tag-list{display:flex;gap:5px;flex-wrap:wrap}
+.cv-tchip{font-family:'Space Mono',monospace;font-size:.64rem;padding:2px 7px;border-radius:4px;background:var(--bg3);border:1px solid var(--br);color:var(--tx)}
+.cv-tchip.act{border-color:var(--br2);color:var(--ac);background:rgba(0,212,160,.09)}
+.cv-exp-list{display:flex;flex-direction:column;gap:1.35rem}
+.cv-exp-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:.4rem;margin-bottom:.25rem}
+.cv-exp-title{font-size:1rem;font-weight:700;color:var(--tx)}
+.cv-exp-comp{font-family:'Space Mono',monospace;font-size:.74rem;color:var(--ac);font-weight:700}
+.cv-exp-time{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--mu)}
+.cv-b-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:.35rem}
+.cv-b-list li{position:relative;padding-left:1.15rem;font-size:.85rem;color:var(--mu);line-height:1.6}
+.cv-b-list li::before{content:'▹';position:absolute;left:0;color:var(--ac)}
+.cv-b-list li strong{color:var(--tx);font-weight:600}
+.cv-p-card{background:var(--bg4);border:1px solid var(--br);border-radius:8px;padding:.9rem 1.1rem;margin-bottom:.75rem}
+.cv-p-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:.4rem;margin-bottom:.25rem}
+.cv-p-title{font-size:.95rem;font-weight:700;color:var(--tx)}
+.cv-p-tags{display:flex;gap:4px;flex-wrap:wrap}
+.cv-p-tag{font-family:'Space Mono',monospace;font-size:.58rem;padding:1px 5px;border-radius:3px;background:rgba(0,212,160,.08);border:1px solid var(--br2);color:var(--ac)}
+.cv-p-desc{font-size:.84rem;color:var(--mu);line-height:1.6}
+.cv-p-desc strong{color:var(--tx);font-weight:600}
+
+@media(max-width:768px){
+  .cv-sheet{padding:1.5rem 1.25rem}
+  .cv-top-row{flex-direction:column;gap:1rem}
+  .cv-cblock{text-align:left;align-items:flex-start}
+  .cv-crow{justify-content:flex-start}
+  .cv-skills-grid{grid-template-columns:1fr}
+}
+
 /* MODAL */
 .modal{position:fixed;inset:0;z-index:2147483646;display:none;align-items:center;justify-content:center;padding:1.2rem;background:rgba(0,0,0,.72);backdrop-filter:blur(8px)}
 .modal.on{display:flex}
@@ -437,7 +497,7 @@ footer span{color:var(--ac)}
     <a href="tel:0964642015"><strong>Smart</strong><span>096 464 2015</span></a>
   </div>
   <a href="https://link.payway.com.kh/ABAPAYzI4445189" target="_blank" rel="noopener" class="cvbtn" style="width:fit-content;margin-top:.25rem">Pay with ABA PayWay</a>
-  <a href="#" class="cvbtn" style="width:fit-content;margin-top:.25rem" onclick="dlcv(event)">⬇ Download CV</a>
+  <a href="#" class="cvbtn" style="width:fit-content;margin-top:.25rem" onclick="dlcv(event)">📄 View &amp; Download CV</a>
 </div>
 
 <!-- HERO -->
@@ -479,7 +539,7 @@ footer span{color:var(--ac)}
     <div class="hbtns">
       <a href="#projects" class="btnp" onclick="goTo(event,'projects')">View Projects →</a>
       <a href="https://link.payway.com.kh/ABAPAYzI4445189" target="_blank" rel="noopener" class="btnp">Pay with ABA PayWay</a>
-      <a href="#" class="cvbtn" onclick="dlcv(event)">⬇ Download CV</a>
+      <a href="#" class="cvbtn" onclick="dlcv(event)">📄 View &amp; Download CV</a>
       <a href="#contact" class="btng" onclick="goTo(event,'contact')">Get in touch</a>
     </div>
   </div>
@@ -809,7 +869,7 @@ footer span{color:var(--ac)}
         </a>
       </div>
       <div style="margin-top:1.4rem">
-        <a href="#" class="cvbtn" onclick="dlcv(event)">⬇ Download CV / Resume</a>
+        <a href="#" class="cvbtn" onclick="dlcv(event)">📄 View &amp; Download CV</a>
       </div>
     </div>
     <div class="cform rev" style="transition-delay:.15s">
@@ -886,6 +946,216 @@ footer span{color:var(--ac)}
           <div class="tgkb" id="tgkb"></div>
         </div>
         <div class="pvbar"><span>Tap a button to see what each tool does. Open Telegram to use it for real.</span><a class="pvopen" href="https://t.me/AnzoAIbot" target="_blank" rel="noopener">OPEN @AnzoAIbot ↗</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CV MODAL -->
+<div class="modal" id="cvmodal" onclick="closeCv(event)">
+  <div class="modalbox cvbox">
+    <div class="cvhead">
+      <div>
+        <div class="modalkicker">Curriculum Vitae</div>
+        <div class="cvtitle">Anzo <span>· Professional CV</span></div>
+      </div>
+      <div class="cv-toolbar">
+        <button type="button" class="cv-tool-btn primary" onclick="printCv()">🖨️ Print / Save as PDF</button>
+        <a href="cv.html" target="_blank" rel="noopener" class="cv-tool-btn">↗ Open Full Page</a>
+        <button type="button" class="cv-tool-btn" onclick="copyCvText()">📋 Copy Text</button>
+        <button class="modalclose" type="button" onclick="closeCv(event)" aria-label="Close CV">X</button>
+      </div>
+    </div>
+    <div class="cvbody">
+      <div class="cv-sheet">
+        <!-- HEADER -->
+        <div class="cv-top-row">
+          <div>
+            <h1 class="cv-hname">ANZO <span>(MAI BICH)</span></h1>
+            <div class="cv-hrole">Senior Database Administrator &amp; Full-Stack Architect</div>
+            <div class="cv-hsub">Data Architecture · Query Tuning · Edge Serverless · Cloud &amp; Payments</div>
+          </div>
+          <div class="cv-cblock">
+            <span class="cv-crow">📍 <strong>Phnom Penh, Cambodia</strong></span>
+            <a href="tel:0964642015" class="cv-crow">📞 <strong>+855 96 464 2015</strong> (Smart)</a>
+            <a href="mailto:Maibich2019@gmail.com" class="cv-crow">✉️ <strong>Maibich2019@gmail.com</strong></a>
+            <a href="https://t.me/MaiBich" target="_blank" rel="noopener" class="cv-crow">✈️ <strong>t.me/MaiBich</strong></a>
+            <a href="https://anzo-ai.onrender.com" target="_blank" rel="noopener" class="cv-crow">🌐 <strong>anzo-ai.onrender.com</strong></a>
+          </div>
+        </div>
+
+        <!-- SUMMARY -->
+        <div class="cv-sec-block">
+          <div class="cv-sec-lbl">01 — Professional Summary</div>
+          <p class="cv-ptext">
+            Dedicated, performance-driven <strong>Database Administrator &amp; Data Architect</strong> with 3+ years of experience designing, scaling, and managing mission-critical relational and NoSQL databases. Demonstrated expertise in <strong>PostgreSQL query tuning (reducing p99 latency by up to 88%)</strong>, MySQL replication, MongoDB sharding, and Redis caching for high-load platforms processing <strong>10M+ daily transactions</strong>. Highly proficient in backend automation using Python (FastAPI, ETL pipelines), Node.js/TypeScript, serverless edge cloud (Cloudflare Workers, D1 SQLite), and Cambodian fintech payment integrations (ABA PayWay, Bakong KHQR). Currently completing Year 4 in Computer Science &amp; Software Development.
+          </p>
+        </div>
+
+        <!-- SKILLS MATRIX -->
+        <div class="cv-sec-block">
+          <div class="cv-sec-lbl">02 — Technical Skills &amp; Competencies</div>
+          <div class="cv-skills-grid">
+            <div class="cv-sk-box">
+              <div class="cv-sk-head"><span>🗄️ Relational &amp; NoSQL DBs</span><span style="color:var(--ac);font-size:.6rem">CORE</span></div>
+              <div class="cv-tag-list">
+                <span class="cv-tchip act">PostgreSQL (14/15/16)</span>
+                <span class="cv-tchip act">MySQL / MariaDB</span>
+                <span class="cv-tchip">MongoDB</span>
+                <span class="cv-tchip">Redis Caching</span>
+                <span class="cv-tchip">Cloudflare D1 (SQLite)</span>
+                <span class="cv-tchip">TimescaleDB</span>
+              </div>
+            </div>
+
+            <div class="cv-sk-box">
+              <div class="cv-sk-head"><span>⚡ DBA &amp; Performance Engineering</span><span style="color:var(--ac);font-size:.6rem">ADVANCED</span></div>
+              <div class="cv-tag-list">
+                <span class="cv-tchip act">Indexing (B-Tree/GIN/GiST)</span>
+                <span class="cv-tchip act">EXPLAIN ANALYZE</span>
+                <span class="cv-tchip">Partitioning &amp; Sharding</span>
+                <span class="cv-tchip">Connection Pooling (PgBouncer)</span>
+                <span class="cv-tchip">Read Replicas</span>
+                <span class="cv-tchip">Disaster Recovery (1h RPO)</span>
+              </div>
+            </div>
+
+            <div class="cv-sk-box">
+              <div class="cv-sk-head"><span>⚙️ Backend &amp; Data Engineering</span><span style="color:var(--ac);font-size:.6rem">AUTOMATION</span></div>
+              <div class="cv-tag-list">
+                <span class="cv-tchip act">Python (FastAPI/Pandas)</span>
+                <span class="cv-tchip">Node.js (Hono/Express)</span>
+                <span class="cv-tchip">TypeScript</span>
+                <span class="cv-tchip">SQL / PL/pgSQL</span>
+                <span class="cv-tchip">Docker Containers</span>
+                <span class="cv-tchip">Automated ETL</span>
+              </div>
+            </div>
+
+            <div class="cv-sk-box">
+              <div class="cv-sk-head"><span>☁️ Cloud, Bots &amp; Fintech Payments</span><span style="color:var(--ac);font-size:.6rem">PRODUCTION</span></div>
+              <div class="cv-tag-list">
+                <span class="cv-tchip act">Cloudflare Workers &amp; KV</span>
+                <span class="cv-tchip act">ABA PayWay (USD/KHR)</span>
+                <span class="cv-tchip">Bakong KHQR</span>
+                <span class="cv-tchip">Telegraf (Telegram Bots)</span>
+                <span class="cv-tchip">Gemini AI / LLMs</span>
+                <span class="cv-tchip">Render Web Services</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WORK EXPERIENCE -->
+        <div class="cv-sec-block">
+          <div class="cv-sec-lbl">03 — Professional Experience</div>
+          <div class="cv-exp-list">
+            <div>
+              <div class="cv-exp-head">
+                <div><span class="cv-exp-title">Senior Database Administrator / Data Architect</span> · <span class="cv-exp-comp">TechCorp (Full-Time)</span></div>
+                <div class="cv-exp-time">2023 — Present | Phnom Penh, Cambodia</div>
+              </div>
+              <ul class="cv-b-list">
+                <li>Architected and managed production PostgreSQL and MySQL database clusters supporting <strong>200,000+ active users</strong> with <strong>99.9% verified uptime</strong>.</li>
+                <li>Identified query bottlenecks and redesigned composite indexing structures, <strong>slashing p99 query latency from 850ms to 95ms (88% improvement)</strong>.</li>
+                <li>Engineered automated daily backup pipelines, replication health checks, and failover runbooks achieving a certified <strong>1-hour Recovery Point Objective (RPO)</strong>.</li>
+                <li>Led zero-downtime database schema migrations for new business features and large-scale data volume spikes.</li>
+              </ul>
+            </div>
+
+            <div>
+              <div class="cv-exp-head">
+                <div><span class="cv-exp-title">Database Administrator &amp; Backend Engineer</span> · <span class="cv-exp-comp">Data Solutions Co. (Full-Time)</span></div>
+                <div class="cv-exp-time">2022 — 2023 | Phnom Penh, Cambodia</div>
+              </div>
+              <ul class="cv-b-list">
+                <li>Maintained high-volume MySQL and MongoDB clusters; resolved database deadlocks, connection spikes, and memory leaks.</li>
+                <li>Implemented Redis in-memory caching for core REST API endpoints, <strong>reducing database read load by over 60%</strong>.</li>
+                <li>Developed automated Python ETL scripts consolidating data across 8 distinct business endpoints into clean analytical reporting schemas.</li>
+              </ul>
+            </div>
+
+            <div>
+              <div class="cv-exp-head">
+                <div><span class="cv-exp-title">Junior DBA &amp; Data Support Specialist</span> · <span class="cv-exp-comp">Startup Inc. &amp; Freelance Projects</span></div>
+                <div class="cv-exp-time">2021 — 2022 | Phnom Penh, Cambodia</div>
+              </div>
+              <ul class="cv-b-list">
+                <li>Designed 3NF normalized relational schemas, data dictionary documentation, and stored procedures for SaaS features.</li>
+                <li>Automated routine database maintenance, role-based access reviews (RBAC), CSV data cleanup, and migration verification scripts.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- KEY PRODUCTION SYSTEMS -->
+        <div class="cv-sec-block">
+          <div class="cv-sec-lbl">04 — Key Production Systems</div>
+          <div class="cv-p-card">
+            <div class="cv-p-head">
+              <span class="cv-p-title">Khmer Daily Tools &amp; AnzoAI Ecosystem</span>
+              <div class="cv-p-tags">
+                <span class="cv-p-tag">Cloudflare D1</span>
+                <span class="cv-p-tag">Workers</span>
+                <span class="cv-p-tag">Node.js</span>
+                <span class="cv-p-tag">Telegram Bot</span>
+                <span class="cv-p-tag">ABA PayWay</span>
+              </div>
+            </div>
+            <p class="cv-p-desc">
+              Production utility ecosystem featuring Telegram bot (<strong>@AnzoAIbot</strong>) and two PWA web applications serving Cambodian users: media resolvers (yt-dlp/FFmpeg), AI companion, Khmer OCR/TTS, live Phnom Penh time &amp; lunar calendar bar, and <strong>ABA PayWay / KHQR integration</strong>. Edge database powered by Cloudflare D1 (SQLite) with zero maintenance overhead.
+            </p>
+          </div>
+
+          <div class="cv-p-card">
+            <div class="cv-p-head">
+              <span class="cv-p-title">EcomDB — High-Throughput E-Commerce Database</span>
+              <div class="cv-p-tags">
+                <span class="cv-p-tag">PostgreSQL</span>
+                <span class="cv-p-tag">Redis</span>
+                <span class="cv-p-tag">Python</span>
+                <span class="cv-p-tag">Partitioning</span>
+              </div>
+            </div>
+            <p class="cv-p-desc">
+              High-performance relational architecture handling <strong>10M+ daily transactions</strong>. Implemented range partitioning by date, connection pooling with PgBouncer, and Redis invalidation patterns that eliminated locking on high-frequency order checkout tables.
+            </p>
+          </div>
+
+          <div class="cv-p-card">
+            <div class="cv-p-head">
+              <span class="cv-p-title">SecureAuth &amp; DataVault BI Layer</span>
+              <div class="cv-p-tags">
+                <span class="cv-p-tag">MySQL</span>
+                <span class="cv-p-tag">MongoDB</span>
+                <span class="cv-p-tag">RBAC</span>
+                <span class="cv-p-tag">ETL</span>
+              </div>
+            </div>
+            <p class="cv-p-desc">
+              Fintech security and analytical warehouse layer featuring column-level encryption, multi-tenant RBAC permissions, audit logging, and automated daily star-schema aggregation for executive business intelligence.
+            </p>
+          </div>
+        </div>
+
+        <!-- EDUCATION & LANGUAGES -->
+        <div class="cv-sec-block">
+          <div class="cv-sec-lbl">05 — Education &amp; Languages</div>
+          <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:1.5rem">
+            <div>
+              <div style="font-weight:700;font-size:.95rem;color:var(--tx)">Bachelor of Science in Computer Science / Software Engineering</div>
+              <div style="font-family:'Space Mono',monospace;font-size:.74rem;color:var(--mu);margin-top:2px">2023 — Present (Year 4 Graduating Senior) · Phnom Penh, Cambodia</div>
+              <div style="font-size:.82rem;color:var(--mu);margin-top:4px">Core focus: Database Management Systems, Data Structures, Software Architecture, Distributed Systems.</div>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:.95rem;color:var(--tx)">Languages</div>
+              <ul class="cv-b-list" style="margin-top:4px">
+                <li><strong>Khmer:</strong> Native proficiency</li>
+                <li><strong>English:</strong> Professional working proficiency</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1013,7 +1283,7 @@ function closeProjectModal(e){
 }
 document.querySelectorAll('#pgrid .pc:not([data-preview])').forEach(function(card,i){card.addEventListener('click',function(e){e.preventDefault();openProjectModal(i);});});
 document.querySelectorAll('#pgrid .pc[data-preview]').forEach(function(card){card.addEventListener('click',function(e){openPreview('web',e);});});
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeProjectModal();closePreview();closePay();}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeProjectModal();closePreview();closePay();closeCv();}});
 
 // PAYMENT: every PayWay link on the page opens a USD / KHR picker first
 document.addEventListener('click',function(e){
@@ -1211,185 +1481,64 @@ function sendF(){
   });
 }
 
-// CV DOWNLOAD
-function dlcv(e){
+// CV VIEWER & DOWNLOAD CONTROLLER
+function openCv(e){
   if(e)e.preventDefault();
-  var cv=[
-    'ANZO CV',
-    '==============================',
+  var m=document.getElementById('cvmodal');
+  if(m){m.classList.add('on');document.body.style.overflow='hidden';}
+}
+
+function closeCv(e){
+  if(e&&e.type==='click'&&e.target.id!=='cvmodal'&&e.target.className!=='modalclose')return;
+  var m=document.getElementById('cvmodal');
+  if(m&&m.classList.contains('on')){m.classList.remove('on');document.body.style.overflow='';}
+}
+
+function dlcv(e){
+  openCv(e);
+}
+
+function printCv(){
+  window.open('cv.html', '_blank');
+}
+
+function copyCvText(){
+  var text=[
+    'ANZO (MAI BICH) - Senior Database Administrator & Full-Stack Architect',
+    'Location: Phnom Penh, Cambodia | Phone: +855 96 464 2015 | Email: Maibich2019@gmail.com',
+    'Portfolio: https://anzo-ai.onrender.com | Telegram: https://t.me/MaiBich',
     '',
-    'Name     : Anzo',
-    'Position : Database Administrator',
-    'Location : Phnom Penh, Cambodia',
-    'Phone    : 096 464 2015',
-    'Email    : Maibich2019@gmail.com',
-    'Telegram : https://t.me/MaiBich',
-    'Facebook : https://www.facebook.com/mai.pich.5/',
+    'SUMMARY',
+    'Dedicated Database Administrator & Data Architect with 3+ years experience designing, scaling, and maintaining mission-critical relational and NoSQL databases (PostgreSQL, MySQL, MongoDB, Redis, D1 SQLite). Proven track record reducing query latency by up to 88% and managing high-throughput systems processing 10M+ daily transactions.',
     '',
-    'ABOUT ME',
-    '------------------------------',
-    'I am a Database Administrator.',
-    'I can help with database setup, backup,',
-    'SQL query fixing, and database performance.',
-    '',
-    'SKILLS',
-    '------------------------------',
-    '- PostgreSQL',
-    '- MySQL',
-    '- MongoDB',
-    '- Redis',
-    '- SQL',
-    '- Python',
-    '- Database backup',
-    '- Query optimization',
-    '- Node.js / TypeScript / React',
-    '- Telegram bots (Telegraf, webhooks, Mini Apps)',
-    '- Cloudflare Workers, D1 (SQLite), KV',
-    '- Python FastAPI, Docker, Render',
-    '- KHQR / ABA PayWay payments',
-    '',
-    'SERVICES',
-    '------------------------------',
-    '- Database setup',
-    '- Fix slow SQL queries',
-    '- Backup and recovery',
-    '- Data migration',
-    '- Database security check',
-    '- Python data scripts',
-    '',
-    'PROJECTS',
-    '------------------------------',
-    '1. Fintech Reconciliation System',
-    '   Tools: PostgreSQL, Python, Redis',
-    '',
-    '2. Inventory Sync System',
-    '   Tools: MySQL, Python',
-    '',
-    '3. API Cache System',
-    '   Tools: Redis, Backend API',
+    'CORE SKILLS',
+    '- Relational: PostgreSQL (14/15/16), MySQL, MariaDB, SQLite / Cloudflare D1, TimescaleDB',
+    '- NoSQL & Cache: MongoDB, Redis Caching, Key-Value Stores',
+    '- DBA: Indexing, EXPLAIN ANALYZE, Partitioning, Replication, Backup & Disaster Recovery (1h RPO), PgBouncer',
+    '- Backend: Python (FastAPI, Pandas, ETL), Node.js, TypeScript, Docker, SQL Scripting',
+    '- Cloud & Payments: Cloudflare Workers, Render, ABA PayWay (USD/KHR), Bakong KHQR, Telegraf',
     '',
     'EXPERIENCE',
-    '------------------------------',
-    'Database Administrator / Data Support',
-    '2023 - Present',
-    '- Manage databases',
-    '- Improve SQL performance',
-    '- Create backup plans',
-    '- Support data reports',
+    '• Senior Database Administrator / Data Architect | TechCorp (2023 - Present)',
+    '  - Managed production PostgreSQL/MySQL clusters for 200K+ users with 99.9% uptime.',
+    '  - Reduced p99 query latency from 850ms to 95ms via indexing and query refactoring.',
+    '  - Implemented automated backup pipelines and disaster recovery with 1-hour RPO.',
+    '• Database Administrator & Backend Engineer | Data Solutions Co. (2022 - 2023)',
+    '  - Maintained MySQL & MongoDB clusters; slashed API read load by 60% with Redis caching.',
+    '  - Created automated Python ETL pipelines consolidating data across 8 endpoints.',
+    '• Junior DBA / Data Support | Startup Inc. & Freelance (2021 - 2022)',
+    '  - Normalized 3NF schemas, automated maintenance, and data import validations.',
     '',
-    'EDUCATION',
-    '------------------------------',
-    'Year 4 Student',
-    'Web / Database / Software Development',
-    '',
-    'LANGUAGES',
-    '------------------------------',
-    '- Khmer',
-    '- English',
-    '',
-    'AVAILABLE FOR',
-    '------------------------------',
-    '- Database support',
-    '- Query optimization',
-    '- Backend data tasks',
-    '- Freelance projects'
+    'EDUCATION & LANGUAGES',
+    '- Bachelor of Science in Computer Science / Software Engineering (Year 4 Senior)',
+    '- Khmer (Native) | English (Professional Working)'
   ].join('\n');
-  var blob=new Blob([cv],{type:'text/plain'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='Anzo_CV_Professional.txt';a.click();URL.revokeObjectURL(url);return;
-  var cv=`<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Anzo - Database Administrator CV</title>
-<style>
-*{box-sizing:border-box}body{margin:0;background:#f4f6f8;color:#111827;font-family:Arial,Helvetica,sans-serif;line-height:1.55}.page{max-width:900px;margin:32px auto;background:#fff;padding:44px;border:1px solid #e5e7eb;box-shadow:0 18px 48px rgba(15,23,42,.12)}.top{display:flex;justify-content:space-between;gap:24px;border-bottom:3px solid #00d4a0;padding-bottom:22px}.name{font-size:40px;font-weight:800;letter-spacing:.04em;margin:0;color:#07111f}.role{font-size:16px;color:#00a77d;font-weight:700;margin:6px 0 0}.contact{text-align:right;font-size:13px;color:#4b5563}.section{margin-top:26px}.section h2{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#00a77d;border-bottom:1px solid #e5e7eb;padding-bottom:7px;margin:0 0 12px}.summary{font-size:15px;color:#374151}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 24px}.skill{background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;font-size:14px}.item{margin-bottom:16px}.item h3{margin:0;font-size:16px;color:#111827}.meta{font-size:13px;color:#6b7280;margin:2px 0 7px}.item ul{margin:8px 0 0 20px;padding:0}.item li{margin:4px 0;color:#374151}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{font-size:12px;font-weight:700;color:#064e3b;background:#d1fae5;border:1px solid #a7f3d0;border-radius:999px;padding:5px 9px}.print{margin-top:28px;font-size:12px;color:#6b7280;text-align:center}@media print{body{background:#fff}.page{margin:0;box-shadow:none;border:none}.print{display:none}}@media(max-width:700px){.page{margin:0;padding:26px}.top{flex-direction:column}.contact{text-align:left}.grid{grid-template-columns:1fr}.name{font-size:32px}}
-</style>
-</head>
-<body>
-<main class="page">
-  <header class="top">
-    <div>
-      <h1 class="name">ANZO</h1>
-      <p class="role">Database Administrator</p>
-    </div>
-    <div class="contact">
-      Phnom Penh, Cambodia<br>
-      Email: Maibich2019@gmail.com<br>
-      Phone: 096 464 2015<br>
-      Telegram: https://t.me/MaiBich<br>
-      Facebook: https://www.facebook.com/mai.pich.5/
-    </div>
-  </header>
 
-  <section class="section">
-    <h2>Professional Summary</h2>
-    <p class="summary">Database Administrator focused on reliable data systems, query performance, backup planning, and clean database operations. Experienced with PostgreSQL, MySQL, MongoDB, Redis, SQL scripting, and Python automation for practical business workflows.</p>
-  </section>
-
-  <section class="section">
-    <h2>Core Skills</h2>
-    <div class="grid">
-      <div class="skill">PostgreSQL, MySQL, MongoDB, Redis</div>
-      <div class="skill">Database design and data modeling</div>
-      <div class="skill">Query optimization and indexing</div>
-      <div class="skill">Backup, recovery, and access control</div>
-      <div class="skill">Python automation and SQL scripting</div>
-      <div class="skill">Reporting, migration, and data validation</div>
-      <div class="skill">Telegram bots: Node.js, Telegraf, webhooks, Mini Apps</div>
-      <div class="skill">Web apps: TypeScript, React, Vite, Tailwind CSS</div>
-      <div class="skill">Serverless: Cloudflare Workers, D1 (SQLite), KV, cron</div>
-      <div class="skill">Payments and AI: KHQR / ABA PayWay, Gemini AI</div>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>Selected Experience</h2>
-    <div class="item">
-      <h3>Database Administrator / Data Support</h3>
-      <div class="meta">2023 - Present | Phnom Penh, Cambodia</div>
-      <ul>
-        <li>Maintained relational and NoSQL databases for performance, reliability, and safe access.</li>
-        <li>Improved SQL queries, indexes, and reporting workflows for faster daily operations.</li>
-        <li>Prepared backup routines, validation checks, and documentation for database recovery.</li>
-      </ul>
-    </div>
-    <div class="item">
-      <h3>Junior Database / Backend Support</h3>
-      <div class="meta">2021 - 2023 | Project and freelance work</div>
-      <ul>
-        <li>Supported data migration, cleanup, and API data tasks using SQL and Python.</li>
-        <li>Assisted with schema updates, user permissions, and troubleshooting data issues.</li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>Project Highlights</h2>
-    <div class="item">
-      <h3>Fintech Reconciliation Platform</h3>
-      <p class="meta">PostgreSQL, Python, Redis</p>
-      <p>Built reliable data checks for payment records, settlement review, and daily reporting.</p>
-    </div>
-    <div class="item">
-      <h3>Inventory Sync Engine</h3>
-      <p class="meta">MySQL, Python, Automation</p>
-      <p>Improved inventory synchronization with retry handling and clearer error visibility.</p>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>Tools</h2>
-    <div class="chips">
-      <span class="chip">PostgreSQL</span><span class="chip">MySQL</span><span class="chip">MongoDB</span><span class="chip">Redis</span><span class="chip">Python</span><span class="chip">SQL</span><span class="chip">AWS RDS</span><span class="chip">Node.js</span><span class="chip">TypeScript</span><span class="chip">React</span><span class="chip">Telegraf</span><span class="chip">Cloudflare Workers</span><span class="chip">Cloudflare D1</span><span class="chip">FastAPI</span><span class="chip">Docker</span>
-    </div>
-  </section>
-
-  <p class="print">Tip: open this file in a browser and press Ctrl+P to save as PDF.</p>
-</main>
-<div id="toast" class="toast-popup" role="status" aria-live="polite">✓ Copied to clipboard!</div>
-</body>
-</html>`;
-  var blob=new Blob([cv],{type:'text/html'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='Anzo_CV_Professional.html';a.click();URL.revokeObjectURL(url);
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){showToast('✓ CV Text copied to clipboard!');});
+  }else{
+    fallbackCopy(text, 'CV Text');
+  }
 }
 
 // PHOTO UPLOAD
@@ -1467,7 +1616,7 @@ document.querySelectorAll('.pc, .svccard, .skpan, .khmer-status-bar').forEach(fu
 
 // INTERACTIVE HERO TERMINAL
 var termCommands = {
-  help: 'Available commands:\n• whoami    - About Anzo\n• skills    - Core tech stack & tools\n• projects  - Key systems & achievements\n• contact   - Phone, Telegram & Email\n• hire      - Open ABA PayWay payment\n• status    - System & database status\n• clear     - Clear terminal history\n• select * from anzo',
+  help: 'Available commands:\n• whoami    - About Anzo\n• skills    - Core tech stack & tools\n• projects  - Key systems & achievements\n• contact   - Phone, Telegram & Email\n• hire      - Open ABA PayWay payment\n• status    - System & database status\n• cv        - View & download professional CV\n• clear     - Clear terminal history\n• select * from anzo',
   whoami: 'Anzo: Senior Database Administrator & Full-Stack Architect.\nBased in Phnom Penh, Cambodia. Year 4 developer specializing in high-throughput database schemas, query optimization, and resilient backends.',
   skills: 'Databases: PostgreSQL (95%), MySQL/MariaDB (92%), MongoDB (85%), Redis (82%), Cloudflare D1\nBackend: Python (FastAPI/ETL), Node.js, TypeScript, Docker\nBots & Cloud: Telegraf, Cloudflare Workers, Gemini AI, ABA PayWay',
   projects: '1. Khmer Daily Tools — Telegram Bot & Web App (Workers + D1)\n2. EcomDB — PostgreSQL Schema Handling 10M+ Daily Transactions\n3. SecureAuth — Fintech RBAC & Encryption Layer\n4. RealTime Metrics Store — TimescaleDB IoT Ingestion',
@@ -1510,7 +1659,7 @@ function runTermCmd(cmd) {
   out.textContent = resp;
   body.appendChild(out);
   
-  if (c === 'hire' || c === 'pay') {
+  if (c === 'cv' || c === 'resume') { openCv(); }\n  if (c === 'hire' || c === 'pay') {
     var paym = document.getElementById('paymodal');
     if (paym) { paym.classList.add('on'); document.body.style.overflow = 'hidden'; }
   }
@@ -1612,5 +1761,6 @@ function handleTermSubmit(e) {
 })();
 
 </script>
+<div id="toast" class="toast-popup" role="status" aria-live="polite">✓ Copied to clipboard!</div>
 </body>
 </html>
