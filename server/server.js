@@ -16,6 +16,121 @@ app.use(express.json({
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, '..')));
 
+// Trust proxy for accurate client IP behind Cloudflare and Render load balancers
+app.set('trust proxy', true);
+
+function getClientIp(req) {
+  const cfIp = req.headers['cf-connecting-ip'];
+  if (cfIp) return String(cfIp).trim();
+  const fwd = req.headers['x-forwarded-for'];
+  if (fwd) return String(fwd).split(',')[0].trim();
+  return req.ip || req.socket?.remoteAddress || '127.0.0.1';
+}
+
+// In-memory rate limiting and anti-loop tracking
+const telegramRateLimit = new Map();
+const aiRateLimit = new Map();
+
+// Periodic cleanup every 5 minutes to prevent memory leaks
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, data] of telegramRateLimit.entries()) {
+    if (now - data.lastTime > 15 * 60 * 1000) {
+      telegramRateLimit.delete(ip);
+    }
+  }
+  for (const [ip, data] of aiRateLimit.entries()) {
+    if (now > data.resetTime) {
+      aiRateLimit.delete(ip);
+    }
+  }
+}, 5 * 60 * 1000);
+
+// Middleware: Anti-Loop & Rate Limiting for contact/telegram messages
+function telegramAntiLoop(req, res, next) {
+  const ip = getClientIp(req);
+  const now = Date.now();
+  const { name = '', email = '', message = '', subject = '' } = req.body || {};
+
+  const record = telegramRateLimit.get(ip) || {
+    lastTime: 0,
+    history: [],
+    lastHash: '',
+    lastHashTime: 0
+  };
+
+  // 1. Cooldown Check: at least 8 seconds between consecutive messages from the same IP
+  const timeSinceLast = now - record.lastTime;
+  if (timeSinceLast < 8000) {
+    const waitSec = Math.ceil((8000 - timeSinceLast) / 1000);
+    return res.status(429).json({
+      ok: false,
+      error: `Too many requests. Please wait ${waitSec}s before sending another message to prevent request loops.`
+    });
+  }
+
+  // 2. Sliding Window: Max 3 messages in 1 minute, max 6 messages in 10 minutes
+  record.history = record.history.filter(ts => now - ts < 10 * 60 * 1000);
+  const last1MinCount = record.history.filter(ts => now - ts < 60 * 1000).length;
+  if (last1MinCount >= 3) {
+    return res.status(429).json({
+      ok: false,
+      error: 'Rate limit exceeded: max 3 messages per minute. Please slow down.'
+    });
+  }
+  if (record.history.length >= 6) {
+    return res.status(429).json({
+      ok: false,
+      error: 'Message quota reached for this IP. Please wait 10 minutes before sending again.'
+    });
+  }
+
+  // 3. Duplicate Message Loop Detection
+  const msgHash = crypto.createHash('md5')
+    .update(`${String(email).trim().toLowerCase()}|${String(message).trim().toLowerCase()}`)
+    .digest('hex');
+
+  if (record.lastHash === msgHash && (now - record.lastHashTime < 60 * 1000)) {
+    return res.status(429).json({
+      ok: false,
+      error: 'Duplicate message detected. Please do not submit the same message repeatedly in a loop.'
+    });
+  }
+
+  record.lastTime = now;
+  record.history.push(now);
+  record.lastHash = msgHash;
+  record.lastHashTime = now;
+  telegramRateLimit.set(ip, record);
+
+  next();
+}
+
+// Middleware: Rate Limiting for /ai endpoint (max 20 requests per 2 minutes)
+function aiAntiLoop(req, res, next) {
+  const ip = getClientIp(req);
+  const now = Date.now();
+  const record = aiRateLimit.get(ip) || { count: 0, resetTime: now + 2 * 60 * 1000 };
+
+  if (now > record.resetTime) {
+    record.count = 1;
+    record.resetTime = now + 2 * 60 * 1000;
+  } else {
+    record.count++;
+  }
+
+  aiRateLimit.set(ip, record);
+
+  if (record.count > 20) {
+    return res.status(429).json({
+      ok: false,
+      error: 'AI chat request limit reached. Please wait a moment before sending more queries.'
+    });
+  }
+
+  next();
+}
+
 let db;
 const telegramCountPath = path.join(__dirname, '.telegram-count');
 const paymentsPath = path.join(__dirname, 'payments.json');
@@ -113,7 +228,7 @@ async function connectDB() {
   console.log('MySQL connected.');
 }
 
-app.post('/ai', async (req, res) => {
+app.post('/ai', aiAntiLoop, async (req, res) => {
   try {
     const { message, history } = req.body;
     const apiKey = process.env.GEMINI_API_KEY;
@@ -195,7 +310,7 @@ app.post('/ai', async (req, res) => {
   }
 });
 
-app.post('/contact', async (req, res) => {
+app.post('/contact', telegramAntiLoop, async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
 
@@ -218,7 +333,7 @@ app.post('/contact', async (req, res) => {
   }
 });
 
-app.post('/telegram', async (req, res) => {
+app.post('/telegram', telegramAntiLoop, async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
@@ -358,6 +473,11 @@ app.get('/payments', (req, res) => {
 
 app.get('/health', (req, res) => {
   res.json({ status: 'Anzo backend running' });
+});
+
+// Dedicated performance & ping testing endpoint (safe for load testing without spamming Telegram)
+app.get('/api/ping', (req, res) => {
+  res.json({ ok: true, status: 'pong', time: Date.now() });
 });
 
 const PORT = process.env.PORT || 3000;
