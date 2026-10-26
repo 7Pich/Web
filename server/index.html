@@ -1680,7 +1680,7 @@ function updateStandeeTotal() {
 }
 
 function renderKhqrPresets() {
-  var container = document.getElementById('presetChipsContainer');
+  var container = document.getElementById('khqrPresetChips');
   if (!container) return;
   var presets = khqrState.currency === 'KHR' ? KHR_PRESETS : USD_PRESETS;
   var html = '';
@@ -1693,58 +1693,67 @@ function renderKhqrPresets() {
   container.innerHTML = html;
 }
 
+function selectKhqrPreset(val) {
+  khqrState.amount = val;
+  var amtInput = document.getElementById('khqrAmountCustom');
+  if (amtInput) {
+    amtInput.value = (khqrState.currency === 'KHR') ? val.toLocaleString() : (val < 1 ? val.toFixed(2) : val.toString());
+  }
+  renderKhqrPresets();
+  updateStandeeTotal();
+  resetStandeeReady();
+}
+
+function onAmountCustomInput(val) {
+  var cleanVal = (val || '').replace(/[^0-9.]/g, '');
+  var num = parseFloat(cleanVal) || 0;
+  khqrState.amount = num;
+  renderKhqrPresets();
+  updateStandeeTotal();
+  resetStandeeReady();
+}
+
 function setKhqrCurrency(curr) {
   if (khqrState.currency === curr) return;
   khqrState.currency = curr;
   
-  var btnUSD = document.getElementById('btnCurrUSD');
-  var btnKHR = document.getElementById('btnCurrKHR');
-  var unitLabel = document.getElementById('amountUnitLabel');
-  var symDisplay = document.getElementById('amountSymDisplay');
-  var amtInput = document.getElementById('khqrAmountInput');
-  var paywayFallback = document.getElementById('btnPaywayFallback');
+  var btnUSD = document.getElementById('khqrCurrUsd');
+  var btnKHR = document.getElementById('khqrCurrKhr');
+  var unitLabel = document.getElementById('khqrAmountLabel');
+  var symDisplay = document.getElementById('khqrAmountSym');
+  var amtInput = document.getElementById('khqrAmountCustom');
+  var paywayFallback = document.getElementById('paywayDirectLink');
 
   if (curr === 'KHR') {
     if (btnUSD) btnUSD.classList.remove('active');
     if (btnKHR) btnKHR.classList.add('active');
-    if (unitLabel) unitLabel.textContent = '(៛ KHR)';
+    if (unitLabel) unitLabel.textContent = 'Amount (៛ KHR)';
     if (symDisplay) { symDisplay.textContent = '៛'; symDisplay.style.color = '#ffb74d'; }
     khqrState.amount = 4000;
-    if (amtInput) { amtInput.value = 4000; amtInput.step = 1000; amtInput.min = 100; }
-    if (paywayFallback) paywayFallback.href = 'https://link.payway.com.kh/ABAPAY67513794R';
+    if (amtInput) { amtInput.value = '4,000'; }
+    if (paywayFallback) {
+      paywayFallback.href = 'https://link.payway.com.kh/ABAPAY67513794R';
+      paywayFallback.innerHTML = 'ABA PayWay (KHR) ↗';
+    }
   } else {
     if (btnKHR) btnKHR.classList.remove('active');
     if (btnUSD) btnUSD.classList.add('active');
-    if (unitLabel) unitLabel.textContent = '($ USD)';
+    if (unitLabel) unitLabel.textContent = 'Amount ($ USD)';
     if (symDisplay) { symDisplay.textContent = '$'; symDisplay.style.color = 'var(--ac)'; }
     khqrState.amount = 1.00;
-    if (amtInput) { amtInput.value = '1.00'; amtInput.step = 0.5; amtInput.min = 0.01; }
-    if (paywayFallback) paywayFallback.href = 'https://link.payway.com.kh/ABAPAYzI4445189';
+    if (amtInput) { amtInput.value = '1.00'; }
+    if (paywayFallback) {
+      paywayFallback.href = 'https://link.payway.com.kh/ABAPAYzI4445189';
+      paywayFallback.innerHTML = 'ABA PayWay (USD) ↗';
+    }
   }
-  
+
   renderKhqrPresets();
   updateStandeeTotal();
   resetStandeeReady();
 }
 
-function selectKhqrPreset(val) {
-  khqrState.amount = val;
-  var amtInput = document.getElementById('khqrAmountInput');
-  if (amtInput) amtInput.value = (khqrState.currency === 'USD' && val < 1) ? val.toFixed(2) : val;
-  renderKhqrPresets();
-  updateStandeeTotal();
-  resetStandeeReady();
-}
 
-function onAmountCustomInput() {
-  var amtInput = document.getElementById('khqrAmountInput');
-  if (!amtInput) return;
-  var val = parseFloat(amtInput.value) || 0;
-  khqrState.amount = val;
-  renderKhqrPresets();
-  updateStandeeTotal();
-  resetStandeeReady();
-}
 
 function onPayerNameChange() {
   var nameInput = document.getElementById('khqrPayerName');
@@ -2129,6 +2138,15 @@ function openKhqr() {
   if (invEl) invEl.value = khqrState.invoiceNo;
   var standeeInv = document.getElementById('standeeInvoiceNo');
   if (standeeInv) standeeInv.textContent = khqrState.invoiceNo;
+  
+  if (!khqrState.amount) {
+    khqrState.amount = (khqrState.currency === 'KHR') ? 4000 : 1.00;
+  }
+  var amtInput = document.getElementById('khqrAmountCustom');
+  if (amtInput) {
+    amtInput.value = (khqrState.currency === 'KHR') ? khqrState.amount.toLocaleString() : (khqrState.amount < 1 ? Number(khqrState.amount).toFixed(2) : khqrState.amount.toString());
+  }
+
   renderKhqrPresets();
   updateStandeeTotal();
 }
