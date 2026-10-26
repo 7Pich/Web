@@ -1969,13 +1969,40 @@ function stopKhqrPolling() {
 
 function downloadKhqrImageSilently() {
   if (!khqrState.dataUrl) return false;
-  var a = document.createElement('a');
-  a.href = khqrState.dataUrl;
-  a.download = 'KHQR-' + (khqrState.invoiceNo || 'Anzo') + '.png';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  return true;
+  try {
+    fetch(khqrState.dataUrl)
+      .then(function(res) { return res.blob(); })
+      .then(function(blob) {
+        var blobUrl = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = 'KHQR-' + (khqrState.invoiceNo || 'Anzo') + '.png';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+          if (a.parentNode) a.parentNode.removeChild(a);
+          URL.revokeObjectURL(blobUrl);
+        }, 1000);
+      })
+      .catch(function() {
+        var a = document.createElement('a');
+        a.href = khqrState.dataUrl;
+        a.download = 'KHQR-' + (khqrState.invoiceNo || 'Anzo') + '.png';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+          if (a.parentNode) a.parentNode.removeChild(a);
+        }, 500);
+      });
+    return true;
+  } catch (e) {
+    var a = document.createElement('a');
+    a.href = khqrState.dataUrl;
+    a.download = 'KHQR-' + (khqrState.invoiceNo || 'Anzo') + '.png';
+    document.body.appendChild(a);
+    a.click();
+    return true;
+  }
 }
 
 function payWithBakongApp() {
@@ -2038,27 +2065,68 @@ function shareKhqr() {
 }
 
 function executeShareKhqr() {
-  var shareUrl = khqrState.deeplink || ((khqrState.currency === 'KHR') ? 'https://link.payway.com.kh/ABAPAY67513794R' : 'https://link.payway.com.kh/ABAPAYzI4445189');
-  var shareText = 'Support Anzo via KHQR: ' + (khqrState.currency === 'USD' ? '$' : '') + khqrState.amount + ' ' + (khqrState.currency === 'KHR' ? '៛' : 'USD') + ' (Invoice: ' + khqrState.invoiceNo + ')';
-
-  if (navigator.share) {
-    navigator.share({
-      title: 'Support Anzo via KHQR',
-      text: shareText,
-      url: shareUrl
-    }).catch(function() {});
-  } else {
-    downloadKhqrImageSilently();
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(shareUrl).then(function() {
-        showToast('📥 QR saved & link copied to clipboard!');
-      }).catch(function() {
-        showToast('📥 QR saved to device!');
-      });
-    } else {
-      showToast('📥 QR saved to device!');
-    }
+  if (!khqrState.dataUrl) {
+    showToast('⚠️ QR code not ready yet');
+    return;
   }
+
+  showToast('⏳ Preparing KHQR PNG to share...');
+
+  fetch(khqrState.dataUrl)
+    .then(function(res) { return res.blob(); })
+    .then(function(blob) {
+      var filename = 'KHQR-' + (khqrState.invoiceNo || 'Anzo') + '.png';
+      var file = null;
+      try {
+        file = new File([blob], filename, { type: 'image/png' });
+      } catch (e) {
+        file = null;
+      }
+
+      var shareTitle = 'KHQR Payment';
+      var shareText = 'KHQR Payment (' + formatKhqrDisplayAmount(khqrState.amount, khqrState.currency) + ') - Invoice: ' + (khqrState.invoiceNo || 'Anzo');
+
+      // 1. Share PNG file directly via Web Share API Level 2 (iOS / Android)
+      if (navigator.canShare && file && navigator.canShare({ files: [file] })) {
+        navigator.share({
+          files: [file],
+          title: shareTitle,
+          text: shareText
+        }).then(function() {
+          showToast('✅ KHQR PNG shared successfully!');
+        }).catch(function(err) {
+          if (err && err.name !== 'AbortError') {
+            downloadKhqrImageSilently();
+            showToast('📥 KHQR PNG saved to device!');
+          }
+        });
+      } else {
+        // 2. Fallback: Always download the PNG file directly
+        downloadKhqrImageSilently();
+
+        // 3. Also copy image directly to clipboard if supported
+        if (navigator.clipboard && window.ClipboardItem) {
+          try {
+            navigator.clipboard.write([
+              new ClipboardItem({ 'image/png': blob })
+            ]).then(function() {
+              showToast('📥 KHQR PNG saved & copied to clipboard!');
+            }).catch(function() {
+              showToast('📥 KHQR PNG image downloaded!');
+            });
+          } catch (e) {
+            showToast('📥 KHQR PNG image downloaded!');
+          }
+        } else {
+          showToast('📥 KHQR PNG image downloaded!');
+        }
+      }
+    })
+    .catch(function(err) {
+      console.error('Error preparing PNG:', err);
+      downloadKhqrImageSilently();
+      showToast('📥 KHQR PNG image downloaded!');
+    });
 }
 
 function editKhqrDetails() {
