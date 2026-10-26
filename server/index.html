@@ -468,6 +468,11 @@ nav.scrolled{background:rgba(12,12,14,0.98);box-shadow:0 12px 30px rgba(0,0,0,0.
 .khqr-foot-amount{font-family:'Space Mono',monospace;font-size:.92rem;font-weight:900;color:#00875a}
 
 /* Right Column Actions */
+.standee-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1.4rem 1rem;gap:.45rem;min-height:200px;width:100%}
+.placeholder-icon{width:46px;height:46px;border-radius:14px;background:rgba(0,212,160,.12);border:1px solid rgba(0,212,160,.3);color:var(--ac);display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 0 16px rgba(0,212,160,.15)}
+.placeholder-title{font-weight:800;font-size:.92rem;color:#1e293b}
+.placeholder-desc{font-size:.72rem;color:#64748b;line-height:1.45;max-width:210px}
+.btn-disabled{opacity:0.45;pointer-events:none;cursor:not-allowed}
 .standee-actions{width:100%;max-width:280px;display:flex;flex-direction:column;gap:.45rem;margin-top:.75rem}
 .standee-btn-row{display:grid;grid-template-columns:1fr 1fr;gap:.45rem}
 .btn-bakong-app{padding:.6rem;border-radius:10px;background:linear-gradient(135deg,#e1251b,#c62828);color:#fff;font-weight:700;font-size:.74rem;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.35rem;text-decoration:none;box-shadow:0 4px 14px rgba(225,37,27,.3);transition:all .2s}
@@ -1280,7 +1285,7 @@ footer span{color:var(--ac)}
         <div class="payhead-emblem">KH</div>
         <div>
           <div class="payhead-title-row">
-            <h3 class="payhead-title">Generate Official KHQR</h3>
+            <h3 class="payhead-title">Official NBC KHQR</h3>
             <span class="payhead-badge">EMVCo Compliant</span>
           </div>
           <p class="payhead-sub">National Bank of Cambodia · Dynamic QR &amp; Settlement</p>
@@ -1295,21 +1300,6 @@ footer span{color:var(--ac)}
       <!-- Left Column: Controls & Presets -->
       <div class="pay-left">
         
-        <!-- Merchant Info Strip -->
-        <div class="pay-merchant-strip">
-          <div class="pay-merchant-left">
-            <div class="pay-merchant-icon">🏪</div>
-            <div>
-              <div class="pay-merchant-name">MAI BICH</div>
-              <div class="pay-merchant-id">mai_bich@bkrt</div>
-            </div>
-          </div>
-          <span class="pay-kyc-badge">
-            <span class="pay-kyc-dot"></span>
-            <span>FULL KYC</span>
-          </span>
-        </div>
-
         <!-- Currency Selector -->
         <div>
           <div class="pay-sec-label">Select Currency</div>
@@ -1340,20 +1330,20 @@ footer span{color:var(--ac)}
           </div>
         </div>
 
-        <!-- Invoice / Bill No & Merchant Name -->
+        <!-- Payer Name (Optional) & Bill / Invoice No -->
         <div class="pay-inputs-row">
+          <div>
+            <div class="pay-field-label">
+              <span>Your Name (Optional)</span>
+            </div>
+            <input type="text" id="khqrPayerName" class="pay-text-input" placeholder="e.g. Supporter / Anonymous" oninput="onPayerNameChange()" />
+          </div>
           <div>
             <div class="pay-field-label">
               <span>Bill / Invoice No</span>
               <button type="button" class="pay-regen-btn" onclick="regenInvoiceNo()">🔄 New</button>
             </div>
             <input type="text" id="khqrInvoiceInput" class="pay-text-input" readonly />
-          </div>
-          <div>
-            <div class="pay-field-label">
-              <span>Merchant / Store</span>
-            </div>
-            <input type="text" id="khqrStoreInput" value="Mai Bich" class="pay-text-input" readonly />
           </div>
         </div>
 
@@ -1379,8 +1369,8 @@ footer span{color:var(--ac)}
 
         <!-- Live Status Badge -->
         <div class="khqr-status-badge" id="khqrStatusBadge">
-          <span class="pay-kyc-dot" id="khqrStatusDot" style="background:#ffb74d;box-shadow:0 0 8px #ffb74d"></span>
-          <span id="khqrStatusText">Awaiting customer scan...</span>
+          <span class="pay-kyc-dot" id="khqrStatusDot" style="background:var(--ac);box-shadow:0 0 8px var(--ac)"></span>
+          <span id="khqrStatusText">⚡ Select amount and click Generate</span>
         </div>
 
         <!-- Authentic Cambodian NBC KHQR Standee Card -->
@@ -1398,12 +1388,22 @@ footer span{color:var(--ac)}
             </div>
           </div>
 
-          <!-- White Body with QR Code -->
+          <!-- White Body with QR Code / Placeholder -->
           <div class="khqr-standee-body">
-            <img id="standeeQrImg" class="khqr-img" alt="Official Bakong KHQR Code" />
+            <!-- Initial Standee Placeholder (Saves limit until clicked) -->
+            <div id="standeePlaceholder" class="standee-placeholder">
+              <div class="placeholder-icon">⚡</div>
+              <div class="placeholder-title">KHQR Standee Ready</div>
+              <div class="placeholder-desc">Choose your tip amount on the left, then click <strong>"បង្កើត KHQR កូដ"</strong> to view code.</div>
+            </div>
+
+            <!-- QR Image (Hidden until generated) -->
+            <img id="standeeQrImg" class="khqr-img" style="display:none" alt="Official Bakong KHQR Code" />
+            
+            <!-- Loading Spinner -->
             <div class="khqr-loading-overlay" id="khqrLoadingOverlay" style="display:none">
               <div class="khqr-spinner"></div>
-              <span>Generating KHQR...</span>
+              <span>Generating Official KHQR...</span>
             </div>
           </div>
 
@@ -1424,18 +1424,18 @@ footer span{color:var(--ac)}
         <!-- Action Buttons -->
         <div class="standee-actions">
           <div class="standee-btn-row">
-            <a id="btnBakongDeeplink" href="#" target="_blank" rel="noopener" class="btn-bakong-app">
+            <a id="btnBakongDeeplink" href="#" target="_blank" rel="noopener" class="btn-bakong-app btn-disabled">
               <span>🚀</span>
               <span>Bakong App</span>
             </a>
-            <button type="button" class="btn-dl-qr" onclick="downloadKhqrImage()">
+            <button type="button" id="btnDownloadQr" class="btn-dl-qr btn-disabled" onclick="downloadKhqrImage()">
               <span>📥</span>
               <span>Download QR</span>
             </button>
           </div>
           
           <div class="standee-btn-row">
-            <button type="button" class="btn-verify-nbc" id="btnManualVerify" onclick="verifyKhqrManual()">
+            <button type="button" class="btn-verify-nbc btn-disabled" id="btnManualVerify" onclick="verifyKhqrManual()">
               <span>🔄</span>
               <span>Verify NBC</span>
             </button>
@@ -1566,6 +1566,7 @@ var khqrState = {
   currency: 'USD',
   amount: 1.00,
   invoiceNo: '',
+  payerName: '',
   merchantName: 'Mai Bich',
   accountId: 'mai_bich@bkrt',
   md5: '',
@@ -1575,7 +1576,8 @@ var khqrState = {
   pollTimer: null,
   pollCount: 0,
   maxPolls: 5,
-  isPaid: false
+  isPaid: false,
+  isGenerated: false
 };
 
 var USD_PRESETS = [0.50, 1.00, 2.00, 5.00, 10.00, 20.00, 50.00];
@@ -1596,7 +1598,14 @@ function regenInvoiceNo() {
   if (invEl) invEl.value = khqrState.invoiceNo;
   var standeeInv = document.getElementById('standeeInvoiceNo');
   if (standeeInv) standeeInv.textContent = khqrState.invoiceNo;
-  triggerKhqrGeneration();
+  resetStandeeReady();
+}
+
+function updateStandeeTotal() {
+  var standeeTotal = document.getElementById('standeeTotalAmount');
+  if (standeeTotal) {
+    standeeTotal.textContent = formatKhqrDisplayAmount(khqrState.amount, khqrState.currency);
+  }
 }
 
 function renderKhqrPresets() {
@@ -1643,7 +1652,8 @@ function setKhqrCurrency(curr) {
   }
   
   renderKhqrPresets();
-  triggerKhqrGeneration();
+  updateStandeeTotal();
+  resetStandeeReady();
 }
 
 function selectKhqrPreset(val) {
@@ -1651,7 +1661,8 @@ function selectKhqrPreset(val) {
   var amtInput = document.getElementById('khqrAmountInput');
   if (amtInput) amtInput.value = (khqrState.currency === 'USD' && val < 1) ? val.toFixed(2) : val;
   renderKhqrPresets();
-  triggerKhqrGeneration();
+  updateStandeeTotal();
+  resetStandeeReady();
 }
 
 function onAmountCustomInput() {
@@ -1660,10 +1671,45 @@ function onAmountCustomInput() {
   var val = parseFloat(amtInput.value) || 0;
   khqrState.amount = val;
   renderKhqrPresets();
-  clearTimeout(window.__amtInputTimer);
-  window.__amtInputTimer = setTimeout(function() {
-    triggerKhqrGeneration();
-  }, 600);
+  updateStandeeTotal();
+  resetStandeeReady();
+}
+
+function onPayerNameChange() {
+  var nameInput = document.getElementById('khqrPayerName');
+  if (nameInput) {
+    khqrState.payerName = nameInput.value.trim();
+  }
+  if (khqrState.isGenerated) {
+    resetStandeeReady();
+  }
+}
+
+function resetStandeeReady() {
+  stopKhqrPolling();
+  khqrState.isPaid = false;
+  khqrState.isGenerated = false;
+
+  var placeholder = document.getElementById('standeePlaceholder');
+  var qrImg = document.getElementById('standeeQrImg');
+  if (placeholder) placeholder.style.display = 'flex';
+  if (qrImg) qrImg.style.display = 'none';
+
+  var dlBtn = document.getElementById('btnBakongDeeplink');
+  var dlQr = document.getElementById('btnDownloadQr');
+  var vBtn = document.getElementById('btnManualVerify');
+  if (dlBtn) dlBtn.classList.add('btn-disabled');
+  if (dlQr) dlQr.classList.add('btn-disabled');
+  if (vBtn) vBtn.classList.add('btn-disabled');
+
+  var statusBadge = document.getElementById('khqrStatusBadge');
+  var statusText = document.getElementById('khqrStatusText');
+  var statusDot = document.getElementById('khqrStatusDot');
+  if (statusBadge) {
+    statusBadge.className = 'khqr-status-badge';
+    if (statusDot) { statusDot.style.background = 'var(--ac)'; statusDot.style.boxShadow = '0 0 8px var(--ac)'; }
+    if (statusText) statusText.textContent = '⚡ Select amount and click Generate';
+  }
 }
 
 function formatKhqrDisplayAmount(amount, currency) {
@@ -1706,11 +1752,21 @@ function triggerKhqrGeneration() {
   var standeeInv = document.getElementById('standeeInvoiceNo');
   if (standeeInv) standeeInv.textContent = khqrState.invoiceNo;
 
-  var standeeTotal = document.getElementById('standeeTotalAmount');
-  if (standeeTotal) standeeTotal.textContent = formatKhqrDisplayAmount(khqrState.amount, khqrState.currency);
+  var nameInput = document.getElementById('khqrPayerName');
+  if (nameInput) {
+    khqrState.payerName = nameInput.value.trim();
+  }
+
+  updateStandeeTotal();
 
   var overlay = document.getElementById('khqrLoadingOverlay');
   if (overlay) overlay.style.display = 'flex';
+
+  var btnGen = document.getElementById('btnGenKhqr');
+  if (btnGen) {
+    btnGen.disabled = true;
+    btnGen.innerHTML = '<span>⏳</span> <span>Generating KHQR...</span>';
+  }
 
   var statusBadge = document.getElementById('khqrStatusBadge');
   var statusText = document.getElementById('khqrStatusText');
@@ -1718,7 +1774,7 @@ function triggerKhqrGeneration() {
   if (statusBadge) {
     statusBadge.className = 'khqr-status-badge';
     if (statusDot) { statusDot.style.background = '#ffb74d'; statusDot.style.boxShadow = '0 0 8px #ffb74d'; }
-    if (statusText) statusText.textContent = 'Awaiting customer scan...';
+    if (statusText) statusText.textContent = 'Generating KHQR code...';
   }
 
   fetch(KHQR_API_BASE + '/api/bakong/generate-khqr', {
@@ -1729,34 +1785,62 @@ function triggerKhqrGeneration() {
       merchantName: khqrState.merchantName,
       currency: khqrState.currency,
       amount: khqrState.amount,
-      billNumber: khqrState.invoiceNo
+      billNumber: khqrState.invoiceNo,
+      storeLabel: khqrState.payerName || 'Supporter',
+      payerName: khqrState.payerName || ''
     })
   }).then(function(res) {
     return res.json();
   }).then(function(data) {
     if (overlay) overlay.style.display = 'none';
+    if (btnGen) {
+      btnGen.disabled = false;
+      btnGen.innerHTML = '<span>⚡</span> <span>បង្កើត KHQR កូដ (Generate KHQR)</span>';
+    }
     if (data && data.qr && data.dataUrl) {
       khqrState.qr = data.qr;
       khqrState.md5 = data.md5;
       khqrState.dataUrl = data.dataUrl;
       khqrState.deeplink = (data.deeplink && data.deeplink.shortLink) ? data.deeplink.shortLink : ('https://bakong-deeplink.nbc.gov.kh/bakong/' + data.md5);
+      khqrState.isGenerated = true;
 
+      var placeholder = document.getElementById('standeePlaceholder');
       var qrImg = document.getElementById('standeeQrImg');
-      if (qrImg) qrImg.src = data.dataUrl;
+      if (placeholder) placeholder.style.display = 'none';
+      if (qrImg) {
+        qrImg.src = data.dataUrl;
+        qrImg.style.display = 'block';
+      }
 
       var dlBtn = document.getElementById('btnBakongDeeplink');
-      if (dlBtn) dlBtn.href = khqrState.deeplink;
+      var dlQr = document.getElementById('btnDownloadQr');
+      var vBtn = document.getElementById('btnManualVerify');
+      if (dlBtn) {
+        dlBtn.href = khqrState.deeplink;
+        dlBtn.classList.remove('btn-disabled');
+      }
+      if (dlQr) dlQr.classList.remove('btn-disabled');
+      if (vBtn) vBtn.classList.remove('btn-disabled');
+
+      if (statusText) statusText.textContent = '⏱️ Awaiting scan... (Scan with any bank app)';
+      showToast('✅ KHQR generated! Scan or tap Bakong App.');
 
       var autoCheck = document.getElementById('khqrAutoCheck');
       if (autoCheck && autoCheck.checked) {
         startKhqrPolling();
       }
     } else {
-      console.warn('KHQR generate issue:', data);
+      if (statusText) statusText.textContent = '⚠️ Generation failed. Try again.';
+      showToast('⚠️ ' + (data.error || 'Failed to generate KHQR'));
     }
   }).catch(function(err) {
     if (overlay) overlay.style.display = 'none';
+    if (btnGen) {
+      btnGen.disabled = false;
+      btnGen.innerHTML = '<span>⚡</span> <span>បង្កើត KHQR កូដ (Generate KHQR)</span>';
+    }
     console.error('Error generating KHQR:', err);
+    if (statusText) statusText.textContent = '⚠️ Connection error. Click to retry.';
   });
 }
 
@@ -1769,6 +1853,10 @@ function startKhqrPolling() {
     khqrState.pollCount++;
     if (khqrState.pollCount > khqrState.maxPolls || khqrState.isPaid) {
       stopKhqrPolling();
+      var statusText = document.getElementById('khqrStatusText');
+      if (statusText && !khqrState.isPaid) {
+        statusText.textContent = '⏱️ Awaiting scan (Auto-check paused to save limit)';
+      }
       return;
     }
 
@@ -1812,12 +1900,13 @@ function markPaymentSuccess() {
   }
 
   playSuccessChime();
-  showToast('🎉 Thank you for tipping & supporting Anzo!');
+  var thankMsg = khqrState.payerName ? ('🎉 Thank you, ' + khqrState.payerName + ', for tipping!') : '🎉 Thank you for tipping & supporting Anzo!';
+  showToast(thankMsg);
 }
 
 function verifyKhqrManual() {
   if (!khqrState.md5) {
-    showToast('⚠️ No active QR to verify');
+    showToast('⚠️ Click "Generate KHQR" first');
     return;
   }
   var btn = document.getElementById('btnManualVerify');
@@ -1846,7 +1935,7 @@ function verifyKhqrManual() {
 
 function downloadKhqrImage() {
   if (!khqrState.dataUrl) {
-    showToast('⚠️ Please wait for QR code to load');
+    showToast('⚠️ Click "Generate KHQR" first');
     return;
   }
   var a = document.createElement('a');
@@ -1863,10 +1952,16 @@ function openPay() {
   if (!m) return;
   m.classList.add('on');
   document.body.style.overflow = 'hidden';
-  if (!khqrState.qr) {
-    renderKhqrPresets();
-    regenInvoiceNo();
+  if (!khqrState.invoiceNo) {
+    khqrState.invoiceNo = generateRandomInvoice();
   }
+  var invEl = document.getElementById('khqrInvoiceInput');
+  if (invEl) invEl.value = khqrState.invoiceNo;
+  var standeeInv = document.getElementById('standeeInvoiceNo');
+  if (standeeInv) standeeInv.textContent = khqrState.invoiceNo;
+  renderKhqrPresets();
+  updateStandeeTotal();
+  // DO NOT auto-generate: saves customer limit!
 }
 
 function closePay(e) {
