@@ -1815,7 +1815,7 @@ function playSuccessChime() {
   } catch (e) {}
 }
 
-function triggerKhqrGeneration() {
+function triggerKhqrGeneration(onSuccess) {
   stopKhqrPolling();
   khqrState.isPaid = false;
 
@@ -1887,14 +1887,14 @@ function triggerKhqrGeneration() {
         qrImg.style.display = 'block';
       }
 
-      
+      if (statusText) statusText.textContent = '⏱️ Awaiting scan... (Auto-checking payment)';
+      showToast('✅ KHQR generated! Scan or tap your Banking App.');
 
-      if (statusText) statusText.textContent = '⏱️ Awaiting scan... (Scan with any bank app)';
-      showToast('✅ KHQR generated! Scan or tap Bakong App.');
+      // Automatically start polling to detect payment
+      startKhqrPolling();
 
-      var autoCheck = document.getElementById('khqrAutoCheck');
-      if (autoCheck && autoCheck.checked) {
-        startKhqrPolling();
+      if (typeof onSuccess === 'function') {
+        onSuccess();
       }
     } else {
       if (statusText) statusText.textContent = '⚠️ Generation failed. Try again.';
@@ -1965,11 +1965,18 @@ function downloadKhqrImageSilently() {
 }
 
 function openBankingApp(app) {
+  // If QR code is not generated yet, auto-generate it first, then open app to pay
   if (!khqrState.isGenerated || !khqrState.dataUrl) {
-    showToast('⚠️ Please click "⚡ បង្កើត KHQR កូដ" to generate QR first');
+    showToast('⚡ Auto-generating KHQR for ' + app.toUpperCase() + '...');
+    triggerKhqrGeneration(function() {
+      executeOpenBankingApp(app);
+    });
     return;
   }
-  
+  executeOpenBankingApp(app);
+}
+
+function executeOpenBankingApp(app) {
   if (app === 'bakong') {
     if (khqrState.deeplink) {
       showToast('🚀 Opening Bakong App...');
@@ -1982,38 +1989,45 @@ function openBankingApp(app) {
 
   if (app === 'aba') {
     downloadKhqrImageSilently();
-    showToast('📥 QR saved to gallery! Opening ABA...');
+    showToast('🚀 Opening ABA Mobile... (QR saved to gallery to scan)');
+    var abaDeeplink = 'abamobilebank://ababank.com?type=payway&qrcode=' + encodeURIComponent(khqrState.qr);
     setTimeout(function() {
-      window.location.href = 'abamobilebank://';
-    }, 300);
+      window.location.href = abaDeeplink;
+    }, 200);
     return;
   }
 
   if (app === 'acleda') {
     downloadKhqrImageSilently();
-    showToast('📥 QR saved to gallery! Opening ACLEDA...');
+    showToast('🚀 Opening ACLEDA... (QR saved to gallery to scan)');
     setTimeout(function() {
       window.location.href = 'acledamobile://';
-    }, 300);
+    }, 200);
     return;
   }
 
   if (app === 'wing') {
     downloadKhqrImageSilently();
-    showToast('📥 QR saved to gallery! Opening Wing...');
+    showToast('🚀 Opening Wing Bank... (QR saved to gallery to scan)');
     setTimeout(function() {
       window.location.href = 'wingmoney://';
-    }, 300);
+    }, 200);
     return;
   }
 }
 
 function shareKhqr() {
   if (!khqrState.isGenerated || !khqrState.dataUrl) {
-    showToast('⚠️ Please click "⚡ បង្កើត KHQR កូដ" first');
+    showToast('⚡ Auto-generating KHQR to share...');
+    triggerKhqrGeneration(function() {
+      executeShareKhqr();
+    });
     return;
   }
+  executeShareKhqr();
+}
 
+function executeShareKhqr() {
   var shareUrl = khqrState.deeplink || 'https://link.payway.com.kh/ABAPAYzI4445189';
   var shareText = 'Support Anzo via KHQR: ' + (khqrState.currency === 'USD' ? '$' : '') + khqrState.amount + ' ' + khqrState.currency + ' (Invoice: ' + khqrState.invoiceNo + ')';
 
