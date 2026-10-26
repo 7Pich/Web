@@ -438,16 +438,16 @@ nav.scrolled{background:rgba(12,12,14,0.98);box-shadow:0 12px 30px rgba(0,0,0,0.
 .btn-gen-khqr:active{transform:translateY(1px)}
 
 /* Right Column Standee Frame */
-.standee-limit-row{width:100%;max-width:280px;display:flex;align-items:center;justify-content:space-between;font-size:.68rem;color:var(--mu);margin-bottom:.45rem}
+.standee-limit-row{width:100%;max-width:310px;display:flex;align-items:center;justify-content:space-between;font-size:.68rem;color:var(--mu);margin-bottom:.45rem}
 .standee-limit-row label{display:flex;align-items:center;gap:.35rem;cursor:pointer;color:var(--tx)}
 .limit-badge{font-family:'Space Mono',monospace;font-size:.62rem;color:var(--ac);font-weight:700}
 
-.khqr-status-badge{width:100%;max-width:280px;padding:.45rem .8rem;border-radius:10px;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:.45rem;margin-bottom:.75rem;background:rgba(255,183,77,.1);color:#ffb74d;border:1px solid rgba(255,183,77,.3);transition:all .3s}
+.khqr-status-badge{width:100%;max-width:310px;padding:.45rem .8rem;border-radius:10px;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:.45rem;margin-bottom:.75rem;background:rgba(255,183,77,.1);color:#ffb74d;border:1px solid rgba(255,183,77,.3);transition:all .3s}
 .khqr-status-badge.paid{background:rgba(0,212,160,.16);color:var(--ac);border-color:var(--ac);animation:bounce-once .6s ease}
 @keyframes bounce-once{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 
 /* Authentic NBC Red Standee Card */
-.khqr-standee{width:100%;max-width:275px;background:#ffffff;border:3.5px solid #d32f2f;border-radius:16px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,0.5);display:flex;flex-direction:column;color:#111}
+.khqr-standee{width:100%;max-width:310px;background:#ffffff;border:3.5px solid #d32f2f;border-radius:16px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,0.5);display:flex;flex-direction:column;color:#111}
 .khqr-standee-head{background:linear-gradient(135deg,#e1251b,#c62828);padding:.65rem .9rem;display:flex;align-items:center;justify-content:space-between;color:#fff}
 .khqr-brand-pill{display:flex;align-items:center;gap:.3rem}
 .khqr-brand-title{font-family:'Outfit',sans-serif;font-weight:900;font-size:1.05rem;letter-spacing:.08em;line-height:1}
@@ -457,7 +457,7 @@ nav.scrolled{background:rgba(12,12,14,0.98);box-shadow:0 12px 30px rgba(0,0,0,0.
 .khqr-standee-acc{font-family:'Space Mono',monospace;font-size:.62rem;opacity:.9}
 
 .khqr-standee-body{background:#fff;padding:.85rem;display:flex;align-items:center;justify-content:center;min-height:220px;position:relative}
-.khqr-img{width:200px;height:200px;object-fit:contain;display:block}
+.khqr-img{width:220px;height:220px;object-fit:contain;display:block}
 .khqr-loading-overlay{position:absolute;inset:0;background:rgba(255,255,255,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;color:#333;font-size:.75rem;font-weight:600}
 .khqr-spinner{width:28px;height:28px;border:3px solid #f0f0f0;border-top-color:#d32f2f;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -473,18 +473,30 @@ nav.scrolled{background:rgba(12,12,14,0.98);box-shadow:0 12px 30px rgba(0,0,0,0.
 .placeholder-title{font-weight:800;font-size:.92rem;color:#1e293b}
 .placeholder-desc{font-size:.72rem;color:#64748b;line-height:1.45;max-width:210px}
 .btn-disabled{opacity:0.45;pointer-events:none;cursor:not-allowed}
-.standee-actions{width:100%;max-width:280px;display:flex;flex-direction:column;gap:.45rem;margin-top:.75rem}
-.standee-btn-row{display:grid;grid-template-columns:1fr 1fr;gap:.45rem}
-.btn-bakong-app{padding:.6rem;border-radius:10px;background:linear-gradient(135deg,#e1251b,#c62828);color:#fff;font-weight:700;font-size:.74rem;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.35rem;text-decoration:none;box-shadow:0 4px 14px rgba(225,37,27,.3);transition:all .2s}
-.btn-bakong-app:hover{background:linear-gradient(135deg,#f0342a,#d32f2f);transform:translateY(-1px)}
-.btn-dl-qr{padding:.6rem;border-radius:10px;background:var(--bg4);color:var(--tx);border:1px solid var(--br);font-weight:600;font-size:.74rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.35rem;transition:all .2s}
-.btn-dl-qr:hover{background:rgba(255,255,255,.08)}
-.btn-verify-nbc{padding:.5rem;border-radius:8px;background:var(--bg4);color:var(--tx);border:1px solid var(--br);font-size:.7rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.3rem;transition:all .2s}
-.btn-verify-nbc:hover{background:rgba(255,255,255,.08);border-color:var(--br2)}
-.btn-payway-alt{padding:.5rem;border-radius:8px;background:rgba(0,212,160,.08);color:var(--ac);border:1px solid var(--br2);font-size:.7rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:.3rem;text-decoration:none;transition:all .2s}
-.btn-payway-alt:hover{background:rgba(0,212,160,.16)}
-.btn-close-modal{padding:.55rem;border-radius:8px;background:none;border:1px solid var(--br);color:var(--mu);font-size:.7rem;cursor:pointer;transition:all .2s;width:100%}
-.btn-close-modal:hover{color:var(--tx);background:rgba(255,255,255,.04)}
+.standee-banking-box{width:100%;max-width:310px;background:#0d1527;border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:.9rem 1rem .85rem;margin-top:.75rem;box-shadow:0 10px 25px rgba(0,0,0,.35)}
+.banking-box-head{display:flex;align-items:baseline;justify-content:space-between;gap:.4rem}
+.banking-box-title{font-size:.88rem;font-weight:700;color:#f8fafc;font-family:'Outfit',-apple-system,sans-serif}
+.banking-box-sub{font-size:.68rem;color:#94a3b8;font-weight:500;white-space:nowrap}
+.banking-apps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin:.85rem 0 .75rem}
+.banking-app-btn{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);border-radius:13px;padding:.65rem .25rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;cursor:pointer;transition:all .2s ease;color:#e2e8f0;outline:none}
+.banking-app-btn:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);transform:translateY(-2px)}
+.banking-app-btn:active{transform:translateY(0)}
+.app-icon-badge{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;box-shadow:0 4px 12px rgba(0,0,0,.35);user-select:none}
+.app-icon-badge.aba{background:#005c8a;color:#ffffff;font-size:.85rem;letter-spacing:-0.02em}
+.app-icon-badge.bakong{background:#e1251b;color:#ffffff;font-size:.95rem;font-weight:900}
+.app-icon-badge.acleda{background:#15284f;color:#f5b335;font-size:.88rem;font-weight:800;border:1px solid rgba(245,179,53,.28)}
+.app-icon-badge.wing{background:#7cbd27;color:#ffffff;font-size:1.05rem;font-weight:900}
+.app-label{font-size:.74rem;font-weight:600;color:#cbd5e1}
+.banking-direct-link-row{display:flex;align-items:center;justify-content:space-between;padding-top:.65rem;border-top:1px solid rgba(255,255,255,.07);font-size:.78rem}
+.direct-link-lbl{color:#64748b;font-size:.76rem}
+.direct-payway-link{color:#38bdf8;font-weight:700;text-decoration:none;font-size:.78rem;transition:color .2s;display:inline-flex;align-items:center;gap:.25rem}
+.direct-payway-link:hover{color:#7dd3fc;text-decoration:underline}
+.standee-actions-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;width:100%;max-width:310px;margin-top:.65rem}
+.action-btn{background:rgba(30,41,59,.7);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:.65rem .35rem;display:flex;align-items:center;justify-content:center;gap:.35rem;color:#f1f5f9;font-size:.74rem;font-weight:600;cursor:pointer;transition:all .2s;outline:none}
+.action-btn:hover{background:rgba(51,65,85,.85);border-color:rgba(255,255,255,.18);transform:translateY(-1px)}
+.action-btn:active{transform:translateY(0)}
+.btn-close-modal-link{background:none;border:none;color:#64748b;font-size:.72rem;cursor:pointer;margin-top:.45rem;padding:.3rem .6rem;transition:color .2s;text-decoration:underline;text-decoration-color:transparent}
+.btn-close-modal-link:hover{color:#94a3b8;text-decoration-color:#94a3b8}
 
 
 
@@ -1421,35 +1433,66 @@ footer span{color:var(--ac)}
 
         </div>
 
-        <!-- Action Buttons -->
-        <div class="standee-actions">
-          <div class="standee-btn-row">
-            <a id="btnBakongDeeplink" href="#" target="_blank" rel="noopener" class="btn-bakong-app btn-disabled">
-              <span>🚀</span>
-              <span>Bakong App</span>
-            </a>
-            <button type="button" id="btnDownloadQr" class="btn-dl-qr btn-disabled" onclick="downloadKhqrImage()">
-              <span>📥</span>
-              <span>Download QR</span>
-            </button>
-          </div>
-          
-          <div class="standee-btn-row">
-            <button type="button" class="btn-verify-nbc btn-disabled" id="btnManualVerify" onclick="verifyKhqrManual()">
-              <span>🔄</span>
-              <span>Verify NBC</span>
-            </button>
-            <a href="https://link.payway.com.kh/ABAPAYzI4445189" id="btnPaywayFallback" target="_blank" rel="noopener" class="btn-payway-alt">
-              <span>💳</span>
-              <span>PayWay Card</span>
-            </a>
+        <!-- Open in Banking App Card -->
+        <div class="standee-banking-box">
+          <div class="banking-box-head">
+            <span class="banking-box-title">Open in Banking App</span>
+            <span class="banking-box-sub">Auto-saves QR · Scan from Gallery</span>
           </div>
 
-          <button type="button" class="btn-close-modal" onclick="closePay(event)">
-            រួចរាល់ (Close &amp; Return)
+          <div class="banking-apps-grid">
+            <!-- ABA -->
+            <button type="button" class="banking-app-btn" onclick="openBankingApp('aba')" title="Open in ABA Mobile">
+              <div class="app-icon-badge aba">ABA</div>
+              <span class="app-label">ABA</span>
+            </button>
+
+            <!-- Bakong -->
+            <button type="button" class="banking-app-btn" onclick="openBankingApp('bakong')" title="Open in Bakong App">
+              <div class="app-icon-badge bakong">KH</div>
+              <span class="app-label">Bakong</span>
+            </button>
+
+            <!-- ACLEDA -->
+            <button type="button" class="banking-app-btn" onclick="openBankingApp('acleda')" title="Open in ACLEDA mobile">
+              <div class="app-icon-badge acleda">AC</div>
+              <span class="app-label">ACLEDA</span>
+            </button>
+
+            <!-- Wing -->
+            <button type="button" class="banking-app-btn" onclick="openBankingApp('wing')" title="Open in Wing Bank">
+              <div class="app-icon-badge wing">W</div>
+              <span class="app-label">Wing</span>
+            </button>
+          </div>
+
+          <div class="banking-direct-link-row">
+            <span class="direct-link-lbl">Or direct link:</span>
+            <a href="https://link.payway.com.kh/ABAPAYzI4445189" target="_blank" rel="noopener" class="direct-payway-link" id="paywayDirectLink">
+              ABA PayWay (USD) ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- 3 Action Buttons -->
+        <div class="standee-actions-row">
+          <button type="button" class="action-btn" id="btnManualVerify" onclick="verifyKhqrManual()">
+            <span class="btn-icon">🔄</span>
+            <span>Verify Now</span>
+          </button>
+          <button type="button" class="action-btn" id="btnShareQr" onclick="shareKhqr()">
+            <span class="btn-icon">📤</span>
+            <span>Share QR</span>
+          </button>
+          <button type="button" class="action-btn" id="btnEditKhqr" onclick="editKhqrDetails()">
+            <span class="btn-icon">✏️</span>
+            <span>Edit</span>
           </button>
         </div>
 
+        <button type="button" class="btn-close-modal-link" onclick="closePay(event)">
+          រួចរាល់ (Close &amp; Return)
+        </button>
       </div>
 
     </div>
@@ -1695,12 +1738,7 @@ function resetStandeeReady() {
   if (placeholder) placeholder.style.display = 'flex';
   if (qrImg) qrImg.style.display = 'none';
 
-  var dlBtn = document.getElementById('btnBakongDeeplink');
-  var dlQr = document.getElementById('btnDownloadQr');
-  var vBtn = document.getElementById('btnManualVerify');
-  if (dlBtn) dlBtn.classList.add('btn-disabled');
-  if (dlQr) dlQr.classList.add('btn-disabled');
-  if (vBtn) vBtn.classList.add('btn-disabled');
+  
 
   var statusBadge = document.getElementById('khqrStatusBadge');
   var statusText = document.getElementById('khqrStatusText');
@@ -1812,15 +1850,7 @@ function triggerKhqrGeneration() {
         qrImg.style.display = 'block';
       }
 
-      var dlBtn = document.getElementById('btnBakongDeeplink');
-      var dlQr = document.getElementById('btnDownloadQr');
-      var vBtn = document.getElementById('btnManualVerify');
-      if (dlBtn) {
-        dlBtn.href = khqrState.deeplink;
-        dlBtn.classList.remove('btn-disabled');
-      }
-      if (dlQr) dlQr.classList.remove('btn-disabled');
-      if (vBtn) vBtn.classList.remove('btn-disabled');
+      
 
       if (statusText) statusText.textContent = '⏱️ Awaiting scan... (Scan with any bank app)';
       showToast('✅ KHQR generated! Scan or tap Bakong App.');
@@ -1884,6 +1914,101 @@ function stopKhqrPolling() {
     clearInterval(khqrState.pollTimer);
     khqrState.pollTimer = null;
   }
+}
+
+function downloadKhqrImageSilently() {
+  if (!khqrState.dataUrl) return false;
+  var a = document.createElement('a');
+  a.href = khqrState.dataUrl;
+  a.download = 'KHQR-' + (khqrState.invoiceNo || 'Anzo') + '.png';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  return true;
+}
+
+function openBankingApp(app) {
+  if (!khqrState.isGenerated || !khqrState.dataUrl) {
+    showToast('⚠️ Please click "⚡ បង្កើត KHQR កូដ" to generate QR first');
+    return;
+  }
+  
+  if (app === 'bakong') {
+    if (khqrState.deeplink) {
+      showToast('🚀 Opening Bakong App...');
+      window.open(khqrState.deeplink, '_blank');
+    } else {
+      showToast('⚠️ Deeplink not ready yet');
+    }
+    return;
+  }
+
+  if (app === 'aba') {
+    downloadKhqrImageSilently();
+    showToast('📥 QR saved to gallery! Opening ABA...');
+    setTimeout(function() {
+      window.location.href = 'abamobilebank://';
+    }, 300);
+    return;
+  }
+
+  if (app === 'acleda') {
+    downloadKhqrImageSilently();
+    showToast('📥 QR saved to gallery! Opening ACLEDA...');
+    setTimeout(function() {
+      window.location.href = 'acledamobile://';
+    }, 300);
+    return;
+  }
+
+  if (app === 'wing') {
+    downloadKhqrImageSilently();
+    showToast('📥 QR saved to gallery! Opening Wing...');
+    setTimeout(function() {
+      window.location.href = 'wingmoney://';
+    }, 300);
+    return;
+  }
+}
+
+function shareKhqr() {
+  if (!khqrState.isGenerated || !khqrState.dataUrl) {
+    showToast('⚠️ Please click "⚡ បង្កើត KHQR កូដ" first');
+    return;
+  }
+
+  var shareUrl = khqrState.deeplink || 'https://link.payway.com.kh/ABAPAYzI4445189';
+  var shareText = 'Support Anzo via KHQR: ' + (khqrState.currency === 'USD' ? '$' : '') + khqrState.amount + ' ' + khqrState.currency + ' (Invoice: ' + khqrState.invoiceNo + ')';
+
+  if (navigator.share) {
+    navigator.share({
+      title: 'Support Anzo via KHQR',
+      text: shareText,
+      url: shareUrl
+    }).catch(function() {});
+  } else {
+    downloadKhqrImageSilently();
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(shareUrl).then(function() {
+        showToast('📥 QR saved & link copied to clipboard!');
+      }).catch(function() {
+        showToast('📥 QR saved to device!');
+      });
+    } else {
+      showToast('📥 QR saved to device!');
+    }
+  }
+}
+
+function editKhqrDetails() {
+  var grid = document.querySelector('.paybody-grid');
+  if (grid) grid.scrollTo({ top: 0, behavior: 'smooth' });
+  var amt = document.getElementById('khqrAmountCustom');
+  if (amt) {
+    amt.focus();
+    amt.select();
+  }
+  showToast('✏️ You can now change amount, currency, or name.');
 }
 
 function markPaymentSuccess() {
