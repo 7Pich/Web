@@ -376,134 +376,125 @@ nav.scrolled{background:rgba(12,12,14,0.98);box-shadow:0 12px 30px rgba(0,0,0,0.
 .pvbtn{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.06em;padding:.5rem .85rem;border-radius:6px;border:1px solid var(--br2);background:rgba(0,212,160,.08);color:var(--ac);cursor:pointer;transition:background .2s}
 .pvbtn:hover{background:rgba(0,212,160,.18)}
 #pvmodal{padding-top:82px}
-#paymodal{padding-top:60px}
-.paybox{width:min(880px,calc(100vw - 28px));max-height:calc(100vh - 80px);overflow:hidden;display:flex;flex-direction:column;border-radius:20px;border:1px solid rgba(0,212,160,0.3);box-shadow:0 25px 70px rgba(0,0,0,0.75);background:var(--bg3)}
-.payhead{padding:1rem 1.35rem;border-bottom:1px solid var(--br);display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.02)}
-.payhead-left{display:flex;align-items:center;gap:.75rem}
-.payhead-emblem{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#e1251b,#b71c1c);color:#fff;font-family:'Outfit',sans-serif;font-weight:900;font-size:.9rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(225,37,27,.35);letter-spacing:.02em}
-.payhead-title-row{display:flex;align-items:center;gap:.5rem}
-.payhead-title{font-weight:800;font-size:1.05rem;line-height:1.2;color:var(--tx)}
-.payhead-badge{padding:.15rem .55rem;border-radius:20px;font-size:.65rem;font-weight:700;background:rgba(0,212,160,.12);color:var(--ac);border:1px solid var(--br2);font-family:'Space Mono',monospace}
-.payhead-sub{font-size:.72rem;color:var(--mu);margin-top:2px}
+/* ORIGINAL ABA PAYWAY MODAL */
+#paymodal{padding-top:82px}
+.paybox{width:min(460px,calc(100vw - 28px));border-radius:16px;border:1px solid var(--br2);box-shadow:var(--shadow);background:var(--bg3);overflow:hidden}
+.payopts{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.payopt{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:1.3rem .8rem;border:1px solid var(--br2);border-radius:10px;background:rgba(0,212,160,.06);color:var(--tx);text-decoration:none;transition:background .2s,transform .2s}
+.payopt:hover{background:rgba(0,212,160,.16);transform:translateY(-3px)}
+.paysym{font-size:2rem;font-weight:800;color:var(--ac);line-height:1.1}
+.paycur{font-family:'Space Mono',monospace;font-weight:700;letter-spacing:.1em}
+.paylbl{font-size:.8rem;color:var(--mu)}
+.modalbody p.paynote{font-size:.78rem;margin:1rem 0 0;text-align:center;color:var(--mu)}
 
-.paybody-grid{display:grid;grid-template-columns:1.15fr 0.85fr;overflow-y:auto;flex:1}
+/* DEDICATED BAKONG KHQR TIP MODAL */
+#khqrmodal{padding-top:60px}
+.khqr-box{width:min(880px,calc(100vw - 28px));max-height:calc(100vh - 80px);overflow:hidden;display:flex;flex-direction:column;border-radius:20px;border:1px solid rgba(0,212,160,0.3);box-shadow:0 25px 70px rgba(0,0,0,0.75);background:var(--bg3)}
+.khqr-head{padding:1rem 1.35rem;border-bottom:1px solid var(--br);display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.02)}
+.khqr-head-left{display:flex;align-items:center;gap:.75rem}
+.khqr-head-emblem{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#e1251b,#b71c1c);color:#fff;font-family:'Outfit',sans-serif;font-weight:900;font-size:.9rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(225,37,27,.35);letter-spacing:.02em}
+.khqr-head-title-row{display:flex;align-items:center;gap:.5rem}
+.khqr-head-title{font-weight:800;font-size:1.05rem;line-height:1.2;color:var(--tx)}
+.khqr-head-badge{padding:.15rem .55rem;border-radius:20px;font-size:.65rem;font-weight:700;background:rgba(0,212,160,.12);color:var(--ac);border:1px solid var(--br2);font-family:'Space Mono',monospace}
+.khqr-head-sub{font-size:.72rem;color:var(--mu);margin-top:2px}
+
+.khqr-body-grid{display:grid;grid-template-columns:1.1fr 0.9fr;overflow-y:auto;flex:1}
 @media(max-width:820px){
-  .paybody-grid{grid-template-columns:1fr}
-  .pay-right{border-left:none!important;border-top:1px solid var(--br)}
-  .paybox{max-height:92vh}
+  .khqr-body-grid{grid-template-columns:1fr}
+  .khqr-right{border-left:none!important;border-top:1px solid var(--br)}
+  .khqr-box{max-height:92vh}
 }
-.pay-left{padding:1.35rem;display:flex;flex-direction:column;gap:1.1rem;background:rgba(0,0,0,0.12)}
-.pay-right{padding:1.35rem;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;background:rgba(0,0,0,0.25);border-left:1px solid var(--br);position:relative}
+.khqr-left{padding:1.35rem;display:flex;flex-direction:column;gap:.9rem;background:rgba(0,0,0,0.12)}
+.khqr-right{padding:1.35rem;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;background:rgba(0,0,0,0.25);border-left:1px solid var(--br);position:relative}
 
-/* Merchant Info Strip */
-.pay-merchant-strip{display:flex;align-items:center;justify-content:space-between;padding:.7rem .85rem;border-radius:12px;background:var(--bg4);border:1px solid var(--br)}
-.pay-merchant-left{display:flex;align-items:center;gap:.65rem}
-.pay-merchant-icon{width:32px;height:32px;border-radius:8px;background:rgba(0,212,160,.1);border:1px solid var(--br2);color:var(--ac);display:flex;align-items:center;justify-content:center;font-size:.95rem}
-.pay-merchant-name{font-weight:800;font-size:.82rem;color:var(--tx);line-height:1.15}
-.pay-merchant-id{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--mu);margin-top:1px}
-.pay-kyc-badge{font-family:'Space Mono',monospace;font-size:.62rem;font-weight:700;color:var(--ac);background:rgba(0,212,160,.12);border:1px solid var(--br2);padding:.2rem .55rem;border-radius:20px;display:inline-flex;align-items:center;gap:.3rem}
-.pay-kyc-dot{width:6px;height:6px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac);animation:pulse-dot 1.8s infinite}
-@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.tip-intro-card{display:flex;align-items:center;gap:.75rem;padding:.7rem .85rem;border-radius:12px;background:rgba(0,212,160,.06);border:1px solid var(--br2)}
+.tip-intro-icon{font-size:1.4rem;line-height:1}
+.tip-intro-title{font-weight:800;font-size:.82rem;color:var(--tx);line-height:1.2}
+.tip-intro-desc{font-size:.7rem;color:var(--mu);margin-top:2px;line-height:1.35}
 
-/* Currency Selector */
-.pay-sec-label{display:flex;justify-content:space-between;align-items:center;font-family:'Space Mono',monospace;font-size:.64rem;font-weight:700;color:var(--mu);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.45rem}
+.khqr-sec-label{display:flex;justify-content:space-between;align-items:center;font-family:'Space Mono',monospace;font-size:.64rem;font-weight:700;color:var(--mu);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
 .curr-toggle-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
 .curr-toggle-btn{padding:.65rem;border-radius:10px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.82rem;display:flex;align-items:center;justify-content:center;gap:.5rem;border:1px solid var(--br);background:var(--bg4);color:var(--mu);cursor:pointer;transition:all .2s}
 .curr-toggle-btn.active{background:rgba(0,212,160,.14);border-color:var(--ac);color:var(--tx);box-shadow:0 0 16px rgba(0,212,160,.15)}
 .curr-toggle-btn.khr.active{background:rgba(255,183,77,.14);border-color:#ffb74d;color:var(--tx);box-shadow:0 0 16px rgba(255,183,77,.15)}
 .curr-badge-sym{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:.72rem}
 
-/* Amount Input */
-.pay-amount-box{position:relative;display:flex;align-items:center}
-.pay-amount-sym{position:absolute;left:14px;font-family:'Space Mono',monospace;font-size:1.15rem;font-weight:700;color:var(--ac);pointer-events:none}
-.pay-amount-input{width:100%;padding:.7rem 1rem .7rem 2.5rem;font-family:'Space Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--tx);background:var(--bg4);border:1px solid var(--br);border-radius:10px;outline:none;transition:border-color .2s}
-.pay-amount-input:focus{border-color:var(--ac);box-shadow:0 0 12px rgba(0,212,160,.2)}
+.khqr-amount-box{position:relative;display:flex;align-items:center}
+.khqr-amount-sym{position:absolute;left:14px;font-family:'Space Mono',monospace;font-size:1.15rem;font-weight:700;color:var(--ac);pointer-events:none}
+.khqr-amount-input{width:100%;padding:.65rem 1rem .65rem 2.4rem;font-family:'Space Mono',monospace;font-size:1.15rem;font-weight:700;color:var(--tx);background:var(--bg4);border:1px solid var(--br);border-radius:10px;outline:none;transition:border-color .2s}
+.khqr-amount-input:focus{border-color:var(--ac);box-shadow:0 0 12px rgba(0,212,160,.2)}
 
-/* Preset Chips */
-.preset-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}
+.preset-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.45rem}
 .preset-chip{font-family:'Space Mono',monospace;font-size:.68rem;padding:.32rem .65rem;border-radius:6px;background:var(--bg4);border:1px solid var(--br);color:var(--mu);cursor:pointer;transition:all .2s}
 .preset-chip:hover{background:rgba(255,255,255,.08);color:var(--tx)}
 .preset-chip.active{background:rgba(0,212,160,.16);border-color:var(--ac);color:var(--ac);font-weight:700}
 
-/* Bill & Store inputs */
-.pay-inputs-row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
-.pay-field-label{display:flex;justify-content:space-between;align-items:center;font-size:.68rem;font-weight:600;color:var(--mu);margin-bottom:.3rem}
-.pay-regen-btn{font-size:.62rem;color:var(--ac);background:none;border:none;cursor:pointer;font-weight:700}
-.pay-text-input{width:100%;padding:.5rem .75rem;font-family:'Space Mono',monospace;font-size:.76rem;color:var(--tx);background:var(--bg4);border:1px solid var(--br);border-radius:8px;outline:none}
-.pay-text-input:focus{border-color:var(--ac)}
+.khqr-inputs-row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.khqr-field-label{display:flex;justify-content:space-between;align-items:center;font-size:.68rem;font-weight:600;color:var(--mu);margin-bottom:.3rem}
+.khqr-regen-btn{font-size:.62rem;color:var(--ac);background:none;border:none;cursor:pointer;font-weight:700}
+.khqr-text-input{width:100%;padding:.5rem .75rem;font-family:'Space Mono',monospace;font-size:.76rem;color:var(--tx);background:var(--bg4);border:1px solid var(--br);border-radius:8px;outline:none}
+.khqr-text-input:focus{border-color:var(--ac)}
 
-/* Generate Button */
-.btn-gen-khqr{width:100%;padding:.85rem;border-radius:12px;background:linear-gradient(135deg,#00d4a0,#009f78);color:#050509;border:none;font-weight:800;font-size:.88rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;box-shadow:0 6px 20px rgba(0,212,160,.3);transition:all .2s;margin-top:auto}
+.btn-gen-khqr{width:100%;padding:.8rem;border-radius:12px;background:linear-gradient(135deg,#00d4a0,#009f78);color:#050509;border:none;font-weight:800;font-size:.88rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;box-shadow:0 6px 20px rgba(0,212,160,.3);transition:all .2s;margin-top:.2rem}
 .btn-gen-khqr:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,212,160,.4)}
 .btn-gen-khqr:active{transform:translateY(1px)}
 
-/* Right Column Standee Frame */
-.standee-limit-row{width:100%;max-width:310px;display:flex;align-items:center;justify-content:space-between;font-size:.68rem;color:var(--mu);margin-bottom:.45rem}
-.standee-limit-row label{display:flex;align-items:center;gap:.35rem;cursor:pointer;color:var(--tx)}
-.limit-badge{font-family:'Space Mono',monospace;font-size:.62rem;color:var(--ac);font-weight:700}
+.tip-trust-row{display:flex;align-items:center;justify-content:center;gap:.6rem;font-size:.66rem;color:var(--mu);padding-top:.15rem}
 
-.khqr-status-badge{width:100%;max-width:310px;padding:.45rem .8rem;border-radius:10px;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:.45rem;margin-bottom:.75rem;background:rgba(255,183,77,.1);color:#ffb74d;border:1px solid rgba(255,183,77,.3);transition:all .3s}
-.khqr-status-badge.paid{background:rgba(0,212,160,.16);color:var(--ac);border-color:var(--ac);animation:bounce-once .6s ease}
+.khqr-status-badge{width:100%;max-width:310px;padding:.45rem .8rem;border-radius:10px;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:.45rem;margin-bottom:.75rem;background:rgba(0,212,160,.1);color:var(--ac);border:1px solid var(--br2);transition:all .3s}
+.khqr-status-badge.paid{background:rgba(0,212,160,.2);color:var(--ac);border-color:var(--ac);animation:bounce-once .6s ease}
 @keyframes bounce-once{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 
-/* Authentic NBC Red Standee Card */
-.khqr-standee{width:100%;max-width:310px;background:#ffffff;border:3.5px solid #d32f2f;border-radius:16px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,0.5);display:flex;flex-direction:column;color:#111}
-.khqr-standee-head{background:linear-gradient(135deg,#e1251b,#c62828);padding:.65rem .9rem;display:flex;align-items:center;justify-content:space-between;color:#fff}
+.khqr-standee{width:100%;max-width:310px;background:#ffffff;border:3px solid #d32f2f;border-radius:16px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,0.5);display:flex;flex-direction:column;color:#111}
+.khqr-standee-head{background:linear-gradient(135deg,#e1251b,#c62828);padding:.6rem .85rem;display:flex;align-items:center;justify-content:space-between;color:#fff}
 .khqr-brand-pill{display:flex;align-items:center;gap:.3rem}
 .khqr-brand-title{font-family:'Outfit',sans-serif;font-weight:900;font-size:1.05rem;letter-spacing:.08em;line-height:1}
 .khqr-nbc-tag{font-size:.58rem;padding:.12rem .35rem;border-radius:4px;background:rgba(255,255,255,.24);font-weight:700}
 .khqr-merchant-info{text-align:right}
-.khqr-standee-mname{font-weight:800;font-size:.78rem;line-height:1.15;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.khqr-standee-mname{font-weight:800;font-size:.78rem;line-height:1.15;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .khqr-standee-acc{font-family:'Space Mono',monospace;font-size:.62rem;opacity:.9}
 
 .khqr-standee-body{background:#fff;padding:.85rem;display:flex;align-items:center;justify-content:center;min-height:220px;position:relative}
-.khqr-img{width:220px;height:220px;object-fit:contain;display:block}
+.khqr-img{width:210px;height:210px;object-fit:contain;display:block}
 .khqr-loading-overlay{position:absolute;inset:0;background:rgba(255,255,255,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;color:#333;font-size:.75rem;font-weight:600}
 .khqr-spinner{width:28px;height:28px;border:3px solid #f0f0f0;border-top-color:#d32f2f;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-.khqr-standee-foot{background:#f8f9fa;border-top:1px solid #e9ecef;padding:.55rem .9rem;display:flex;align-items:center;justify-content:space-between}
-.khqr-foot-label{font-family:'Space Mono',monospace;font-size:.58rem;color:#6c757d;text-transform:uppercase}
-.khqr-foot-invoice{font-family:'Space Mono',monospace;font-size:.74rem;font-weight:700;color:#212529}
+.khqr-standee-foot{background:#f8f9fa;border-top:1px solid #e9ecef;padding:.5rem .85rem;display:flex;align-items:center;justify-content:space-between}
+.khqr-foot-label{font-family:'Space Mono',monospace;font-size:.56rem;color:#6c757d;text-transform:uppercase}
+.khqr-foot-invoice{font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;color:#212529}
 .khqr-foot-amount{font-family:'Space Mono',monospace;font-size:.92rem;font-weight:900;color:#00875a}
 
-/* Right Column Actions */
-.standee-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1.4rem 1rem;gap:.45rem;min-height:200px;width:100%}
-.placeholder-icon{width:46px;height:46px;border-radius:14px;background:rgba(0,212,160,.12);border:1px solid rgba(0,212,160,.3);color:var(--ac);display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 0 16px rgba(0,212,160,.15)}
-.placeholder-title{font-weight:800;font-size:.92rem;color:#1e293b}
-.placeholder-desc{font-size:.72rem;color:#64748b;line-height:1.45;max-width:210px}
-.btn-disabled{opacity:0.45;pointer-events:none;cursor:not-allowed}
-.standee-banking-box{width:100%;max-width:310px;background:#0d1527;border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:.9rem 1rem .85rem;margin-top:.75rem;box-shadow:0 10px 25px rgba(0,0,0,.35)}
-.banking-box-head{display:flex;align-items:baseline;justify-content:space-between;gap:.4rem}
-.banking-box-title{font-size:.88rem;font-weight:700;color:#f8fafc;font-family:'Outfit',-apple-system,sans-serif}
-.banking-box-sub{font-size:.68rem;color:#94a3b8;font-weight:500;white-space:nowrap}
-.banking-apps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin:.85rem 0 .75rem}
-.banking-app-btn{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);border-radius:13px;padding:.65rem .25rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;cursor:pointer;transition:all .2s ease;color:#e2e8f0;outline:none}
+.standee-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1.2rem 1rem;gap:.4rem;min-height:200px;width:100%}
+.placeholder-icon{width:44px;height:44px;border-radius:12px;background:rgba(0,212,160,.12);border:1px solid rgba(0,212,160,.3);color:var(--ac);display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 0 16px rgba(0,212,160,.15)}
+.placeholder-title{font-weight:800;font-size:.9rem;color:#1e293b}
+.placeholder-desc{font-size:.7rem;color:#64748b;line-height:1.4;max-width:210px}
+
+.standee-banking-box{width:100%;max-width:310px;background:#0d1527;border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:.85rem .95rem .8rem;margin-top:.65rem;box-shadow:0 10px 25px rgba(0,0,0,.35)}
+.banking-box-head{display:flex;align-items:center;justify-content:space-between;gap:.4rem}
+.banking-box-title{font-size:.85rem;font-weight:700;color:#f8fafc;white-space:nowrap}
+.banking-box-sub{font-size:.65rem;color:#94a3b8;font-weight:500;white-space:nowrap}
+.banking-apps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.45rem;margin:.75rem 0 .65rem}
+.banking-app-btn{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:.6rem .2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem;cursor:pointer;transition:all .2s ease;color:#e2e8f0;outline:none}
 .banking-app-btn:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);transform:translateY(-2px)}
 .banking-app-btn:active{transform:translateY(0)}
-.app-icon-badge{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;box-shadow:0 4px 12px rgba(0,0,0,.35);user-select:none}
-.app-icon-badge.aba{background:#005c8a;color:#ffffff;font-size:.85rem;letter-spacing:-0.02em}
-.app-icon-badge.bakong{background:#e1251b;color:#ffffff;font-size:.95rem;font-weight:900}
-.app-icon-badge.acleda{background:#15284f;color:#f5b335;font-size:.88rem;font-weight:800;border:1px solid rgba(245,179,53,.28)}
-.app-icon-badge.wing{background:#7cbd27;color:#ffffff;font-size:1.05rem;font-weight:900}
-.app-label{font-size:.74rem;font-weight:600;color:#cbd5e1}
-.banking-direct-link-row{display:flex;align-items:center;justify-content:space-between;padding-top:.65rem;border-top:1px solid rgba(255,255,255,.07);font-size:.78rem}
-.direct-link-lbl{color:#64748b;font-size:.76rem}
-.direct-payway-link{color:#38bdf8;font-weight:700;text-decoration:none;font-size:.78rem;transition:color .2s;display:inline-flex;align-items:center;gap:.25rem}
+.app-icon-badge{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:800;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;box-shadow:0 4px 10px rgba(0,0,0,.35);user-select:none}
+.app-icon-badge.aba{background:#005c8a;color:#ffffff;font-size:.82rem;letter-spacing:-0.02em}
+.app-icon-badge.bakong{background:#e1251b;color:#ffffff;font-size:.92rem;font-weight:900}
+.app-icon-badge.acleda{background:#15284f;color:#f5b335;font-size:.85rem;font-weight:800;border:1px solid rgba(245,179,53,.28)}
+.app-icon-badge.wing{background:#7cbd27;color:#ffffff;font-size:1rem;font-weight:900}
+.app-label{font-size:.72rem;font-weight:600;color:#cbd5e1}
+.banking-direct-link-row{display:flex;align-items:center;justify-content:space-between;padding-top:.55rem;border-top:1px solid rgba(255,255,255,.07);font-size:.76rem}
+.direct-link-lbl{color:#64748b;font-size:.74rem}
+.direct-payway-link{color:#38bdf8;font-weight:700;text-decoration:none;font-size:.76rem;transition:color .2s;display:inline-flex;align-items:center;gap:.25rem}
 .direct-payway-link:hover{color:#7dd3fc;text-decoration:underline}
-.standee-actions-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;width:100%;max-width:310px;margin-top:.65rem}
-.action-btn{background:rgba(30,41,59,.7);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:.65rem .35rem;display:flex;align-items:center;justify-content:center;gap:.35rem;color:#f1f5f9;font-size:.74rem;font-weight:600;cursor:pointer;transition:all .2s;outline:none}
+
+.standee-actions-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.45rem;width:100%;max-width:310px;margin-top:.55rem}
+.action-btn{background:rgba(30,41,59,.7);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:.55rem .3rem;display:flex;align-items:center;justify-content:center;gap:.35rem;color:#f1f5f9;font-size:.72rem;font-weight:600;cursor:pointer;transition:all .2s;outline:none}
 .action-btn:hover{background:rgba(51,65,85,.85);border-color:rgba(255,255,255,.18);transform:translateY(-1px)}
 .action-btn:active{transform:translateY(0)}
-.btn-close-modal-link{background:none;border:none;color:#64748b;font-size:.72rem;cursor:pointer;margin-top:.45rem;padding:.3rem .6rem;transition:color .2s;text-decoration:underline;text-decoration-color:transparent}
+.btn-close-modal-link{background:none;border:none;color:#64748b;font-size:.72rem;cursor:pointer;margin-top:.45rem;padding:.25rem .5rem;transition:color .2s;text-decoration:underline;text-decoration-color:transparent}
 .btn-close-modal-link:hover{color:#94a3b8;text-decoration-color:#94a3b8}
-
-
-
-
-
-
-
 
 .pvbox{width:min(980px,100%);max-height:calc(100vh - 100px);display:flex;flex-direction:column;overflow:hidden}
 .pvtabs{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem}
@@ -603,7 +594,7 @@ footer span{color:var(--ac)}
   </ul>
   <div class="nright">
     <button class="thbtn" id="thbtn" onclick="toggleTheme()">🌙</button>
-    <button class="tipbtn" type="button" onclick="openPay()" title="Tip &amp; Support Anzo with Bakong KHQR">☕ TIP_ME</button>
+    <button class="tipbtn" type="button" onclick="openKhqr()" title="Tip &amp; Support Anzo with Bakong KHQR">☕ TIP_ME</button>
     <a class="hirebtn" href="https://link.payway.com.kh/ABAPAYzI4445189" target="_blank" rel="noopener">HIRE_ME()</a>
     <button class="hbtn" id="hbtn" onclick="toggleMenu()"><span></span><span></span><span></span></button>
   </div>
@@ -620,7 +611,7 @@ footer span{color:var(--ac)}
     <div class="mcontact-title">Quick call</div>
     <a href="tel:0964642015"><strong>Smart</strong><span>096 464 2015</span></a>
   </div>
-  <button type="button" onclick="openPay();toggleMenu();" class="cvbtn" style="width:fit-content;margin-top:.25rem;border-color:rgba(255,183,77,.5);color:#ffb74d;background:rgba(255,183,77,.08);cursor:pointer">☕ Tip via Bakong KHQR</button>
+  <button type="button" onclick="openKhqr();toggleMenu();" class="cvbtn" style="width:fit-content;margin-top:.25rem;border-color:rgba(255,183,77,.5);color:#ffb74d;background:rgba(255,183,77,.08);cursor:pointer">☕ Tip via Bakong KHQR</button>
   <a href="https://link.payway.com.kh/ABAPAYzI4445189" target="_blank" rel="noopener" class="cvbtn" style="width:fit-content;margin-top:.25rem">Pay with ABA PayWay</a>
   <a href="#" class="cvbtn" style="width:fit-content;margin-top:.25rem" onclick="dlcv(event)">📄 View &amp; Download CV</a>
 </div>
@@ -663,7 +654,7 @@ footer span{color:var(--ac)}
     <p class="hdesc">Designing <strong>robust, scalable database systems</strong> that power modern applications. Specialized in query optimization, data architecture, and keeping your data fast, safe, and always available.</p>
     <div class="hbtns">
       <a href="#projects" class="btnp" onclick="goTo(event,'projects')">View Projects →</a>
-      <button type="button" class="btnp" onclick="openPay()" style="background:rgba(255,183,77,0.14);border-color:rgba(255,183,77,0.45);color:#ffb74d;cursor:pointer">☕ Tip via KHQR</button>
+      <button type="button" class="btnp" onclick="openKhqr()" style="background:rgba(255,183,77,0.14);border-color:rgba(255,183,77,0.45);color:#ffb74d;cursor:pointer">☕ Tip via KHQR</button>
       <a href="https://link.payway.com.kh/ABAPAYzI4445189" target="_blank" rel="noopener" class="btnp">Pay with ABA PayWay</a>
       <a href="#" class="cvbtn" onclick="dlcv(event)">📄 View &amp; Download CV</a>
       <a href="#contact" class="btng" onclick="goTo(event,'contact')">Get in touch</a>
@@ -1288,107 +1279,143 @@ footer span{color:var(--ac)}
   </div>
 </div>
 
+<!-- ORIGINAL ABA PAYWAY MODAL (Only PayWay, Not Including KHQR) -->
 <div class="modal" id="paymodal" onclick="closePay(event)">
   <div class="modalbox paybox">
+    <div class="modalhead">
+      <div>
+        <div class="modalkicker">ABA PayWay</div>
+        <div class="modaltitle">Choose your currency</div>
+      </div>
+      <button class="modalclose" type="button" onclick="closePay(event)" aria-label="Close payment options">✕</button>
+    </div>
+    <div class="modalbody">
+      <div class="payopts">
+        <a class="payopt" href="https://link.payway.com.kh/ABAPAYzI4445189" target="_blank" rel="noopener">
+          <span class="paysym">$</span><span class="paycur">USD</span><span class="paylbl">Pay in US Dollars</span>
+        </a>
+        <a class="payopt" href="https://link.payway.com.kh/ABAPAY67513794R" target="_blank" rel="noopener">
+          <span class="paysym">៛</span><span class="paycur">KHR</span><span class="paylbl">បង់ជាប្រាក់រៀល</span>
+        </a>
+      </div>
+      <p class="paynote">Secure payment page by ABA PayWay. You can pay with ABA Mobile, KHQR, or card.</p>
+    </div>
+  </div>
+</div>
+
+<!-- DEDICATED BAKONG KHQR TIP & SUPPORT MODAL -->
+<div class="modal" id="khqrmodal" onclick="closeKhqr(event)">
+  <div class="modalbox khqr-box">
     
     <!-- Top Modal Header -->
-    <div class="payhead">
-      <div class="payhead-left">
-        <div class="payhead-emblem">KH</div>
+    <div class="khqr-head">
+      <div class="khqr-head-left">
+        <div class="khqr-head-emblem">KH</div>
         <div>
-          <div class="payhead-title-row">
-            <h3 class="payhead-title">Official NBC KHQR</h3>
-            <span class="payhead-badge">EMVCo Compliant</span>
+          <div class="khqr-head-title-row">
+            <h3 class="khqr-head-title">Tip &amp; Support Anzo</h3>
+            <span class="khqr-head-badge">Bakong KHQR</span>
           </div>
-          <p class="payhead-sub">National Bank of Cambodia · Dynamic QR &amp; Settlement</p>
+          <p class="khqr-head-sub">National Bank of Cambodia · Dynamic QR Settlement</p>
         </div>
       </div>
-      <button class="modalclose" type="button" onclick="closePay(event)" aria-label="Close payment modal">✕</button>
+      <button class="modalclose" type="button" onclick="closeKhqr(event)" aria-label="Close KHQR modal">✕</button>
     </div>
 
-    <!-- Split 2-Column Body -->
-    <div class="paybody-grid">
+    <!-- Modal 2-Column Body Grid -->
+    <div class="khqr-body-grid">
       
       <!-- Left Column: Controls & Presets -->
-      <div class="pay-left">
+      <div class="khqr-left">
         
+        <!-- Friendly Intro Card -->
+        <div class="tip-intro-card">
+          <div class="tip-intro-icon">☕</div>
+          <div>
+            <div class="tip-intro-title">Buy Anzo a Coffee / Tip</div>
+            <div class="tip-intro-desc">Help keep free open-source bots, tools &amp; server infrastructure running!</div>
+          </div>
+        </div>
+
         <!-- Currency Selector -->
         <div>
-          <div class="pay-sec-label">Select Currency</div>
+          <div class="khqr-sec-label">
+            <span>Select Currency</span>
+            <span style="color:var(--ac)">Zero Fees</span>
+          </div>
           <div class="curr-toggle-grid">
-            <button type="button" class="curr-toggle-btn active" id="btnCurrUSD" onclick="setKhqrCurrency('USD')">
+            <button type="button" id="khqrCurrUsd" class="curr-toggle-btn active" onclick="setKhqrCurrency('USD')">
               <span class="curr-badge-sym">$</span>
               <span>USD (Dollar)</span>
             </button>
-            <button type="button" class="curr-toggle-btn khr" id="btnCurrKHR" onclick="setKhqrCurrency('KHR')">
-              <span class="curr-badge-sym" style="color:#ffb74d">៛</span>
+            <button type="button" id="khqrCurrKhr" class="curr-toggle-btn khr" onclick="setKhqrCurrency('KHR')">
+              <span class="curr-badge-sym">៛</span>
               <span>KHR (ប្រាក់រៀល)</span>
             </button>
           </div>
         </div>
 
-        <!-- Amount Input & Quick Presets -->
+        <!-- Amount Input -->
         <div>
-          <div class="pay-sec-label">
-            <span>Amount <strong id="amountUnitLabel" style="color:var(--ac);font-weight:700">($ USD)</strong></span>
-            <span style="font-size:.6rem;color:var(--mu);text-transform:none">Quick Presets</span>
+          <div class="khqr-sec-label">
+            <span id="khqrAmountLabel">Amount ($ USD)</span>
+            <span>Quick Presets</span>
           </div>
-          <div class="pay-amount-box">
-            <span class="pay-amount-sym" id="amountSymDisplay">$</span>
-            <input type="number" id="khqrAmountInput" step="0.5" min="0.01" value="1.00" class="pay-amount-input" oninput="onAmountCustomInput()" />
+          <div class="khqr-amount-box">
+            <span class="khqr-amount-sym" id="khqrAmountSym">$</span>
+            <input type="text" id="khqrAmountCustom" class="khqr-amount-input" value="1.00" oninput="onAmountCustomInput(this.value)" placeholder="1.00" />
           </div>
-          <div class="preset-chips" id="presetChipsContainer">
-            <!-- Populated via JS -->
-          </div>
+          <!-- Preset Chips -->
+          <div class="preset-chips" id="khqrPresetChips"></div>
         </div>
 
         <!-- Payer Name (Optional) & Bill / Invoice No -->
-        <div class="pay-inputs-row">
+        <div class="khqr-inputs-row">
           <div>
-            <div class="pay-field-label">
+            <div class="khqr-field-label">
               <span>Your Name (Optional)</span>
             </div>
-            <input type="text" id="khqrPayerName" class="pay-text-input" placeholder="e.g. Supporter / Anonymous" oninput="onPayerNameChange()" />
+            <input type="text" id="khqrPayerName" class="khqr-text-input" placeholder="e.g. Supporter / Anonymous" oninput="onPayerNameChange()" />
           </div>
           <div>
-            <div class="pay-field-label">
+            <div class="khqr-field-label">
               <span>Bill / Invoice No</span>
-              <button type="button" class="pay-regen-btn" onclick="regenInvoiceNo()">🔄 New</button>
+              <button type="button" class="khqr-regen-btn" onclick="regenInvoiceNo()">🔄 New</button>
             </div>
-            <input type="text" id="khqrInvoiceInput" class="pay-text-input" readonly />
+            <input type="text" id="khqrInvoiceInput" class="khqr-text-input" readonly />
           </div>
         </div>
 
-        <!-- Generate Button -->
+        <!-- Generate Button (Placed right under form for natural flow) -->
         <button type="button" class="btn-gen-khqr" id="btnGenKhqr" onclick="triggerKhqrGeneration()">
           <span>⚡</span>
           <span>បង្កើត KHQR កូដ (Generate KHQR)</span>
         </button>
 
+        <!-- Trust & Security Strip -->
+        <div class="tip-trust-row">
+          <span>🛡️ EMVCo Compliant</span>
+          <span>•</span>
+          <span>⚡ Instant Settlement</span>
+          <span>•</span>
+          <span>🔒 100% Free &amp; Direct</span>
+        </div>
+
       </div>
 
-      <!-- Right Column: Authentic Standee & Actions -->
-      <div class="pay-right">
-        
-        <!-- Quota Saver Checkbox -->
-        <div class="standee-limit-row">
-          <label title="Automatically verify transaction (up to 5 checks to preserve NBC quota)">
-            <input type="checkbox" id="khqrAutoCheck" checked style="accent-color:var(--ac);cursor:pointer" />
-            <span>⚡ Auto-check (Max 5 tries)</span>
-          </label>
-          <span class="limit-badge">🛡️ Limit Protected</span>
-        </div>
+      <!-- Right Column: Authentic Standee Card & Banking Apps -->
+      <div class="khqr-right">
 
         <!-- Live Status Badge -->
         <div class="khqr-status-badge" id="khqrStatusBadge">
-          <span class="pay-kyc-dot" id="khqrStatusDot" style="background:var(--ac);box-shadow:0 0 8px var(--ac)"></span>
+          <span class="pay-kyc-dot" id="khqrStatusDot"></span>
           <span id="khqrStatusText">⚡ Select amount and click Generate</span>
         </div>
 
         <!-- Authentic Cambodian NBC KHQR Standee Card -->
-        <div class="khqr-standee" id="khqrStandeeCard">
+        <div class="khqr-standee">
           
-          <!-- Red Header -->
+          <!-- Standee Header (Official NBC Red) -->
           <div class="khqr-standee-head">
             <div class="khqr-brand-pill">
               <span class="khqr-brand-title">KHQR</span>
@@ -1396,13 +1423,14 @@ footer span{color:var(--ac)}
             </div>
             <div class="khqr-merchant-info">
               <div class="khqr-standee-mname" id="standeeMerchantName">Mai Bich</div>
-              <div class="khqr-standee-acc">mai_bich@bkrt</div>
+              <div class="khqr-standee-acc" id="standeeMerchantAcc">mai_bich@bkrt</div>
             </div>
           </div>
 
-          <!-- White Body with QR Code / Placeholder -->
+          <!-- White Body with QR Code -->
           <div class="khqr-standee-body">
-            <!-- Initial Standee Placeholder (Saves limit until clicked) -->
+            
+            <!-- Ready Placeholder -->
             <div id="standeePlaceholder" class="standee-placeholder">
               <div class="placeholder-icon">⚡</div>
               <div class="placeholder-title">KHQR Standee Ready</div>
@@ -1437,7 +1465,7 @@ footer span{color:var(--ac)}
         <div class="standee-banking-box">
           <div class="banking-box-head">
             <span class="banking-box-title">Open in Banking App</span>
-            <span class="banking-box-sub">Auto-saves QR · Scan from Gallery</span>
+            <span class="banking-box-sub">Auto-saves QR · Scan in app</span>
           </div>
 
           <div class="banking-apps-grid">
@@ -1490,7 +1518,7 @@ footer span{color:var(--ac)}
           </button>
         </div>
 
-        <button type="button" class="btn-close-modal-link" onclick="closePay(event)">
+        <button type="button" class="btn-close-modal-link" onclick="closeKhqr(event)">
           រួចរាល់ (Close &amp; Return)
         </button>
       </div>
@@ -1599,7 +1627,7 @@ function closeProjectModal(e){
 }
 document.querySelectorAll('#pgrid .pc:not([data-preview])').forEach(function(card,i){card.addEventListener('click',function(e){e.preventDefault();openProjectModal(i);});});
 document.querySelectorAll('#pgrid .pc[data-preview]').forEach(function(card){card.addEventListener('click',function(e){openPreview('web',e);});});
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeProjectModal();closePreview();closePay();closeCv();}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeProjectModal();closePreview();closePay();closeKhqr();closeCv();}});
 
 // ==========================================
 // BAKONG KHQR DYNAMIC PAYMENT & TIP SYSTEM
@@ -2001,7 +2029,7 @@ function shareKhqr() {
 }
 
 function editKhqrDetails() {
-  var grid = document.querySelector('.paybody-grid');
+  var grid = document.querySelector('.khqr-body-grid');
   if (grid) grid.scrollTo({ top: 0, behavior: 'smooth' });
   var amt = document.getElementById('khqrAmountCustom');
   if (amt) {
@@ -2074,6 +2102,23 @@ function downloadKhqrImage() {
 
 function openPay() {
   var m = document.getElementById('paymodal');
+  if (m) {
+    m.classList.add('on');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closePay(e) {
+  if (e && e.type === 'click' && e.target.id !== 'paymodal' && !e.target.closest('.modalclose')) return;
+  var m = document.getElementById('paymodal');
+  if (m && m.classList.contains('on')) {
+    m.classList.remove('on');
+    document.body.style.overflow = '';
+  }
+}
+
+function openKhqr() {
+  var m = document.getElementById('khqrmodal');
   if (!m) return;
   m.classList.add('on');
   document.body.style.overflow = 'hidden';
@@ -2086,12 +2131,11 @@ function openPay() {
   if (standeeInv) standeeInv.textContent = khqrState.invoiceNo;
   renderKhqrPresets();
   updateStandeeTotal();
-  // DO NOT auto-generate: saves customer limit!
 }
 
-function closePay(e) {
-  if (e && e.type === 'click' && e.target.id !== 'paymodal' && !e.target.closest('.modalclose') && !e.target.closest('.btn-close-modal')) return;
-  var m = document.getElementById('paymodal');
+function closeKhqr(e) {
+  if (e && e.type === 'click' && e.target.id !== 'khqrmodal' && !e.target.closest('.modalclose') && !e.target.closest('.btn-close-modal-link')) return;
+  var m = document.getElementById('khqrmodal');
   if (m && m.classList.contains('on')) {
     m.classList.remove('on');
     document.body.style.overflow = '';
@@ -2102,7 +2146,7 @@ function closePay(e) {
 // Every PayWay link opens the unified payment modal
 document.addEventListener('click', function(e) {
   var a = e.target.closest && e.target.closest('a[href^="https://link.payway.com.kh/"]');
-  if (!a || a.closest('#paymodal')) return;
+  if (!a || a.closest('#paymodal') || a.closest('#khqrmodal')) return;
   e.preventDefault(); e.stopPropagation();
   openPay();
 }, true);
