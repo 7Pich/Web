@@ -44,6 +44,8 @@ nav.scrolled{background:rgba(12,12,14,0.98);box-shadow:0 12px 30px rgba(0,0,0,0.
 .nright{display:flex;align-items:center;gap:.6rem}
 .thbtn{width:36px;height:36px;border-radius:8px;background:transparent;border:1px solid var(--br);color:var(--mu);cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .thbtn:hover{background:var(--bg4);border-color:var(--br2);color:var(--tx)}
+.tipbtn{font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;color:#ffb74d;background:rgba(255,183,77,0.08);border:1px solid rgba(255,183,77,0.35);padding:.45rem .85rem;border-radius:4px;letter-spacing:.06em;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;transition:all .2s;text-decoration:none}
+.tipbtn:hover{background:rgba(255,183,77,0.18);border-color:#ffb74d;transform:translateY(-1px);box-shadow:0 4px 14px rgba(255,183,77,0.2)}
 .hirebtn{font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;color:var(--ac);text-decoration:none;border:1px solid var(--br2);padding:.45rem 1rem;border-radius:4px;letter-spacing:.06em;transition:background .2s}
 .hirebtn:hover{background:rgba(0,212,160,0.1)}
 .hbtn{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
@@ -373,15 +375,119 @@ nav.scrolled{background:rgba(12,12,14,0.98);box-shadow:0 12px 30px rgba(0,0,0,0.
 .pvbtns{margin-top:1rem;display:flex;gap:.6rem;flex-wrap:wrap}
 .pvbtn{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.06em;padding:.5rem .85rem;border-radius:6px;border:1px solid var(--br2);background:rgba(0,212,160,.08);color:var(--ac);cursor:pointer;transition:background .2s}
 .pvbtn:hover{background:rgba(0,212,160,.18)}
-#pvmodal,#paymodal{padding-top:82px}
-.paybox{width:min(460px,100%)}
-.payopts{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
-.payopt{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:1.3rem .8rem;border:1px solid var(--br2);border-radius:10px;background:rgba(0,212,160,.06);color:var(--tx);text-decoration:none;transition:background .2s,transform .2s}
-.payopt:hover{background:rgba(0,212,160,.16);transform:translateY(-3px)}
-.paysym{font-size:2rem;font-weight:800;color:var(--ac);line-height:1.1}
-.paycur{font-family:'Space Mono',monospace;font-weight:700;letter-spacing:.1em}
-.paylbl{font-size:.8rem;color:var(--mu)}
-.modalbody p.paynote{font-size:.78rem;margin:1rem 0 0;text-align:center}
+#pvmodal{padding-top:82px}
+#paymodal{padding-top:60px}
+.paybox{width:min(880px,calc(100vw - 28px));max-height:calc(100vh - 80px);overflow:hidden;display:flex;flex-direction:column;border-radius:20px;border:1px solid rgba(0,212,160,0.3);box-shadow:0 25px 70px rgba(0,0,0,0.75);background:var(--bg3)}
+.payhead{padding:1rem 1.35rem;border-bottom:1px solid var(--br);display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.02)}
+.payhead-left{display:flex;align-items:center;gap:.75rem}
+.payhead-emblem{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#e1251b,#b71c1c);color:#fff;font-family:'Outfit',sans-serif;font-weight:900;font-size:.9rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(225,37,27,.35);letter-spacing:.02em}
+.payhead-title-row{display:flex;align-items:center;gap:.5rem}
+.payhead-title{font-weight:800;font-size:1.05rem;line-height:1.2;color:var(--tx)}
+.payhead-badge{padding:.15rem .55rem;border-radius:20px;font-size:.65rem;font-weight:700;background:rgba(0,212,160,.12);color:var(--ac);border:1px solid var(--br2);font-family:'Space Mono',monospace}
+.payhead-sub{font-size:.72rem;color:var(--mu);margin-top:2px}
+
+.paybody-grid{display:grid;grid-template-columns:1.15fr 0.85fr;overflow-y:auto;flex:1}
+@media(max-width:820px){
+  .paybody-grid{grid-template-columns:1fr}
+  .pay-right{border-left:none!important;border-top:1px solid var(--br)}
+  .paybox{max-height:92vh}
+}
+.pay-left{padding:1.35rem;display:flex;flex-direction:column;gap:1.1rem;background:rgba(0,0,0,0.12)}
+.pay-right{padding:1.35rem;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;background:rgba(0,0,0,0.25);border-left:1px solid var(--br);position:relative}
+
+/* Merchant Info Strip */
+.pay-merchant-strip{display:flex;align-items:center;justify-content:space-between;padding:.7rem .85rem;border-radius:12px;background:var(--bg4);border:1px solid var(--br)}
+.pay-merchant-left{display:flex;align-items:center;gap:.65rem}
+.pay-merchant-icon{width:32px;height:32px;border-radius:8px;background:rgba(0,212,160,.1);border:1px solid var(--br2);color:var(--ac);display:flex;align-items:center;justify-content:center;font-size:.95rem}
+.pay-merchant-name{font-weight:800;font-size:.82rem;color:var(--tx);line-height:1.15}
+.pay-merchant-id{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--mu);margin-top:1px}
+.pay-kyc-badge{font-family:'Space Mono',monospace;font-size:.62rem;font-weight:700;color:var(--ac);background:rgba(0,212,160,.12);border:1px solid var(--br2);padding:.2rem .55rem;border-radius:20px;display:inline-flex;align-items:center;gap:.3rem}
+.pay-kyc-dot{width:6px;height:6px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac);animation:pulse-dot 1.8s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+
+/* Currency Selector */
+.pay-sec-label{display:flex;justify-content:space-between;align-items:center;font-family:'Space Mono',monospace;font-size:.64rem;font-weight:700;color:var(--mu);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.45rem}
+.curr-toggle-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.curr-toggle-btn{padding:.65rem;border-radius:10px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.82rem;display:flex;align-items:center;justify-content:center;gap:.5rem;border:1px solid var(--br);background:var(--bg4);color:var(--mu);cursor:pointer;transition:all .2s}
+.curr-toggle-btn.active{background:rgba(0,212,160,.14);border-color:var(--ac);color:var(--tx);box-shadow:0 0 16px rgba(0,212,160,.15)}
+.curr-toggle-btn.khr.active{background:rgba(255,183,77,.14);border-color:#ffb74d;color:var(--tx);box-shadow:0 0 16px rgba(255,183,77,.15)}
+.curr-badge-sym{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:.72rem}
+
+/* Amount Input */
+.pay-amount-box{position:relative;display:flex;align-items:center}
+.pay-amount-sym{position:absolute;left:14px;font-family:'Space Mono',monospace;font-size:1.15rem;font-weight:700;color:var(--ac);pointer-events:none}
+.pay-amount-input{width:100%;padding:.7rem 1rem .7rem 2.5rem;font-family:'Space Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--tx);background:var(--bg4);border:1px solid var(--br);border-radius:10px;outline:none;transition:border-color .2s}
+.pay-amount-input:focus{border-color:var(--ac);box-shadow:0 0 12px rgba(0,212,160,.2)}
+
+/* Preset Chips */
+.preset-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}
+.preset-chip{font-family:'Space Mono',monospace;font-size:.68rem;padding:.32rem .65rem;border-radius:6px;background:var(--bg4);border:1px solid var(--br);color:var(--mu);cursor:pointer;transition:all .2s}
+.preset-chip:hover{background:rgba(255,255,255,.08);color:var(--tx)}
+.preset-chip.active{background:rgba(0,212,160,.16);border-color:var(--ac);color:var(--ac);font-weight:700}
+
+/* Bill & Store inputs */
+.pay-inputs-row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.pay-field-label{display:flex;justify-content:space-between;align-items:center;font-size:.68rem;font-weight:600;color:var(--mu);margin-bottom:.3rem}
+.pay-regen-btn{font-size:.62rem;color:var(--ac);background:none;border:none;cursor:pointer;font-weight:700}
+.pay-text-input{width:100%;padding:.5rem .75rem;font-family:'Space Mono',monospace;font-size:.76rem;color:var(--tx);background:var(--bg4);border:1px solid var(--br);border-radius:8px;outline:none}
+.pay-text-input:focus{border-color:var(--ac)}
+
+/* Generate Button */
+.btn-gen-khqr{width:100%;padding:.85rem;border-radius:12px;background:linear-gradient(135deg,#00d4a0,#009f78);color:#050509;border:none;font-weight:800;font-size:.88rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;box-shadow:0 6px 20px rgba(0,212,160,.3);transition:all .2s;margin-top:auto}
+.btn-gen-khqr:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,212,160,.4)}
+.btn-gen-khqr:active{transform:translateY(1px)}
+
+/* Right Column Standee Frame */
+.standee-limit-row{width:100%;max-width:280px;display:flex;align-items:center;justify-content:space-between;font-size:.68rem;color:var(--mu);margin-bottom:.45rem}
+.standee-limit-row label{display:flex;align-items:center;gap:.35rem;cursor:pointer;color:var(--tx)}
+.limit-badge{font-family:'Space Mono',monospace;font-size:.62rem;color:var(--ac);font-weight:700}
+
+.khqr-status-badge{width:100%;max-width:280px;padding:.45rem .8rem;border-radius:10px;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:.45rem;margin-bottom:.75rem;background:rgba(255,183,77,.1);color:#ffb74d;border:1px solid rgba(255,183,77,.3);transition:all .3s}
+.khqr-status-badge.paid{background:rgba(0,212,160,.16);color:var(--ac);border-color:var(--ac);animation:bounce-once .6s ease}
+@keyframes bounce-once{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+
+/* Authentic NBC Red Standee Card */
+.khqr-standee{width:100%;max-width:275px;background:#ffffff;border:3.5px solid #d32f2f;border-radius:16px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,0.5);display:flex;flex-direction:column;color:#111}
+.khqr-standee-head{background:linear-gradient(135deg,#e1251b,#c62828);padding:.65rem .9rem;display:flex;align-items:center;justify-content:space-between;color:#fff}
+.khqr-brand-pill{display:flex;align-items:center;gap:.3rem}
+.khqr-brand-title{font-family:'Outfit',sans-serif;font-weight:900;font-size:1.05rem;letter-spacing:.08em;line-height:1}
+.khqr-nbc-tag{font-size:.58rem;padding:.12rem .35rem;border-radius:4px;background:rgba(255,255,255,.24);font-weight:700}
+.khqr-merchant-info{text-align:right}
+.khqr-standee-mname{font-weight:800;font-size:.78rem;line-height:1.15;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.khqr-standee-acc{font-family:'Space Mono',monospace;font-size:.62rem;opacity:.9}
+
+.khqr-standee-body{background:#fff;padding:.85rem;display:flex;align-items:center;justify-content:center;min-height:220px;position:relative}
+.khqr-img{width:200px;height:200px;object-fit:contain;display:block}
+.khqr-loading-overlay{position:absolute;inset:0;background:rgba(255,255,255,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;color:#333;font-size:.75rem;font-weight:600}
+.khqr-spinner{width:28px;height:28px;border:3px solid #f0f0f0;border-top-color:#d32f2f;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.khqr-standee-foot{background:#f8f9fa;border-top:1px solid #e9ecef;padding:.55rem .9rem;display:flex;align-items:center;justify-content:space-between}
+.khqr-foot-label{font-family:'Space Mono',monospace;font-size:.58rem;color:#6c757d;text-transform:uppercase}
+.khqr-foot-invoice{font-family:'Space Mono',monospace;font-size:.74rem;font-weight:700;color:#212529}
+.khqr-foot-amount{font-family:'Space Mono',monospace;font-size:.92rem;font-weight:900;color:#00875a}
+
+/* Right Column Actions */
+.standee-actions{width:100%;max-width:280px;display:flex;flex-direction:column;gap:.45rem;margin-top:.75rem}
+.standee-btn-row{display:grid;grid-template-columns:1fr 1fr;gap:.45rem}
+.btn-bakong-app{padding:.6rem;border-radius:10px;background:linear-gradient(135deg,#e1251b,#c62828);color:#fff;font-weight:700;font-size:.74rem;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.35rem;text-decoration:none;box-shadow:0 4px 14px rgba(225,37,27,.3);transition:all .2s}
+.btn-bakong-app:hover{background:linear-gradient(135deg,#f0342a,#d32f2f);transform:translateY(-1px)}
+.btn-dl-qr{padding:.6rem;border-radius:10px;background:var(--bg4);color:var(--tx);border:1px solid var(--br);font-weight:600;font-size:.74rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.35rem;transition:all .2s}
+.btn-dl-qr:hover{background:rgba(255,255,255,.08)}
+.btn-verify-nbc{padding:.5rem;border-radius:8px;background:var(--bg4);color:var(--tx);border:1px solid var(--br);font-size:.7rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.3rem;transition:all .2s}
+.btn-verify-nbc:hover{background:rgba(255,255,255,.08);border-color:var(--br2)}
+.btn-payway-alt{padding:.5rem;border-radius:8px;background:rgba(0,212,160,.08);color:var(--ac);border:1px solid var(--br2);font-size:.7rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:.3rem;text-decoration:none;transition:all .2s}
+.btn-payway-alt:hover{background:rgba(0,212,160,.16)}
+.btn-close-modal{padding:.55rem;border-radius:8px;background:none;border:1px solid var(--br);color:var(--mu);font-size:.7rem;cursor:pointer;transition:all .2s;width:100%}
+.btn-close-modal:hover{color:var(--tx);background:rgba(255,255,255,.04)}
+
+
+
+
+
+
+
+
 .pvbox{width:min(980px,100%);max-height:calc(100vh - 100px);display:flex;flex-direction:column;overflow:hidden}
 .pvtabs{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem}
 .pvtab{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.08em;padding:.35rem .75rem;border-radius:5px;border:1px solid var(--br);background:transparent;color:var(--mu);cursor:pointer}
@@ -480,6 +586,7 @@ footer span{color:var(--ac)}
   </ul>
   <div class="nright">
     <button class="thbtn" id="thbtn" onclick="toggleTheme()">🌙</button>
+    <button class="tipbtn" type="button" onclick="openPay()" title="Tip &amp; Support Anzo with Bakong KHQR">☕ TIP_ME</button>
     <a class="hirebtn" href="https://link.payway.com.kh/ABAPAYzI4445189" target="_blank" rel="noopener">HIRE_ME()</a>
     <button class="hbtn" id="hbtn" onclick="toggleMenu()"><span></span><span></span><span></span></button>
   </div>
@@ -496,6 +603,7 @@ footer span{color:var(--ac)}
     <div class="mcontact-title">Quick call</div>
     <a href="tel:0964642015"><strong>Smart</strong><span>096 464 2015</span></a>
   </div>
+  <button type="button" onclick="openPay();toggleMenu();" class="cvbtn" style="width:fit-content;margin-top:.25rem;border-color:rgba(255,183,77,.5);color:#ffb74d;background:rgba(255,183,77,.08);cursor:pointer">☕ Tip via Bakong KHQR</button>
   <a href="https://link.payway.com.kh/ABAPAYzI4445189" target="_blank" rel="noopener" class="cvbtn" style="width:fit-content;margin-top:.25rem">Pay with ABA PayWay</a>
   <a href="#" class="cvbtn" style="width:fit-content;margin-top:.25rem" onclick="dlcv(event)">📄 View &amp; Download CV</a>
 </div>
@@ -538,6 +646,7 @@ footer span{color:var(--ac)}
     <p class="hdesc">Designing <strong>robust, scalable database systems</strong> that power modern applications. Specialized in query optimization, data architecture, and keeping your data fast, safe, and always available.</p>
     <div class="hbtns">
       <a href="#projects" class="btnp" onclick="goTo(event,'projects')">View Projects →</a>
+      <button type="button" class="btnp" onclick="openPay()" style="background:rgba(255,183,77,0.14);border-color:rgba(255,183,77,0.45);color:#ffb74d;cursor:pointer">☕ Tip via KHQR</button>
       <a href="https://link.payway.com.kh/ABAPAYzI4445189" target="_blank" rel="noopener" class="btnp">Pay with ABA PayWay</a>
       <a href="#" class="cvbtn" onclick="dlcv(event)">📄 View &amp; Download CV</a>
       <a href="#contact" class="btng" onclick="goTo(event,'contact')">Get in touch</a>
@@ -563,6 +672,7 @@ footer span{color:var(--ac)}
     </div>
     <div class="term-pills">
       <button type="button" class="term-pill" onclick="runTermCmd('help')">help</button>
+      <button type="button" class="term-pill" onclick="runTermCmd('tip')">tip</button>
       <button type="button" class="term-pill" onclick="runTermCmd('skills')">skills</button>
       <button type="button" class="term-pill" onclick="runTermCmd('projects')">projects</button>
       <button type="button" class="term-pill" onclick="runTermCmd('contact')">contact</button>
@@ -1163,24 +1273,187 @@ footer span{color:var(--ac)}
 
 <div class="modal" id="paymodal" onclick="closePay(event)">
   <div class="modalbox paybox">
-    <div class="modalhead">
-      <div>
-        <div class="modalkicker">ABA PayWay</div>
-        <div class="modaltitle">Choose your currency</div>
+    
+    <!-- Top Modal Header -->
+    <div class="payhead">
+      <div class="payhead-left">
+        <div class="payhead-emblem">KH</div>
+        <div>
+          <div class="payhead-title-row">
+            <h3 class="payhead-title">Generate Official KHQR</h3>
+            <span class="payhead-badge">EMVCo Compliant</span>
+          </div>
+          <p class="payhead-sub">National Bank of Cambodia · Dynamic QR &amp; Settlement</p>
+        </div>
       </div>
-      <button class="modalclose" type="button" onclick="closePay(event)" aria-label="Close payment options">X</button>
+      <button class="modalclose" type="button" onclick="closePay(event)" aria-label="Close payment modal">✕</button>
     </div>
-    <div class="modalbody">
-      <div class="payopts">
-        <a class="payopt" href="https://link.payway.com.kh/ABAPAYzI4445189" target="_blank" rel="noopener">
-          <span class="paysym">$</span><span class="paycur">USD</span><span class="paylbl">Pay in US Dollars</span>
-        </a>
-        <a class="payopt" href="https://link.payway.com.kh/ABAPAY67513794R" target="_blank" rel="noopener">
-          <span class="paysym">៛</span><span class="paycur">KHR</span><span class="paylbl">បង់ជាប្រាក់រៀល</span>
-        </a>
+
+    <!-- Split 2-Column Body -->
+    <div class="paybody-grid">
+      
+      <!-- Left Column: Controls & Presets -->
+      <div class="pay-left">
+        
+        <!-- Merchant Info Strip -->
+        <div class="pay-merchant-strip">
+          <div class="pay-merchant-left">
+            <div class="pay-merchant-icon">🏪</div>
+            <div>
+              <div class="pay-merchant-name">MAI BICH</div>
+              <div class="pay-merchant-id">mai_bich@bkrt</div>
+            </div>
+          </div>
+          <span class="pay-kyc-badge">
+            <span class="pay-kyc-dot"></span>
+            <span>FULL KYC</span>
+          </span>
+        </div>
+
+        <!-- Currency Selector -->
+        <div>
+          <div class="pay-sec-label">Select Currency</div>
+          <div class="curr-toggle-grid">
+            <button type="button" class="curr-toggle-btn active" id="btnCurrUSD" onclick="setKhqrCurrency('USD')">
+              <span class="curr-badge-sym">$</span>
+              <span>USD (Dollar)</span>
+            </button>
+            <button type="button" class="curr-toggle-btn khr" id="btnCurrKHR" onclick="setKhqrCurrency('KHR')">
+              <span class="curr-badge-sym" style="color:#ffb74d">៛</span>
+              <span>KHR (ប្រាក់រៀល)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Amount Input & Quick Presets -->
+        <div>
+          <div class="pay-sec-label">
+            <span>Amount <strong id="amountUnitLabel" style="color:var(--ac);font-weight:700">($ USD)</strong></span>
+            <span style="font-size:.6rem;color:var(--mu);text-transform:none">Quick Presets</span>
+          </div>
+          <div class="pay-amount-box">
+            <span class="pay-amount-sym" id="amountSymDisplay">$</span>
+            <input type="number" id="khqrAmountInput" step="0.5" min="0.01" value="1.00" class="pay-amount-input" oninput="onAmountCustomInput()" />
+          </div>
+          <div class="preset-chips" id="presetChipsContainer">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Invoice / Bill No & Merchant Name -->
+        <div class="pay-inputs-row">
+          <div>
+            <div class="pay-field-label">
+              <span>Bill / Invoice No</span>
+              <button type="button" class="pay-regen-btn" onclick="regenInvoiceNo()">🔄 New</button>
+            </div>
+            <input type="text" id="khqrInvoiceInput" class="pay-text-input" readonly />
+          </div>
+          <div>
+            <div class="pay-field-label">
+              <span>Merchant / Store</span>
+            </div>
+            <input type="text" id="khqrStoreInput" value="Mai Bich" class="pay-text-input" readonly />
+          </div>
+        </div>
+
+        <!-- Generate Button -->
+        <button type="button" class="btn-gen-khqr" id="btnGenKhqr" onclick="triggerKhqrGeneration()">
+          <span>⚡</span>
+          <span>បង្កើត KHQR កូដ (Generate KHQR)</span>
+        </button>
+
       </div>
-      <p class="paynote">Secure payment page by ABA PayWay. You can pay with ABA Mobile, KHQR, or card.</p>
+
+      <!-- Right Column: Authentic Standee & Actions -->
+      <div class="pay-right">
+        
+        <!-- Quota Saver Checkbox -->
+        <div class="standee-limit-row">
+          <label title="Automatically verify transaction (up to 5 checks to preserve NBC quota)">
+            <input type="checkbox" id="khqrAutoCheck" checked style="accent-color:var(--ac);cursor:pointer" />
+            <span>⚡ Auto-check (Max 5 tries)</span>
+          </label>
+          <span class="limit-badge">🛡️ Limit Protected</span>
+        </div>
+
+        <!-- Live Status Badge -->
+        <div class="khqr-status-badge" id="khqrStatusBadge">
+          <span class="pay-kyc-dot" id="khqrStatusDot" style="background:#ffb74d;box-shadow:0 0 8px #ffb74d"></span>
+          <span id="khqrStatusText">Awaiting customer scan...</span>
+        </div>
+
+        <!-- Authentic Cambodian NBC KHQR Standee Card -->
+        <div class="khqr-standee" id="khqrStandeeCard">
+          
+          <!-- Red Header -->
+          <div class="khqr-standee-head">
+            <div class="khqr-brand-pill">
+              <span class="khqr-brand-title">KHQR</span>
+              <span class="khqr-nbc-tag">NBC</span>
+            </div>
+            <div class="khqr-merchant-info">
+              <div class="khqr-standee-mname" id="standeeMerchantName">Mai Bich</div>
+              <div class="khqr-standee-acc">mai_bich@bkrt</div>
+            </div>
+          </div>
+
+          <!-- White Body with QR Code -->
+          <div class="khqr-standee-body">
+            <img id="standeeQrImg" class="khqr-img" alt="Official Bakong KHQR Code" />
+            <div class="khqr-loading-overlay" id="khqrLoadingOverlay" style="display:none">
+              <div class="khqr-spinner"></div>
+              <span>Generating KHQR...</span>
+            </div>
+          </div>
+
+          <!-- Footer with Bill No & Amount -->
+          <div class="khqr-standee-foot">
+            <div>
+              <div class="khqr-foot-label">INVOICE</div>
+              <div class="khqr-foot-invoice" id="standeeInvoiceNo">BILL-XXXXXX</div>
+            </div>
+            <div style="text-align:right">
+              <div class="khqr-foot-label">TOTAL</div>
+              <div class="khqr-foot-amount" id="standeeTotalAmount">$ 1.00 USD</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="standee-actions">
+          <div class="standee-btn-row">
+            <a id="btnBakongDeeplink" href="#" target="_blank" rel="noopener" class="btn-bakong-app">
+              <span>🚀</span>
+              <span>Bakong App</span>
+            </a>
+            <button type="button" class="btn-dl-qr" onclick="downloadKhqrImage()">
+              <span>📥</span>
+              <span>Download QR</span>
+            </button>
+          </div>
+          
+          <div class="standee-btn-row">
+            <button type="button" class="btn-verify-nbc" id="btnManualVerify" onclick="verifyKhqrManual()">
+              <span>🔄</span>
+              <span>Verify NBC</span>
+            </button>
+            <a href="https://link.payway.com.kh/ABAPAYzI4445189" id="btnPaywayFallback" target="_blank" rel="noopener" class="btn-payway-alt">
+              <span>💳</span>
+              <span>PayWay Card</span>
+            </a>
+          </div>
+
+          <button type="button" class="btn-close-modal" onclick="closePay(event)">
+            រួចរាល់ (Close &amp; Return)
+          </button>
+        </div>
+
+      </div>
+
     </div>
+
   </div>
 </div>
 
@@ -1285,17 +1558,334 @@ document.querySelectorAll('#pgrid .pc:not([data-preview])').forEach(function(car
 document.querySelectorAll('#pgrid .pc[data-preview]').forEach(function(card){card.addEventListener('click',function(e){openPreview('web',e);});});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeProjectModal();closePreview();closePay();closeCv();}});
 
-// PAYMENT: every PayWay link on the page opens a USD / KHR picker first
-document.addEventListener('click',function(e){
-  var a=e.target.closest&&e.target.closest('a[href^="https://link.payway.com.kh/"]');
-  if(!a||a.closest('#paymodal'))return;
-  e.preventDefault();e.stopPropagation();
-  document.getElementById('paymodal').classList.add('on');document.body.style.overflow='hidden';
-},true);
-function closePay(e){
-  if(e&&e.type==='click'&&e.target.id!=='paymodal'&&e.target.className!=='modalclose')return;
-  var m=document.getElementById('paymodal');if(m&&m.classList.contains('on')){m.classList.remove('on');document.body.style.overflow='';}
+// ==========================================
+// BAKONG KHQR DYNAMIC PAYMENT & TIP SYSTEM
+// ==========================================
+var KHQR_API_BASE = 'https://khqr-project.onrender.com';
+var khqrState = {
+  currency: 'USD',
+  amount: 1.00,
+  invoiceNo: '',
+  merchantName: 'Mai Bich',
+  accountId: 'mai_bich@bkrt',
+  md5: '',
+  qr: '',
+  dataUrl: '',
+  deeplink: '',
+  pollTimer: null,
+  pollCount: 0,
+  maxPolls: 5,
+  isPaid: false
+};
+
+var USD_PRESETS = [0.50, 1.00, 2.00, 5.00, 10.00, 20.00, 50.00];
+var KHR_PRESETS = [2000, 4000, 10000, 20000, 50000, 100000];
+
+function generateRandomInvoice() {
+  var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  var res = 'BILL-';
+  for (var i = 0; i < 8; i++) {
+    res += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return res;
 }
+
+function regenInvoiceNo() {
+  khqrState.invoiceNo = generateRandomInvoice();
+  var invEl = document.getElementById('khqrInvoiceInput');
+  if (invEl) invEl.value = khqrState.invoiceNo;
+  var standeeInv = document.getElementById('standeeInvoiceNo');
+  if (standeeInv) standeeInv.textContent = khqrState.invoiceNo;
+  triggerKhqrGeneration();
+}
+
+function renderKhqrPresets() {
+  var container = document.getElementById('presetChipsContainer');
+  if (!container) return;
+  var presets = khqrState.currency === 'KHR' ? KHR_PRESETS : USD_PRESETS;
+  var html = '';
+  for (var i = 0; i < presets.length; i++) {
+    var val = presets[i];
+    var isSel = (khqrState.currency === 'KHR') ? (Math.round(khqrState.amount) === val) : (parseFloat(khqrState.amount) === val);
+    var label = khqrState.currency === 'KHR' ? (val.toLocaleString() + ' ៛') : ('$' + (val < 1 ? val.toFixed(2) : val));
+    html += '<button type="button" class="preset-chip ' + (isSel ? 'active' : '') + '" onclick="selectKhqrPreset(' + val + ')">' + label + '</button>';
+  }
+  container.innerHTML = html;
+}
+
+function setKhqrCurrency(curr) {
+  if (khqrState.currency === curr) return;
+  khqrState.currency = curr;
+  
+  var btnUSD = document.getElementById('btnCurrUSD');
+  var btnKHR = document.getElementById('btnCurrKHR');
+  var unitLabel = document.getElementById('amountUnitLabel');
+  var symDisplay = document.getElementById('amountSymDisplay');
+  var amtInput = document.getElementById('khqrAmountInput');
+  var paywayFallback = document.getElementById('btnPaywayFallback');
+
+  if (curr === 'KHR') {
+    if (btnUSD) btnUSD.classList.remove('active');
+    if (btnKHR) btnKHR.classList.add('active');
+    if (unitLabel) unitLabel.textContent = '(៛ KHR)';
+    if (symDisplay) { symDisplay.textContent = '៛'; symDisplay.style.color = '#ffb74d'; }
+    khqrState.amount = 4000;
+    if (amtInput) { amtInput.value = 4000; amtInput.step = 1000; amtInput.min = 100; }
+    if (paywayFallback) paywayFallback.href = 'https://link.payway.com.kh/ABAPAY67513794R';
+  } else {
+    if (btnKHR) btnKHR.classList.remove('active');
+    if (btnUSD) btnUSD.classList.add('active');
+    if (unitLabel) unitLabel.textContent = '($ USD)';
+    if (symDisplay) { symDisplay.textContent = '$'; symDisplay.style.color = 'var(--ac)'; }
+    khqrState.amount = 1.00;
+    if (amtInput) { amtInput.value = '1.00'; amtInput.step = 0.5; amtInput.min = 0.01; }
+    if (paywayFallback) paywayFallback.href = 'https://link.payway.com.kh/ABAPAYzI4445189';
+  }
+  
+  renderKhqrPresets();
+  triggerKhqrGeneration();
+}
+
+function selectKhqrPreset(val) {
+  khqrState.amount = val;
+  var amtInput = document.getElementById('khqrAmountInput');
+  if (amtInput) amtInput.value = (khqrState.currency === 'USD' && val < 1) ? val.toFixed(2) : val;
+  renderKhqrPresets();
+  triggerKhqrGeneration();
+}
+
+function onAmountCustomInput() {
+  var amtInput = document.getElementById('khqrAmountInput');
+  if (!amtInput) return;
+  var val = parseFloat(amtInput.value) || 0;
+  khqrState.amount = val;
+  renderKhqrPresets();
+  clearTimeout(window.__amtInputTimer);
+  window.__amtInputTimer = setTimeout(function() {
+    triggerKhqrGeneration();
+  }, 600);
+}
+
+function formatKhqrDisplayAmount(amount, currency) {
+  if (currency === 'KHR') {
+    return Math.round(amount).toLocaleString() + ' KHR';
+  }
+  return '$ ' + Number(amount).toFixed(2) + ' USD';
+}
+
+function playSuccessChime() {
+  try {
+    var AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    var ctx = new AudioCtx();
+    var notes = [523.25, 659.25, 783.99, 1046.50];
+    notes.forEach(function(freq, i) {
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.1);
+      gain.gain.setValueAtTime(0.25, ctx.currentTime + i * 0.1);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.1 + 0.45);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + i * 0.1);
+      osc.stop(ctx.currentTime + i * 0.1 + 0.45);
+    });
+  } catch (e) {}
+}
+
+function triggerKhqrGeneration() {
+  stopKhqrPolling();
+  khqrState.isPaid = false;
+
+  if (!khqrState.invoiceNo) {
+    khqrState.invoiceNo = generateRandomInvoice();
+  }
+  var invEl = document.getElementById('khqrInvoiceInput');
+  if (invEl) invEl.value = khqrState.invoiceNo;
+  var standeeInv = document.getElementById('standeeInvoiceNo');
+  if (standeeInv) standeeInv.textContent = khqrState.invoiceNo;
+
+  var standeeTotal = document.getElementById('standeeTotalAmount');
+  if (standeeTotal) standeeTotal.textContent = formatKhqrDisplayAmount(khqrState.amount, khqrState.currency);
+
+  var overlay = document.getElementById('khqrLoadingOverlay');
+  if (overlay) overlay.style.display = 'flex';
+
+  var statusBadge = document.getElementById('khqrStatusBadge');
+  var statusText = document.getElementById('khqrStatusText');
+  var statusDot = document.getElementById('khqrStatusDot');
+  if (statusBadge) {
+    statusBadge.className = 'khqr-status-badge';
+    if (statusDot) { statusDot.style.background = '#ffb74d'; statusDot.style.boxShadow = '0 0 8px #ffb74d'; }
+    if (statusText) statusText.textContent = 'Awaiting customer scan...';
+  }
+
+  fetch(KHQR_API_BASE + '/api/bakong/generate-khqr', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      accountId: khqrState.accountId,
+      merchantName: khqrState.merchantName,
+      currency: khqrState.currency,
+      amount: khqrState.amount,
+      billNumber: khqrState.invoiceNo
+    })
+  }).then(function(res) {
+    return res.json();
+  }).then(function(data) {
+    if (overlay) overlay.style.display = 'none';
+    if (data && data.qr && data.dataUrl) {
+      khqrState.qr = data.qr;
+      khqrState.md5 = data.md5;
+      khqrState.dataUrl = data.dataUrl;
+      khqrState.deeplink = (data.deeplink && data.deeplink.shortLink) ? data.deeplink.shortLink : ('https://bakong-deeplink.nbc.gov.kh/bakong/' + data.md5);
+
+      var qrImg = document.getElementById('standeeQrImg');
+      if (qrImg) qrImg.src = data.dataUrl;
+
+      var dlBtn = document.getElementById('btnBakongDeeplink');
+      if (dlBtn) dlBtn.href = khqrState.deeplink;
+
+      var autoCheck = document.getElementById('khqrAutoCheck');
+      if (autoCheck && autoCheck.checked) {
+        startKhqrPolling();
+      }
+    } else {
+      console.warn('KHQR generate issue:', data);
+    }
+  }).catch(function(err) {
+    if (overlay) overlay.style.display = 'none';
+    console.error('Error generating KHQR:', err);
+  });
+}
+
+function startKhqrPolling() {
+  stopKhqrPolling();
+  khqrState.pollCount = 0;
+  if (!khqrState.md5) return;
+
+  khqrState.pollTimer = setInterval(function() {
+    khqrState.pollCount++;
+    if (khqrState.pollCount > khqrState.maxPolls || khqrState.isPaid) {
+      stopKhqrPolling();
+      return;
+    }
+
+    var statusText = document.getElementById('khqrStatusText');
+    if (statusText && !khqrState.isPaid) {
+      statusText.textContent = 'Checking payment (' + khqrState.pollCount + '/' + khqrState.maxPolls + ')...';
+    }
+
+    fetch(KHQR_API_BASE + '/api/bakong/verify-transaction', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ md5: khqrState.md5, invoice_no: khqrState.invoiceNo })
+    }).then(function(res) {
+      return res.json();
+    }).then(function(data) {
+      if (data && data.status === 'SUCCESS') {
+        markPaymentSuccess();
+      }
+    }).catch(function() {});
+  }, 3500);
+}
+
+function stopKhqrPolling() {
+  if (khqrState.pollTimer) {
+    clearInterval(khqrState.pollTimer);
+    khqrState.pollTimer = null;
+  }
+}
+
+function markPaymentSuccess() {
+  khqrState.isPaid = true;
+  stopKhqrPolling();
+
+  var statusBadge = document.getElementById('khqrStatusBadge');
+  var statusText = document.getElementById('khqrStatusText');
+  var statusDot = document.getElementById('khqrStatusDot');
+  if (statusBadge) {
+    statusBadge.className = 'khqr-status-badge paid';
+    if (statusDot) { statusDot.style.background = 'var(--ac)'; statusDot.style.boxShadow = '0 0 10px var(--ac)'; }
+    if (statusText) statusText.textContent = '🎉 Paid Successfully! (Settled)';
+  }
+
+  playSuccessChime();
+  showToast('🎉 Thank you for tipping & supporting Anzo!');
+}
+
+function verifyKhqrManual() {
+  if (!khqrState.md5) {
+    showToast('⚠️ No active QR to verify');
+    return;
+  }
+  var btn = document.getElementById('btnManualVerify');
+  if (btn) btn.textContent = 'Verifying...';
+
+  fetch(KHQR_API_BASE + '/api/bakong/verify-transaction', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ md5: khqrState.md5, invoice_no: khqrState.invoiceNo })
+  }).then(function(res) {
+    return res.json();
+  }).then(function(data) {
+    if (btn) btn.innerHTML = '<span>🔄</span> <span>Verify NBC</span>';
+    if (data && data.status === 'SUCCESS') {
+      markPaymentSuccess();
+    } else if (data && data.limitExceeded) {
+      showToast('⚠️ Daily NBC limit reached. Payment may take a moment to reflect.');
+    } else {
+      showToast('⏱️ Transaction still pending scan.');
+    }
+  }).catch(function() {
+    if (btn) btn.innerHTML = '<span>🔄</span> <span>Verify NBC</span>';
+    showToast('⚠️ Could not connect to verification server');
+  });
+}
+
+function downloadKhqrImage() {
+  if (!khqrState.dataUrl) {
+    showToast('⚠️ Please wait for QR code to load');
+    return;
+  }
+  var a = document.createElement('a');
+  a.href = khqrState.dataUrl;
+  a.download = 'KHQR-' + (khqrState.invoiceNo || 'anzo') + '.png';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  showToast('📥 KHQR Code downloaded!');
+}
+
+function openPay() {
+  var m = document.getElementById('paymodal');
+  if (!m) return;
+  m.classList.add('on');
+  document.body.style.overflow = 'hidden';
+  if (!khqrState.qr) {
+    renderKhqrPresets();
+    regenInvoiceNo();
+  }
+}
+
+function closePay(e) {
+  if (e && e.type === 'click' && e.target.id !== 'paymodal' && !e.target.closest('.modalclose') && !e.target.closest('.btn-close-modal')) return;
+  var m = document.getElementById('paymodal');
+  if (m && m.classList.contains('on')) {
+    m.classList.remove('on');
+    document.body.style.overflow = '';
+    stopKhqrPolling();
+  }
+}
+
+// Every PayWay link opens the unified payment modal
+document.addEventListener('click', function(e) {
+  var a = e.target.closest && e.target.closest('a[href^="https://link.payway.com.kh/"]');
+  if (!a || a.closest('#paymodal')) return;
+  e.preventDefault(); e.stopPropagation();
+  openPay();
+}, true);
 
 // LIVE PREVIEW: web app (real iframe) + Telegram bot (chat mockup from the bot's real menu)
 var BOT_KEYS=[
@@ -1372,7 +1962,7 @@ var aiKnowledge=[
   {keys:['experience','job','career','work history','2023','2021'],answer:`Anzo has Database Administrator / Data Support experience from 2023 to present, plus junior database and backend support project work from 2021 to 2023. His work includes performance tuning, schema updates, backups, migrations, permissions, and troubleshooting.<br><a class="aicta" href="#experience" onclick="goTo(event,'experience')">View Experience</a>`},
   {keys:['education','study','student','language','khmer','english'],answer:'Anzo is a Year 4 student studying web, database, and software development. Languages: Khmer and English.'},
   {keys:['contact','phone','call','number','email','telegram'],answer:`You can call Anzo by Smart: <a href="tel:0964642015">096 464 2015</a>. Email: Maibich2019@gmail.com. You can also use the contact form at the bottom of the page.<br><a class="aicta" href="#contact" onclick="goTo(event,'contact')">Open Contact</a>`},
-  {keys:['pay','payment','aba','hire','price'],answer:`For payment or hiring, use ABA PayWay here:<br><a class="aicta" href="https://link.payway.com.kh/ABAPAYzI4445189" target="_blank" rel="noopener">Pay with ABA PayWay</a>`},
+  {keys:['pay','payment','aba','hire','price','tip','bakong','khqr'],answer:`You can tip or hire Anzo via NBC Bakong KHQR (ABA, Wing, ACLEDA, Bakong App) or ABA PayWay:<br><button class="aicta" onclick="openPay()" style="cursor:pointer;border:none">☕ Tip / Pay with KHQR</button>`},
   {keys:['service','offer','help','work','support'],answer:`Anzo can help with database setup, schema design, PostgreSQL/MySQL tuning, slow query review, indexing, execution plan checks, Redis caching, MongoDB maintenance, Python automation, backups, recovery planning, and access review.<br><a class="aicta" href="#services" onclick="goTo(event,'services')">View Services</a>`},
   {keys:['project','portfolio','case','fintech','inventory','analytics','cache','migration','backup'],answer:`Selected projects include a fintech reconciliation platform, inventory sync engine, customer analytics store, Redis API cache layer, data migration toolkit, and backup/access audit. They cover PostgreSQL, MySQL, MongoDB, Redis, Python, ETL, validation, reporting, and reliability.<br><a class="aicta" href="#projects" onclick="goTo(event,'projects')">View Projects</a>`},
   {keys:['skill','database','postgres','postgresql','mysql','mariadb','mongo','mongodb','redis','python','sql','etl'],answer:'Main skills: PostgreSQL, MySQL/MariaDB, MongoDB, Redis, SQL, Python, database design, indexing, query tuning, backups, recovery, access control, migration, ETL, validation, reporting, and caching.'},
@@ -1622,12 +2212,13 @@ document.querySelectorAll('.pc, .svccard, .skpan, .khmer-status-bar').forEach(fu
 
 // INTERACTIVE HERO TERMINAL
 var termCommands = {
-  help: 'Available commands:\n• whoami    - About Anzo\n• skills    - Core tech stack & tools\n• projects  - Key systems & achievements\n• contact   - Phone, Telegram & Email\n• hire      - Open ABA PayWay payment\n• status    - System & database status\n• cv        - View & download professional CV\n• clear     - Clear terminal history\n• select * from anzo',
+  help: 'Available commands:\n• whoami    - About Anzo\n• skills    - Core tech stack & tools\n• projects  - Key systems & achievements\n• contact   - Phone, Telegram & Email\n• hire      - Open Bakong KHQR & PayWay modal\n• tip       - Send a tip via Bakong KHQR\n• status    - System & database status\n• cv        - View & download professional CV\n• clear     - Clear terminal history\n• select * from anzo',
   whoami: 'Anzo: Senior Database Administrator & Full-Stack Architect.\nBased in Phnom Penh, Cambodia. Year 4 developer specializing in high-throughput database schemas, query optimization, and resilient backends.',
   skills: 'Databases: PostgreSQL (95%), MySQL/MariaDB (92%), MongoDB (85%), Redis (82%), Cloudflare D1\nBackend: Python (FastAPI/ETL), Node.js, TypeScript, Docker\nBots & Cloud: Telegraf, Cloudflare Workers, Gemini AI, ABA PayWay',
   projects: '1. Khmer Daily Tools — Telegram Bot & Web App (Workers + D1)\n2. EcomDB — PostgreSQL Schema Handling 10M+ Daily Transactions\n3. SecureAuth — Fintech RBAC & Encryption Layer\n4. RealTime Metrics Store — TimescaleDB IoT Ingestion',
   contact: 'Phone: 096 464 2015 (Smart)\nTelegram: @MaiBich (https://t.me/MaiBich)\nEmail: Maibich2019@gmail.com\nLocation: Phnom Penh, Cambodia',
-  hire: 'Opening ABA PayWay modal... Click USD or KHR to complete payment.',
+  hire: 'Opening Bakong KHQR & PayWay modal... Scan with any KHQR banking app or choose PayWay.',
+  tip: 'Opening Bakong KHQR Tip modal... Scan with Bakong, ABA, Wing, ACLEDA, or any KHQR mobile app.',
   status: '🟢 Status: All production databases healthy. Uptime 99.9%. Ready for new data architecture and optimization projects.',
   'select * from anzo': 'id: 1 | name: "Anzo" | role: "DBA" | city: "Phnom Penh" | uptime: "99.9%" | status: "ONLINE"'
 };
@@ -1668,9 +2259,9 @@ function runTermCmd(cmd) {
   if (c === 'cv' || c === 'resume') {
     openCv();
   }
-  if (c === 'hire' || c === 'pay') {
-    var paym = document.getElementById('paymodal');
-    if (paym) { paym.classList.add('on'); document.body.style.overflow = 'hidden'; }
+  if (c === 'hire' || c === 'pay' || c === 'tip') {
+    openPay();
+
   }
   
   body.scrollTop = body.scrollHeight;
