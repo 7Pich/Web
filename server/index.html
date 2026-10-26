@@ -483,6 +483,11 @@ nav.scrolled{background:rgba(12,12,14,0.98);box-shadow:0 12px 30px rgba(0,0,0,0.
 .app-icon-badge.bakong{background:#e1251b;color:#ffffff;font-size:.92rem;font-weight:900}
 .app-icon-badge.acleda{background:#15284f;color:#f5b335;font-size:.85rem;font-weight:800;border:1px solid rgba(245,179,53,.28)}
 .app-icon-badge.wing{background:#7cbd27;color:#ffffff;font-size:1rem;font-weight:900}
+.app-icon-badge.save-qr{background:linear-gradient(135deg,#1d4ed8,#1e3a8a);color:#ffffff}
+.app-icon-badge.share-qr{background:linear-gradient(135deg,#7cbd27,#5b9319);color:#ffffff}
+.mobile-pay-hint{padding-top:.6rem;border-top:1px solid rgba(255,255,255,.07);font-size:.67rem;color:#94a3b8;line-height:1.45;display:flex;align-items:flex-start;gap:.35rem}
+.mobile-pay-hint strong{color:#cbd5e1}
+.hint-icon{font-size:.82rem;line-height:1.2}
 .app-label{font-size:.72rem;font-weight:600;color:#cbd5e1}
 .banking-direct-link-row{display:flex;align-items:center;justify-content:space-between;padding-top:.55rem;border-top:1px solid rgba(255,255,255,.07);font-size:.76rem}
 .direct-link-lbl{color:#64748b;font-size:.74rem}
@@ -1461,60 +1466,69 @@ footer span{color:var(--ac)}
 
         </div>
 
-        <!-- Open in Banking App Card -->
+        <!-- Pay on Mobile Card -->
         <div class="standee-banking-box">
           <div class="banking-box-head">
-            <span class="banking-box-title">Open in Banking App</span>
-            <span class="banking-box-sub">Auto-saves QR · Scan in app</span>
+            <span class="banking-box-title">Pay on Mobile</span>
+            <span class="banking-box-sub">Direct App Link or Save QR for Gallery Scan</span>
           </div>
 
           <div class="banking-apps-grid">
-            <!-- ABA -->
-            <button type="button" class="banking-app-btn" onclick="openBankingApp('aba')" title="Open in ABA Mobile">
-              <div class="app-icon-badge aba">ABA</div>
-              <span class="app-label">ABA</span>
-            </button>
-
-            <!-- Bakong -->
-            <button type="button" class="banking-app-btn" onclick="openBankingApp('bakong')" title="Open in Bakong App">
+            <!-- 1. Bakong App -->
+            <button type="button" class="banking-app-btn" onclick="payWithBakongApp()" title="Open in Bakong App">
               <div class="app-icon-badge bakong">KH</div>
-              <span class="app-label">Bakong</span>
+              <span class="app-label">Bakong App</span>
             </button>
 
-            <!-- ACLEDA -->
-            <button type="button" class="banking-app-btn" onclick="openBankingApp('acleda')" title="Open in ACLEDA mobile">
-              <div class="app-icon-badge acleda">AC</div>
-              <span class="app-label">ACLEDA</span>
+            <!-- 2. ABA Link -->
+            <button type="button" class="banking-app-btn" onclick="payWithAbaLink()" title="Open ABA PayWay Link">
+              <div class="app-icon-badge aba">ABA</div>
+              <span class="app-label">ABA Link</span>
             </button>
 
-            <!-- Wing -->
-            <button type="button" class="banking-app-btn" onclick="openBankingApp('wing')" title="Open in Wing Bank">
-              <div class="app-icon-badge wing">W</div>
-              <span class="app-label">Wing</span>
+            <!-- 3. Save QR -->
+            <button type="button" class="banking-app-btn" onclick="saveQrToGallery()" title="Save QR to Photos">
+              <div class="app-icon-badge save-qr">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+              </div>
+              <span class="app-label">Save QR</span>
+            </button>
+
+            <!-- 4. Share QR -->
+            <button type="button" class="banking-app-btn" onclick="shareKhqr()" title="Share QR Link">
+              <div class="app-icon-badge share-qr">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="18" cy="5" r="3"></circle>
+                  <circle cx="6" cy="12" r="3"></circle>
+                  <circle cx="18" cy="19" r="3"></circle>
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+              </div>
+              <span class="app-label">Share QR</span>
             </button>
           </div>
 
-          <div class="banking-direct-link-row">
-            <span class="direct-link-lbl">Or direct link:</span>
-            <a href="https://link.payway.com.kh/ABAPAYzI4445189" target="_blank" rel="noopener" class="direct-payway-link" id="paywayDirectLink">
-              ABA PayWay (USD) ↗
-            </a>
+          <!-- Bottom hint from user image -->
+          <div class="mobile-pay-hint">
+            <span class="hint-icon">💡</span>
+            <span class="hint-text"><strong>ABA / ACLEDA / Wing:</strong> Tap <strong>Save QR</strong> ➔ Open Bank App ➔ <strong>Scan QR from Gallery</strong></span>
           </div>
         </div>
 
-        <!-- 3 Action Buttons -->
-        <div class="standee-actions-row">
+        <!-- Action Buttons: Verify & Edit -->
+        <div class="standee-actions-row" style="grid-template-columns: 1fr 1fr;">
           <button type="button" class="action-btn" id="btnManualVerify" onclick="verifyKhqrManual()">
             <span class="btn-icon">🔄</span>
             <span>Verify Now</span>
           </button>
-          <button type="button" class="action-btn" id="btnShareQr" onclick="shareKhqr()">
-            <span class="btn-icon">📤</span>
-            <span>Share QR</span>
-          </button>
           <button type="button" class="action-btn" id="btnEditKhqr" onclick="editKhqrDetails()">
             <span class="btn-icon">✏️</span>
-            <span>Edit</span>
+            <span>Edit Amount</span>
           </button>
         </div>
 
@@ -1964,55 +1978,52 @@ function downloadKhqrImageSilently() {
   return true;
 }
 
-function openBankingApp(app) {
-  // If QR code is not generated yet, auto-generate it first, then open app to pay
+function payWithBakongApp() {
   if (!khqrState.isGenerated || !khqrState.dataUrl) {
-    showToast('⚡ Auto-generating KHQR for ' + app.toUpperCase() + '...');
+    showToast('⚡ Auto-generating KHQR for Bakong...');
     triggerKhqrGeneration(function() {
-      executeOpenBankingApp(app);
+      executeBakongApp();
     });
     return;
   }
-  executeOpenBankingApp(app);
+  executeBakongApp();
 }
 
-function executeOpenBankingApp(app) {
-  if (app === 'bakong') {
-    if (khqrState.deeplink) {
-      showToast('🚀 Opening Bakong App...');
-      window.open(khqrState.deeplink, '_blank');
-    } else {
-      showToast('⚠️ Deeplink not ready yet');
-    }
-    return;
+function executeBakongApp() {
+  if (khqrState.deeplink) {
+    showToast('🚀 Opening Bakong App...');
+    window.open(khqrState.deeplink, '_blank');
+  } else {
+    showToast('⚠️ Deeplink not ready yet');
   }
+}
 
-  if (app === 'aba') {
-    downloadKhqrImageSilently();
-    showToast('📥 QR saved to Photos! Open ABA ➔ Scan ➔ Gallery to pay.');
-    setTimeout(function() {
-      window.location.href = 'abamobilebank://';
-    }, 250);
-    return;
-  }
+function payWithAbaLink() {
+  var abaUrl = (khqrState.currency === 'KHR') ? 'https://link.payway.com.kh/ABAPAY67513794R' : 'https://link.payway.com.kh/ABAPAYzI4445189';
+  showToast('🚀 Opening ABA PayWay (1-tap pay)...');
+  window.open(abaUrl, '_blank');
+}
 
-  if (app === 'acleda') {
-    downloadKhqrImageSilently();
-    showToast('🚀 Opening ACLEDA... (QR saved to gallery to scan)');
-    setTimeout(function() {
-      window.location.href = 'acledamobile://';
-    }, 200);
+function saveQrToGallery() {
+  if (!khqrState.isGenerated || !khqrState.dataUrl) {
+    showToast('⚡ Auto-generating KHQR to save...');
+    triggerKhqrGeneration(function() {
+      executeSaveQr();
+    });
     return;
   }
+  executeSaveQr();
+}
 
-  if (app === 'wing') {
-    downloadKhqrImageSilently();
-    showToast('🚀 Opening Wing Bank... (QR saved to gallery to scan)');
-    setTimeout(function() {
-      window.location.href = 'wingmoney://';
-    }, 200);
-    return;
-  }
+function executeSaveQr() {
+  downloadKhqrImageSilently();
+  showToast('📥 QR saved to Photos! Open ABA / ACLEDA / Wing ➔ Scan from Gallery to pay.');
+}
+
+function openBankingApp(app) {
+  if (app === 'bakong') return payWithBakongApp();
+  if (app === 'aba') return payWithAbaLink();
+  return saveQrToGallery();
 }
 
 function shareKhqr() {
@@ -2027,8 +2038,8 @@ function shareKhqr() {
 }
 
 function executeShareKhqr() {
-  var shareUrl = khqrState.deeplink || 'https://link.payway.com.kh/ABAPAYzI4445189';
-  var shareText = 'Support Anzo via KHQR: ' + (khqrState.currency === 'USD' ? '$' : '') + khqrState.amount + ' ' + khqrState.currency + ' (Invoice: ' + khqrState.invoiceNo + ')';
+  var shareUrl = khqrState.deeplink || ((khqrState.currency === 'KHR') ? 'https://link.payway.com.kh/ABAPAY67513794R' : 'https://link.payway.com.kh/ABAPAYzI4445189');
+  var shareText = 'Support Anzo via KHQR: ' + (khqrState.currency === 'USD' ? '$' : '') + khqrState.amount + ' ' + (khqrState.currency === 'KHR' ? '៛' : 'USD') + ' (Invoice: ' + khqrState.invoiceNo + ')';
 
   if (navigator.share) {
     navigator.share({
