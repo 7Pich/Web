@@ -1989,11 +1989,10 @@ function executeOpenBankingApp(app) {
 
   if (app === 'aba') {
     downloadKhqrImageSilently();
-    showToast('🚀 Opening ABA Mobile... (QR saved to gallery to scan)');
-    var abaDeeplink = 'abamobilebank://ababank.com?type=payway&qrcode=' + encodeURIComponent(khqrState.qr);
+    showToast('📥 QR saved to Photos! Open ABA ➔ Scan ➔ Gallery to pay.');
     setTimeout(function() {
-      window.location.href = abaDeeplink;
-    }, 200);
+      window.location.href = 'abamobilebank://';
+    }, 250);
     return;
   }
 
